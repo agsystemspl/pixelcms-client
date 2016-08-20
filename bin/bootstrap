@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+import os
+import subprocess
+
+
+WORKING_C = '\033[1;45m'
+DONE_C = '\033[1;42m'
+END_C = '\033[0m'
+
+
+def execute(command, cwd=os.getcwd()):
+    process = subprocess.Popen(
+        command,
+        shell=True,
+        cwd=cwd,
+        stdout=subprocess.PIPE
+    )
+    process.communicate()[0]
+
+
+if __name__ == '__main__':
+    cwd = os.getcwd()
+    package_root = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)),
+        '..'
+    )
+
+    print('\r\n{}Bootstrapping client app...{}'.format(WORKING_C, END_C))
+    execute(
+        'cp -r {} .'
+        .format(os.path.join(
+            cwd,
+            'node_modules/pixelcms-client/projectTemplate/.'
+        )),
+    )
+    execute('npm install')
+    execute('npm run build-dev')
+
+    print('\r\n{}Done!{}'.format(DONE_C, END_C))

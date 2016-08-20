@@ -1,0 +1,21 @@
+@mixin v-center($suffix:null) {
+    position: absolute $suffix; top: 50% $suffix;
+    transform: translateY(-50%) $suffix;
+}
+@mixin h-center($suffix:null) {
+    position: absolute $suffix; left: 50% $suffix;
+    transform: translateX(-50%) $suffix;
+}
+@mixin vh-center($suffix:null) {
+    position: absolute $suffix; top: 50% $suffix; left: 50% $suffix;
+    transform: translateY(-50%) translateX(-50%) $suffix;
+}
+
+@mixin bare-anchor($suffix:null) {
+    text-decoration: none $suffix;
+}
+
+@mixin bare-ul($suffix:null) {
+    list-style: none $suffix; margin: 0 $suffix; padding: 0 $suffix;
+    li { display: inline-block $suffix; }
+}
