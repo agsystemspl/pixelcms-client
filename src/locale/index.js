@@ -31,6 +31,7 @@ const messages = {
       'New password': 'Nowe hasło',
       'Repeat new password': 'Powtórz nowe hasło',
       'Change': 'Zmień',
+      'Hello': 'Witaj',
 
       // contact form
       'Your name / company name': 'Imię i nazwisko / nazwa firmy',

@@ -19,6 +19,7 @@ export LangSwitch from './components/utils/LangSwitch'
 export Mailto from './components/utils/Mailto'
 export Breadcrumbs from './components/utils/Breadcrumbs'
 export Lightbox from './components/utils/Lightbox'
+export AuthLinks from './components/utils/AuthLinks'
 
 // Translations
 export T from './components/utils/T'
