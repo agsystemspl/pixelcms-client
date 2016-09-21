@@ -1,32 +1,30 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 
 import Module from './Module'
 import ArticlesModuleArticle from './ArticlesModule/ArticlesModuleArticle'
 
-class ArticlesModule extends Component {
-  render() {
-    let articles
-    if (this.props.module.data.articles) {
-      let items = this.props.module.data.articles.map((item, key) => {
-        return (
-          <ArticlesModuleArticle
-            key={key}
-            articlesTitlesHeadersLevel={this.props.module.data.articlesTitlesHeadersLevel}
-            {...item}
-          />
-        )
-      })
-      articles = <div className="articles">{items}</div>
-    }
-    return (
-      <div className={this.props.getHtmlClassName()}>
-        <div className="wrapper">
-          {this.props.getHeader()}
-          {articles}
-        </div>
-      </div>
-    )
+let ArticlesModule = props => {
+  let articles
+  if (props.module.data.articles) {
+    let items = props.module.data.articles.map((item, key) => {
+      return (
+        <ArticlesModuleArticle
+          key={key}
+          articlesTitlesHeadersLevel={props.module.data.articlesTitlesHeadersLevel}
+          {...item}
+        />
+      )
+    })
+    articles = <div className="articles">{items}</div>
   }
+  return (
+    <div className={props.getHtmlClassName()}>
+      <div className="wrapper">
+        {props.getHeader()}
+        {articles}
+      </div>
+    </div>
+  )
 }
 
 ArticlesModule.propTypes = {

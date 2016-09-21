@@ -1,27 +1,25 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import DocumentMeta from 'react-document-meta'
 
-class MetaHandler extends Component {
-  render() {
-    const meta = {
-      title: this.props.meta.title,
-      description: this.props.meta.description,
-      meta: {
-        name: {
-          robots: this.props.meta.robots
-        }
-      },
-      auto: {
-        ograph: true
+let MetaHandler = props => {
+  const meta = {
+    title: props.meta.title,
+    description: props.meta.description,
+    meta: {
+      name: {
+        robots: props.meta.robots
       }
+    },
+    auto: {
+      ograph: true
     }
-    return (
-      <DocumentMeta {...meta}>
-        {this.props.children}
-      </DocumentMeta>
-    )
   }
+  return (
+    <DocumentMeta {...meta}>
+      {props.children}
+    </DocumentMeta>
+  )
 }
 MetaHandler.propTypes = {
   children: PropTypes.element.isRequired,

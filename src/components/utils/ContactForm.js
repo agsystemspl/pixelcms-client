@@ -16,9 +16,7 @@ const validate = (data) => {
 const send = (data, dispatch, getState) => {
   return new ApiRequest().post('emails/contact-form/', dispatch, getState, { data })
     .then(
-      (res) => {
-        console.log('ok!')
-      },
+      (res) => {},
       (res) => {
         let errors
         if (res.body) { errors = { ...res.body } }

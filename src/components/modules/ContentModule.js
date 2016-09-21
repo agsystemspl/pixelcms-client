@@ -1,22 +1,18 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 
 import Module from './Module'
 
-class ContentModule extends Component {
-  render() {
-    return (
-      <div className={this.props.getHtmlClassName()}>
-        <div className="wrapper">
-          {this.props.getHeader()}
-          <div
-            className="content"
-            dangerouslySetInnerHTML={{__html: this.props.module.data.content}}
-          />
-        </div>
-      </div>
-    )
-  }
-}
+let ContentModule = props => (
+  <div className={props.getHtmlClassName()}>
+    <div className="wrapper">
+      {props.getHeader()}
+      <div
+        className="content"
+        dangerouslySetInnerHTML={{__html: props.module.data.content}}
+      />
+    </div>
+  </div>
+)
 
 ContentModule.propTypes = {
   module: PropTypes.shape({

@@ -1,24 +1,22 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import getTranslation from '~/utils/i18n/getTranslation'
 
-class T extends Component {
-  render() {
-    if (this.props.lang === 'en') {
-      return <span>{this.props.t}</span>
-    }
-    return (
-      <span>
-        {getTranslation(
-          this.props.t,
-          this.props.ns,
-          this.props.lang,
-          this.props.locale
-        )}
-      </span>
-    )
+let T = props => {
+  if (props.lang === 'en') {
+    return <span>{props.t}</span>
   }
+  return (
+    <span>
+      {getTranslation(
+        props.t,
+        props.ns,
+        props.lang,
+        props.locale
+      )}
+    </span>
+  )
 }
 T.defaultProps = {
   ns: 'default'

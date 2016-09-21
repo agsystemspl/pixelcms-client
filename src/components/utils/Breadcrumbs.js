@@ -1,36 +1,34 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 
 import Link from './Link'
 
-class Breadcrumbs extends Component {
-  render() {
-    let items = this.props.items.map((item, i) => {
-      if (i < this.props.items.length - 1) {
-        return (
-          <span key={i}>
-            <i className="arrow fa fa-angle-right" />
-            <Link to={item.route}><span>{item.name}</span></Link>
-          </span>
-        )
-      }
-      else {
-        return (
-          <span key={i} className="active">
-            <i className="arrow fa fa-angle-right" />
-            <span>{item.name}</span>
-          </span>
-        )
-      }
-    })
-    return (
-      <div id="breadcrumbs">
-        <span className="home">
-          <Link to="/"><i className="fa fa-home" /></Link>
+const Breadcrumbs = props => {
+  let items = props.items.map((item, i) => {
+    if (i < props.items.length - 1) {
+      return (
+        <span key={i}>
+          <i className="arrow fa fa-angle-right" />
+          <Link to={item.route}><span>{item.name}</span></Link>
         </span>
-        {items}
-      </div>
-    )
-  }
+      )
+    }
+    else {
+      return (
+        <span key={i} className="active">
+          <i className="arrow fa fa-angle-right" />
+          <span>{item.name}</span>
+        </span>
+      )
+    }
+  })
+  return (
+    <div id="breadcrumbs">
+      <span className="home">
+        <Link to="/"><i className="fa fa-home" /></Link>
+      </span>
+      {items}
+    </div>
+  )
 }
 Breadcrumbs.propTypes = {
   items: PropTypes.arrayOf(PropTypes.shape({
