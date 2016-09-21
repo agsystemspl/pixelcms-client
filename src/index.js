@@ -9,7 +9,6 @@ export Module from './components/modules/Module'
 export NavModule from './components/modules/NavModule'
 export ContentModule from './components/modules/ContentModule'
 export ArticlesModule from './components/modules/ArticlesModule'
-export ContactForm from './components/modules/ContactForm'
 
 // Utils components
 export Link from './components/utils/Link'
@@ -19,6 +18,7 @@ export LangSwitch from './components/utils/LangSwitch'
 export Mailto from './components/utils/Mailto'
 export Breadcrumbs from './components/utils/Breadcrumbs'
 export Lightbox from './components/utils/Lightbox'
+export ContactForm from './components/utils/ContactForm'
 export AuthLinks from './components/utils/AuthLinks'
 
 // Translations
