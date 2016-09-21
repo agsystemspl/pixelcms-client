@@ -41,7 +41,7 @@ const getRoutes = (store, history = browserHistory) => (
               config.langs,
               store,
               pageComponentsRegistry,
-              []
+              ['accounts']
             )}
           </Route>
         </Route>
