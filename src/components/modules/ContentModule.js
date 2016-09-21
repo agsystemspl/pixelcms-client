@@ -17,9 +17,6 @@ class ContentModule extends Component {
     )
   }
 }
-ContentModule.moduleType = 'content'
-ContentModule.getApiPath = (templateId) => 'content/content-module/' + templateId + '/'
-ContentModule.moduleTypeHtmlClass = 'contentModule'
 
 ContentModule.propTypes = {
   module: PropTypes.shape({
@@ -31,6 +28,10 @@ ContentModule.propTypes = {
   getHeader: PropTypes.func.isRequired
 }
 
-ContentModule = Module(ContentModule)
+ContentModule = Module(
+  'content',
+  templateId => `content/content-module/${templateId}/`,
+  'contentModule'
+)(ContentModule)
 
 export default ContentModule

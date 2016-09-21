@@ -28,9 +28,6 @@ class ArticlesModule extends Component {
     )
   }
 }
-ArticlesModule.moduleType = 'articles'
-ArticlesModule.getApiPath = (templateId) => 'content/articles-module/' + templateId + '/'
-ArticlesModule.moduleTypeHtmlClass = 'articlesModule'
 
 ArticlesModule.propTypes = {
   module: PropTypes.shape({
@@ -43,6 +40,10 @@ ArticlesModule.propTypes = {
   getHeader: PropTypes.func.isRequired
 }
 
-ArticlesModule = Module(ArticlesModule)
+ArticlesModule = Module(
+  'articles',
+  templateId => `content/articles-module/${templateId}/`,
+  'articlesModule'
+)(ArticlesModule)
 
 export default ArticlesModule

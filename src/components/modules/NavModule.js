@@ -56,9 +56,6 @@ class NavModule extends Component {
     )
   }
 }
-NavModule.moduleType = 'nav'
-NavModule.getApiPath = (templateId) => 'nav/' + templateId + '/'
-NavModule.moduleTypeHtmlClass = 'navModule'
 
 NavModule.propTypes = {
   module: PropTypes.shape({
@@ -86,6 +83,10 @@ NavModule = connect(
   mapStateToProps
 )(NavModule)
 
-NavModule = Module(NavModule)
+NavModule = Module(
+  'nav',
+  templateId => `nav/${templateId}/`,
+  'navModule'
+)(NavModule)
 
 export default NavModule
