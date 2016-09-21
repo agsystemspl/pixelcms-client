@@ -3,12 +3,17 @@ import createMemoryHistory from 'react-router/lib/createMemoryHistory'
 import match from 'react-router/lib/match'
 import DocumentMeta from 'react-document-meta'
 
-import configureStore from '~/store/configureStore'
-import locationChanged from '~/actions/route/locationChanged'
-import setSsrCookie from '~/actions/auth/setSsrCookie'
-import ApiRequest from '~/utils/ApiRequest'
+const serverRender = (req, cb) => {
+  const configureStore = require('../store/configureStore').default
+  const locationChanged = require('../actions/route/locationChanged').default
+  const setSsrCookie = require('../actions/auth/setSsrCookie').default
+  const ApiRequest = require('../utils/ApiRequest').default
 
-const serverRender = (req, config, locale, reducers, getRoutes, cb) => {
+  const config = require('../../../../src/config').config
+  const locale = require('../../../../src/locale').default
+  const reducers = require('../../../../src/reducers').reducers
+  const getRoutes = require('../../../../src/routes').default
+
   const store = configureStore(config, locale, reducers)
   store.dispatch(locationChanged(req.path, req.query))
   store.dispatch(setSsrCookie(req.get('cookie')))

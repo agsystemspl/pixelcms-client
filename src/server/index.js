@@ -4,7 +4,9 @@ import mustacheExpress from 'mustache-express'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 
-const server = (webpackConfig, config, locale, reducers, getRoutes, { ssrEnabled, trustSelfSignedCerts, port }) => {
+const serverRender = require('./serverRender').default
+
+const server = (webpackConfig, { ssrEnabled, trustSelfSignedCerts, port }) => {
   // allow self-signed certificates
   if (process.env.NODE_ENV !== 'production' || trustSelfSignedCerts) {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
@@ -23,13 +25,14 @@ const server = (webpackConfig, config, locale, reducers, getRoutes, { ssrEnabled
     }))
 
     compiler.plugin('done', () => {
-      console.log('Clearing module cache on server.')
+      let count = 0
       Object.keys(require.cache).forEach((id) => {
         if (!/\/node_modules\//.test(id) || /\/node_modules\/pixelcms-client\//.test(id)) {
-          console.log('* ' + id)
           delete require.cache[id]
+          count++
         }
       })
+      console.log(`Clearing module cache: ${count} items removed`)
     })
   }
 
@@ -44,7 +47,7 @@ const server = (webpackConfig, config, locale, reducers, getRoutes, { ssrEnabled
   // request handler
   app.get('*', (req, res) => {
     if (ssrEnabled) {
-      require('./serverRender').default(req, config, locale, reducers, getRoutes, (err, redirect, data) => {
+      serverRender(req, (err, redirect, data) => {
         if (err) { console.log(err) }
         if (redirect) { res.redirect(302, redirect) }
         else {

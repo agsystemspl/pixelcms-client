@@ -16,10 +16,6 @@ global.webpack_isomorphic_tools = new WebpackIsomorphicTools(
     .server(__dirname, function() {
       require('pixelcms-client/lib/server').default(
         process.env.NODE_ENV === 'production' ? require('./webpack.config.prod') : require('./webpack.config.dev'),
-        require('./src/config').config,
-        require('./src/locale').default,
-        require('./src/reducers').reducers,
-        require('./src/routes').default,
         {
           ssrEnabled: true,
           trustSelfSignedCerts: true,
@@ -27,4 +23,4 @@ global.webpack_isomorphic_tools = new WebpackIsomorphicTools(
         }
       )
     }
-)
+  )
