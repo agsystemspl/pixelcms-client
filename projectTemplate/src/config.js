@@ -1,5 +1,5 @@
 const config = {
-  apiRoot: 'https://localhost/api/',
+  apiRoot: '/api/',
   langs: [
     {code: 'en', name: 'English'}
   ],
