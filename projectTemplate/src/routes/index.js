@@ -5,7 +5,6 @@ import Route from 'react-router/lib/Route'
 import browserHistory from 'react-router/lib/browserHistory'
 import ReactGA from 'react-ga'
 import ReduxToastr from 'react-redux-toastr'
-import ReactTooltip from 'react-tooltip'
 import { MetaHandler, getRoutes as getPixelcmsRoutes } from 'pixelcms-client'
 
 import { config, pageComponentsRegistry } from '~/config'
@@ -32,7 +31,6 @@ const getRoutes = (store, history = browserHistory) => (
         timeOut={10000}
         position="bottom-center"
       />
-      <ReactTooltip effect="solid" />
       <Router
         history={history}
         onUpdate={GALogPageView}
