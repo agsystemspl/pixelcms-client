@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react'
 
 import Link from '~/components/utils/Link'
+import EditableContent from '~/components/LiveAdmin/EditableContent'
+import AdminLink from '~/components/LiveAdmin/AdminLink'
 
 const CategoryArticle = props => {
   let created
@@ -15,19 +17,27 @@ const CategoryArticle = props => {
   let intro
   if (props.intro) {
     intro = (
-      <div
-        className="intro"
-        dangerouslySetInnerHTML={{__html: props.intro}}
-      />
+      <div className="intro">
+        <EditableContent
+          model="cms.content.models.Article"
+          pk={props.pk}
+          field="intro"
+          content={props.intro}
+        />
+      </div>
     )
   }
   let content
   if (props.content) {
     intro = (
-      <div
-        className="content"
-        dangerouslySetInnerHTML={{__html: props.content}}
-      />
+      <div className="content">
+        <EditableContent
+          model="cms.content.models.Article"
+          pk={props.pk}
+          field="content"
+          content={props.content}
+        />
+      </div>
     )
   }
   let image
@@ -44,7 +54,8 @@ const CategoryArticle = props => {
     )
   }
   return (
-    <div className="article">
+    <div className="article" style={{ position: 'relative' }}>
+      <AdminLink url={`/admin/content/article/${props.pk}/change/`} />
       <h2 className="title">
         <span>
           <Link to={props.route}>
@@ -60,6 +71,7 @@ const CategoryArticle = props => {
   )
 }
 CategoryArticle.propTypes = {
+  pk: PropTypes.number.isRequired,
   created: PropTypes.string,
   intro: PropTypes.string,
   content: PropTypes.string,

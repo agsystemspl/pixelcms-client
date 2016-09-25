@@ -1,9 +1,11 @@
 import React, { PropTypes } from 'react'
 
 import Link from '~/components/utils/Link'
+import AdminLink from '~/components/LiveAdmin/AdminLink'
 
 const Subcategory = props => (
-  <div className="subcategory">
+  <div className="subcategory" style={{ position: 'relative' }}>
+    <AdminLink url={`/admin/content/category/${props.pk}/change/`} />
     <h2 className="title">
       <Link to={props.route}>
         {props.name}
@@ -12,6 +14,7 @@ const Subcategory = props => (
   </div>
 )
 Subcategory.propTypes = {
+  pk: PropTypes.number.isRequired,
   route: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired
 }

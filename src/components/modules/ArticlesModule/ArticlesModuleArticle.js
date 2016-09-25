@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react'
 
 import Link from '~/components/utils/Link'
+import EditableContent from '~/components/LiveAdmin/EditableContent'
+import AdminLink from '~/components/LiveAdmin/AdminLink'
 
 const ArticlesModuleArticle = props => {
   let header
@@ -45,23 +47,32 @@ const ArticlesModuleArticle = props => {
   let intro
   if (props.intro) {
     intro = (
-      <div
-        className="intro"
-        dangerouslySetInnerHTML={{__html: props.intro}}
-      />
+      <div className="intro">
+        <EditableContent
+          model="cms.content.models.Article"
+          pk={props.pk}
+          field="intro"
+          content={props.intro}
+        />
+      </div>
     )
   }
   let content
   if (props.content) {
     intro = (
-      <div
-        className="content"
-        dangerouslySetInnerHTML={{__html: props.content}}
-      />
+      <div className="content">
+        <EditableContent
+          model="cms.content.models.Article"
+          pk={props.pk}
+          field="content"
+          content={props.content}
+        />
+      </div>
     )
   }
   return (
-    <div className="article">
+    <div className="article" style={{ position: 'relative' }}>
+      <AdminLink url={`/admin/content/article/${props.pk}/change/`} />
       {header}
       {image}
       {intro}
@@ -70,6 +81,7 @@ const ArticlesModuleArticle = props => {
   )
 }
 ArticlesModuleArticle.propTypes = {
+  pk: PropTypes.number.isRequired,
   title: PropTypes.string,
   articlesTitlesHeadersLevel: PropTypes.string,
   image: PropTypes.string,

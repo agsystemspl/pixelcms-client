@@ -25,6 +25,11 @@ export AuthLinks from './components/utils/AuthLinks'
 export T from './components/utils/T'
 export t from './utils/i18n/t'
 
+// Live admin
+export LiveAdminSidebar from './components/LiveAdmin/LiveAdminSidebar'
+export EditableContent from './components/LiveAdmin/EditableContent'
+export AdminLink from './components/LiveAdmin/AdminLink'
+
 // Utils
 export ApiRequest from './utils/ApiRequest'
 

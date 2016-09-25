@@ -6,6 +6,8 @@ import Subcategory from './Category/Subcategory'
 import CategoryArticle from './Category/CategoryArticle'
 import Pagination from '~/components/utils/Pagination'
 import T from '~/components/utils/T'
+import EditableContent from '~/components/LiveAdmin/EditableContent'
+import AdminLink from '~/components/LiveAdmin/AdminLink'
 
 const Category = props => {
   let breadcrumbs
@@ -15,10 +17,14 @@ const Category = props => {
   let description
   if (props.description) {
     description = (
-      <div
-        className="description"
-        dangerouslySetInnerHTML={{__html: props.description}}
-      />
+      <div className="description">
+        <EditableContent
+          model="cms.content.models.Category"
+          pk={props.pk}
+          field="description"
+          content={props.description}
+        />
+      </div>
     )
   }
   let subcategories
@@ -52,12 +58,13 @@ const Category = props => {
       <div className="container">
         <div className="wrapper">
           {breadcrumbs}
-          <div className="categoryHeader">
-            <div className="titleWrapper">
+          <header>
+            <div className="titleWrapper" style={{ position: 'relative' }}>
+              <AdminLink url={`/admin/content/category/${props.pk}/change/`} />
               <h1 className="title"><span>{props.name}</span></h1>
             </div>
             {description}
-          </div>
+          </header>
           {subcategories}
           {articles}
           {pagination}
@@ -68,6 +75,7 @@ const Category = props => {
   )
 }
 Category.propTypes = {
+  pk: PropTypes.number.isRequired,
   breadcrumbs: PropTypes.array,
   description: PropTypes.string,
   subcategories: PropTypes.array.isRequired,

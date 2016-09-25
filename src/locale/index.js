@@ -8,6 +8,20 @@ const messages = {
       'Error occured.': 'Wystąpił błąd.',
       'Go back': 'Wróć',
 
+      // live admin
+      'Mark editable content': 'Zaznacz edytowalną treść',
+      'Show admin links': 'Pokaż linki administracyjne',
+      'Go to admin panel': 'Przejdź do panelu administracyjnego',
+      'Go to element in admin panel': 'Przejdź do elementu w panelu administracyjnym',
+      'Unsaved changes': 'Niezapisane zmiany',
+      'Processing...': 'Przetwarzanie...',
+      'Revert changes': 'Cofnij zmiany',
+      'Save changes': 'Zapisz zmiany',
+      'Changes has been reverted.': 'Zmiany zostały cofnięte.',
+      'Error occured while reverting changes.': 'Wystąpił błąd podczas cofania zmian.',
+      'Changes has been saved.': 'Zmiany zostały zapisane.',
+      'Error occured while saving changes.': 'Wystąpił błąd podczas zapisywania zmian.',
+
       // auth
       'Login': 'Zaloguj się',
       'I forgot my password': 'Nie pamiętam hasła',

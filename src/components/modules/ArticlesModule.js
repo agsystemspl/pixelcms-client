@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 
 import Module from './Module'
 import ArticlesModuleArticle from './ArticlesModule/ArticlesModuleArticle'
+import AdminLink from '~/components/LiveAdmin/AdminLink'
 
 let ArticlesModule = props => {
   let articles
@@ -18,7 +19,8 @@ let ArticlesModule = props => {
     articles = <div className="articles">{items}</div>
   }
   return (
-    <div className={props.getHtmlClassName()}>
+    <div className={props.getHtmlClassName()} style={{ position: 'relative' }}>
+      <AdminLink url={`/admin/content/articlesmodule/${props.module.data.pk}/change/`} />
       <div className="wrapper">
         {props.getHeader()}
         {articles}
@@ -30,6 +32,7 @@ let ArticlesModule = props => {
 ArticlesModule.propTypes = {
   module: PropTypes.shape({
     data: PropTypes.shape({
+      pk: PropTypes.number.isRequired,
       articles: PropTypes.array.isRequired,
       articlesTitlesHeadersLevel: PropTypes.string
     }).isRequired
