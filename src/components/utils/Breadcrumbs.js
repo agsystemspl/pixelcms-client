@@ -1,8 +1,10 @@
 import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
 
 import Link from './Link'
 
-const Breadcrumbs = props => {
+let Breadcrumbs = props => {
+  if (props.path === '/') { return null }
   let items = props.items.map((item, i) => {
     if (i < props.items.length - 1) {
       return (
@@ -34,7 +36,15 @@ Breadcrumbs.propTypes = {
   items: PropTypes.arrayOf(PropTypes.shape({
     route: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired
-  })).isRequired
+  })).isRequired,
+  path: PropTypes.string.isRequired
 }
+
+const mapStateToProps = (state) => ({
+  path: state.route.path
+})
+Breadcrumbs = connect(
+  mapStateToProps
+)(Breadcrumbs)
 
 export default Breadcrumbs
