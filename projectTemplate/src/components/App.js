@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import { LiveAdminSidebar } from 'pixelcms-client'
 
 import styles from '~/assets/scss/styles.scss'  // eslint-disable-line no-unused-vars
 
@@ -8,6 +9,7 @@ const App = props => {
       <main>
         {props.children}
       </main>
+      <LiveAdminSidebar />
     </div>
   )
 }

@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import browserHistory from 'react-router/lib/browserHistory'
-import { toastr } from 'react-redux-toastr'
 
 import StaticPage from '~/components/staticPages/StaticPage'
 import RegisterForm from './Register/RegisterForm'
+import addToast from '~/actions/toaster/addToast'
 import langPrefix from '~/utils/langPrefix'
 import T from '~/components/utils/T'
 import t from '~/utils/i18n/t'
@@ -24,9 +24,7 @@ class Register extends Component {
     }
     else {
       browserHistory.push(langPrefix('/', this.props.lang))
-      toastr.success('', res.msg, {
-        icon: 'icon-information-circle'
-      })
+      this.props.addToast('success', res.msg, null)
     }
   }
   render() {
@@ -54,7 +52,8 @@ Register.propTypes = {
   lang: PropTypes.shape({
     code: PropTypes.string.isRequired,
     default: PropTypes.bool.isRequired
-  }).isRequired
+  }).isRequired,
+  addToast: PropTypes.func.isRequired
 }
 
 Register = StaticPage(Register)
@@ -67,7 +66,8 @@ const mapStateToProps = (state) => ({
   }
 })
 Register = connect(
-  mapStateToProps
+  mapStateToProps,
+  { addToast }
 )(Register)
 
 export default Register

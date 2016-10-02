@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import browserHistory from 'react-router/lib/browserHistory'
-import { toastr } from 'react-redux-toastr'
 
 import StaticPage from '~/components/staticPages/StaticPage'
 import ActivateForm from './Activate/ActivateForm'
+import addToast from '~/actions/toaster/addToast'
 import langPrefix from '~/utils/langPrefix'
 import Link from '~/components/utils/Link'
 import T from '~/components/utils/T'
@@ -20,9 +20,7 @@ class Activate extends Component {
   }
   handleSubmitSuccess(res) {
     browserHistory.push(langPrefix('/login', this.props.lang))
-    toastr.success('', res.msg, {
-      icon: 'icon-information-circle'
-    })
+    this.props.addToast('success', res.msg, null)
   }
   handleSubmitFail(err) {
     this.setState({
@@ -60,7 +58,8 @@ Activate.propTypes = {
   lang: PropTypes.shape({
     code: PropTypes.string.isRequired,
     default: PropTypes.bool.isRequired
-  }).isRequired
+  }).isRequired,
+  addToast: PropTypes.func.isRequired
 }
 
 Activate = StaticPage(Activate)
@@ -72,7 +71,8 @@ const mapStateToProps = (state) => ({
   }
 })
 Activate = connect(
-  mapStateToProps
+  mapStateToProps,
+  { addToast }
 )(Activate)
 
 export default Activate

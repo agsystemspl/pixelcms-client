@@ -9,7 +9,7 @@ let Breadcrumbs = props => {
     if (i < props.items.length - 1) {
       return (
         <span key={i}>
-          <i className="arrow fa fa-angle-right" />
+          <i className="arrow material-icons">chevron_right</i>
           <Link to={item.route}><span>{item.name}</span></Link>
         </span>
       )
@@ -17,7 +17,7 @@ let Breadcrumbs = props => {
     else {
       return (
         <span key={i} className="active">
-          <i className="arrow fa fa-angle-right" />
+          <i className="arrow material-icons">chevron_right</i>
           <span>{item.name}</span>
         </span>
       )
@@ -26,7 +26,7 @@ let Breadcrumbs = props => {
   return (
     <div id="breadcrumbs">
       <span className="home">
-        <Link to="/"><i className="fa fa-home" /></Link>
+        <Link to="/"><i className="material-icons">home</i></Link>
       </span>
       {items}
     </div>

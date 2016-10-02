@@ -18,7 +18,7 @@ let AdminLink = props => {
         data-tip={`${t(props.state, 'Go to element in admin panel')}`}
         data-for={tooltipId}
       >
-        <i className="fa fa-wrench" />
+        <i className="material-icons">build</i>
       </a>
       <ReactTooltip id={tooltipId} effect="solid" />
     </div>

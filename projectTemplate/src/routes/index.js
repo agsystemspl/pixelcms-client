@@ -4,8 +4,7 @@ import Router from 'react-router/lib/Router'
 import Route from 'react-router/lib/Route'
 import browserHistory from 'react-router/lib/browserHistory'
 import ReactGA from 'react-ga'
-import ReduxToastr from 'react-redux-toastr'
-import { MetaHandler, getRoutes as getPixelcmsRoutes } from 'pixelcms-client'
+import { Toaster, MetaHandler, getRoutes as getPixelcmsRoutes } from 'pixelcms-client'
 
 import { config, pageComponentsRegistry } from '~/config'
 import App from '~/components/App'
@@ -27,10 +26,7 @@ const GALogPageView = () => {
 const getRoutes = (store, history = browserHistory) => (
   <Provider store={store}>
     <div>
-      <ReduxToastr
-        timeOut={10000}
-        position="bottom-center"
-      />
+      <Toaster />
       <Router
         history={history}
         onUpdate={GALogPageView}

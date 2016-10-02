@@ -4,16 +4,10 @@ h1, h2, h3, h4, h5, h6 {
   line-height: inherit; margin-bottom: 0;
 }
 
-p {
-  &:last-child { margin-bottom: 0; }
-}
+p:last-child { margin-bottom: 0; }
 
-strong { font-weight: 700; }
+strong { font-weight: 600; }
 
 img { max-width: 100%; height: auto; }
 
-.redux-toastr {
-  .toastr {
-    box-shadow: none !important; opacity: 1;
-  }
-}
+.__react_component_tooltip { line-height: 1.5rem; }

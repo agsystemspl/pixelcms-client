@@ -29,7 +29,7 @@ class LiveAdminSidebar extends Component {
           data-for="liveAdminSidebar"
           onClick={() => this.props.toggleMarkEditableContent()}
         >
-          <i className="fa fa-pencil" />
+          <i className="material-icons">content_paste</i>
         </div>
         <div
           className={`icon ${this.props.liveAdmin.showAdminLinks && 'active'}`}
@@ -37,7 +37,7 @@ class LiveAdminSidebar extends Component {
           data-for="liveAdminSidebar"
           onClick={() => this.props.toggleShowAdminLinks()}
         >
-          <i className="fa fa-link" />
+          <i className="material-icons">visibility</i>
         </div>
         <a
           className="icon"
@@ -46,7 +46,7 @@ class LiveAdminSidebar extends Component {
           data-tip={`${t(this.props.state, 'Go to admin panel')}`}
           data-for="liveAdminSidebar"
         >
-          <i className="fa fa-wrench" />
+          <i className="material-icons">build</i>
         </a>
         <div
           className="icon"
@@ -54,7 +54,7 @@ class LiveAdminSidebar extends Component {
           data-for="liveAdminSidebar"
           onClick={() => this.props.logout()}
         >
-          <i className="fa fa-power-off" />
+          <i className="material-icons">lock_outline</i>
         </div>
         <ReactTooltip id="liveAdminSidebar" effect="solid" />
       </div>

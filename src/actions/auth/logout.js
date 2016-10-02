@@ -1,17 +1,15 @@
 import browserHistory from 'react-router/lib/browserHistory'
-import { toastr } from 'react-redux-toastr'
 
 import ApiRequest from '~/utils/ApiRequest'
 import langPrefix from '~/utils/langPrefix'
+import addToast from '~/actions/toaster/addToast'
 
 const logout = () => (dispatch, getState) => {
   return new ApiRequest().delete('accounts/auth-info/', dispatch, getState)
     .then(
       (res) => {
         browserHistory.push(langPrefix('/', getState().route.lang))
-        toastr.success('', res.body.msg, {
-          icon: 'icon-information-circle'
-        })
+        dispatch(addToast('success', res.body.msg, null))
       }
     )
 }

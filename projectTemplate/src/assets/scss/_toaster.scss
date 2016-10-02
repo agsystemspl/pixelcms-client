@@ -1,0 +1,30 @@
+#toaster {
+  position: fixed; bottom: 20px; right: 20px; z-index: 9000;
+  .toast {
+    width: 300px; position: relative; padding: 20px 20px 20px 50px;
+    border-radius: 5px; cursor: pointer; transition: .25s;
+    &.info {
+      background: #ddd; color: darken(#ddd, 50%)
+    }
+    &.success {
+      background: $brand-success; color: lighten($brand-success, 40%);
+    }
+    &.error {
+      background: $brand-danger; color: lighten($brand-danger, 40%);
+    }
+    &.warning {
+      background: $brand-warning; color: darken($brand-warning, 40%);
+    }
+    &:not(:last-child) { margin-bottom: 15px; }
+    &.toast-enter { opacity: 0; left: 320px; }
+    &.toast-enter-active { opacity: 1; left: 0; }
+    &.toast-leave { opacity: 1; left: 0; }
+    &.toast-leave-active { opacity: 0; left: 320px; }
+    .icon {
+      @include v-center; left: 10px; width: 30px; text-align: center;
+      font-size: 1.5rem;
+    }
+    .title { font-weight: 600; }
+    .message { font-size: 0.9rem; }
+  }
+}

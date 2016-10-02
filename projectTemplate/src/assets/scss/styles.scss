@@ -1,5 +1,3 @@
-@import '../../../node_modules/react-redux-toastr/lib/css/react-redux-toastr.css';
-
 @import '_fonts';
 @import '../../../node_modules/bootstrap/scss/variables';
 @import '_variables';
@@ -13,3 +11,4 @@
 @import '_setup';
 @import '_base';
 @import '_liveAdmin';
+@import '_toaster';

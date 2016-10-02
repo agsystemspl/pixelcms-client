@@ -75,8 +75,10 @@ const ArticlesModuleArticle = props => {
       <AdminLink url={`/admin/content/article/${props.pk}/change/`} />
       {header}
       {image}
-      {intro}
-      {content}
+      <div className="contentWrapper">
+        {intro}
+        {content}
+      </div>
     </div>
   )
 }

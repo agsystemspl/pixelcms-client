@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import browserHistory from 'react-router/lib/browserHistory'
-import { toastr } from 'react-redux-toastr'
 
 import StaticPage from '~/components/staticPages/StaticPage'
 import ResetPasswordForm from './ResetPassword/ResetPasswordForm'
+import addToast from '~/actions/toaster/addToast'
 import langPrefix from '~/utils/langPrefix'
 import T from '~/components/utils/T'
 import t from '~/utils/i18n/t'
@@ -19,9 +19,7 @@ class ResetPassword extends Component {
   }
   handleSubmitSuccess(res) {
     browserHistory.push(langPrefix('/login', this.props.lang))
-    toastr.success('', res.msg, {
-      icon: 'icon-information-circle'
-    })
+    this.props.addToast('success', res.msg, null)
   }
   handleSubmitFail(err) {
     if (err.keyError) {
@@ -55,7 +53,8 @@ ResetPassword.propTypes = {
   lang: PropTypes.shape({
     code: PropTypes.string.isRequired,
     default: PropTypes.bool.isRequired
-  }).isRequired
+  }).isRequired,
+  addToast: PropTypes.func.isRequired
 }
 
 ResetPassword = StaticPage(ResetPassword)
@@ -67,7 +66,8 @@ const mapStateToProps = (state) => ({
   }
 })
 ResetPassword = connect(
-  mapStateToProps
+  mapStateToProps,
+  { addToast }
 )(ResetPassword)
 
 export default ResetPassword
