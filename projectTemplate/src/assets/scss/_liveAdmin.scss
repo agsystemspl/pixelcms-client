@@ -16,7 +16,7 @@
 
 .editableContent {
   position: relative;
-  &.marked { border: dashed 1px; }
+  &.marked { outline: dashed 1px; }
   .editor {
     &:focus { outline: 0; box-shadow: 0 0 100px; }
   }
