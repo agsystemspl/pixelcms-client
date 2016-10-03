@@ -1,43 +1,31 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import T from '~/components/utils/T'
-
 let Loading = props => {
-  /* global __CLIENT__ */
-  if (__CLIENT__) {
-    const config = props.config || props.defaultConfig
-    const breakStyles = {
-      background: config.breakColor,
-      width: config.breakWidth,
-      height: config.height
-    }
-    return (
-      <div className="loadingComponent">
-        <div className="wrapper" style={{ width: config.width }}>
-          <div className="text" style={{ marginBottom: config.height }}>
-            <T t="Loading..." />
-          </div>
-          <div className="line" style={{ background: config.lineColor, height: config.height }} />
-          <div className="break b1" style={breakStyles} />
-          <div className="break b2" style={breakStyles} />
-          <div className="break b3" style={breakStyles} />
-        </div>
-      </div>
-    )
+  /* global __SERVER__ */
+  if (__SERVER__) { return null }
+  const config = { ...props.defaultConfig, ...props.config }
+  const style = {
+    width: config.size,
+    height: config.size,
+    borderWidth: config.borderWidth,
+    borderColor: config.borderColor,
+    borderStyle: config.borderStyle,
+    borderRadius: config.borderRadius,
+    animation: `loadingFade .25s .25s backwards, loadingSpin ${config.speed} infinite ${config.easing}`
   }
-  else {
-    return null
-  }
+  return <div className="loadingSpinner"><div style={style} /></div>
 }
 Loading.propTypes = {
   config: PropTypes.object,
   defaultConfig: PropTypes.object.isRequired
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   defaultConfig: state.config.loadingConfig
 })
-Loading = connect(mapStateToProps)(Loading)
+Loading = connect(
+  mapStateToProps
+)(Loading)
 
 export default Loading

@@ -21,6 +21,7 @@ export Lightbox from './components/utils/Lightbox'
 export ContactForm from './components/utils/ContactForm'
 export AuthLinks from './components/utils/AuthLinks'
 export Toaster from './components/utils/Toaster'
+export Loading from './components/utils/Loading'
 
 // Translations
 export T from './components/utils/T'

@@ -4,11 +4,13 @@ const config = {
     {code: 'en', name: 'English'}
   ],
   loadingConfig: {
-    width: '150px',
-    height: '1px',
-    lineColor: '#ff7302',
-    breakColor: '#fff',
-    breakWidth: '6px'
+    size: '35px',
+    borderWidth: '4px',
+    borderColor: '#000 #000 #000 #fff',
+    borderStyle: 'solid',
+    borderRadius: '50%',
+    speed: '2s',
+    easing: 'linear'
   },
   pageTransitionScrollProps: {
     duration: 0,
