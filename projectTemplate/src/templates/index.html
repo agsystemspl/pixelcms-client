@@ -15,7 +15,22 @@
       Because of that some part of this site functionality may be unavailable.
     </noscript>
     <script>
-      document.getElementsByTagName('body')[0].className = ''
+      (function() {
+        document.body.className = document.body.className.replace('noscript', '')
+        document.body.className += ' loading'
+        var appLoading = document.createElement('div')
+        appLoading.id = 'appLoading'
+        document.body.appendChild(appLoading)
+        var loadingSpinner = document.createElement('div')
+        loadingSpinner.className = 'loadingSpinner'
+        appLoading.appendChild(loadingSpinner)
+        loadingSpinner.appendChild(document.createElement('div'))
+
+        window.onload = function() {
+          document.getElementById('appLoading').remove()
+          document.body.className = document.body.className.replace('loading', '')
+        }
+      })();
     </script>
     <!-- TinyMCE //-->
     <script src="https://cdn.tinymce.com/4/tinymce.min.js" defer></script>
