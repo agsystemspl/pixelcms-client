@@ -1,56 +1,84 @@
+import React from 'react'
 import { renderToString } from 'react-dom/server'
-import createMemoryHistory from 'react-router/lib/createMemoryHistory'
-import match from 'react-router/lib/match'
+import { Provider } from 'react-redux'
+import ServerRouter from 'react-router/ServerRouter'
+import createServerRenderContext from 'react-router/createServerRenderContext'
+import { Subscriber } from 'react-broadcast'
 import DocumentMeta from 'react-document-meta'
 
-const serverRender = (req, cb) => {
+const serverRender = (req, res, cb) => {
   const configureStore = require('../store/configureStore').default
   const locationChanged = require('../actions/route/locationChanged').default
   const setSsrCookie = require('../actions/auth/setSsrCookie').default
   const ApiRequest = require('../utils/ApiRequest').default
+  const LocationHandler = require('../components/core/LocationHandler').default
+  const MetaHandler = require('../components/core/MetaHandler').default
 
-  const config = require('../../../../src/config').config
-  const locale = require('../../../../src/locale').default
-  const reducers = require('../../../../src/reducers').reducers
-  const getRoutes = require('../../../../src/routes').default
+  const App = require('../../../../src/components/App').default
 
-  const store = configureStore(config, locale, reducers)
+  const store = configureStore()
   store.dispatch(locationChanged(req.path, req.query))
   store.dispatch(setSsrCookie(req.get('cookie')))
+
   new ApiRequest().get('accounts/auth-info/', store.dispatch, store.getState)
     .then()
     .then(() => {
-      const history = createMemoryHistory(req.originalUrl)
-      const routes = getRoutes(store, history)
-      match({ routes, location: req.originalUrl }, (err, redirectLocation, renderProps) => {
-        if (err) { console.log(err) }
-        else {
-          var returnData = (data) => {
-            var state = store.getState()
-            if (state.route.serverRedirect) {
-              cb(null, state.route.serverRedirect, null)
+      const context = createServerRenderContext()
+
+      const markup = (store, context) => (
+        <Provider store={store}>
+          <ServerRouter
+            location={req.url}
+            context={context}
+          >
+            <div>
+              <Subscriber channel="location">
+                {location => <LocationHandler location={location} />}
+              </Subscriber>
+              <MetaHandler />
+              <App />
+            </div>
+          </ServerRouter>
+        </Provider>
+      )
+
+      const returnData = data => {
+        var state = store.getState()
+        var meta = DocumentMeta.renderAsHTML()
+        cb({
+          appRoot: data.output,
+          initialState: state,
+          meta: meta
+        })
+      }
+
+      store.renderUniversal(renderToString, markup(store, context))
+        .then(
+          data => {
+            const result = context.getResult()
+            if (result.missed) {
+              store.renderUniversal(renderToString, markup(store, context))
+                .then(
+                  data => {
+                    if (result.redirect) {
+                      res.status(302).set({ 'Location': result.redirect.pathname }).end()
+                    }
+                    else {
+                      returnData(data)
+                    }
+                  }
+                )
             }
             else {
-              var meta = DocumentMeta.renderAsHTML()
-              cb(null, null, {
-                appRoot: data.output,
-                initialState: state,
-                meta: meta
-              })
-            }
-          }
-          store.renderUniversal(renderToString, routes)
-            .then(
-              (data) => {
-                returnData(data)
-              },
-              (data) => {
-                console.warn(data.error.message)
+              if (result.redirect) {
+                res.status(302).set({ 'Location': result.redirect.pathname }).end()
+              }
+              else {
                 returnData(data)
               }
-            )
-        }
-      })
+            }
+          }
+        )
     })
 }
 

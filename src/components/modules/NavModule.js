@@ -32,7 +32,7 @@ let NavModule = props => {
     }
     else if (item.route) {
       navItem = (
-        <Link to={item.route} activeClassName="active">
+        <Link to={item.route} activeClassName="active" activeOnlyWhenExact={true}>
           <span>{item.name}</span>
         </Link>
       )

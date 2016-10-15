@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import BareLink from 'react-router/lib/Link'
+import BareLink from 'react-router/Link'
 
 import langPrefix from '~/utils/langPrefix'
 
@@ -32,4 +32,4 @@ const mapStateToProps = (state) => ({
 })
 Link = connect(mapStateToProps)(Link)
 
-export default Link
+export default BareLink

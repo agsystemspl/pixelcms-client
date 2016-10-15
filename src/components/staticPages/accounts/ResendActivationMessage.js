@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import StaticPage from '~/components/staticPages/StaticPage'
+import RequireNotLoggedIn from '~/components/utils/RequireNotLoggedIn'
 import ResendActivationMessageForm from './ResendActivationMessage/ResendActivationMessageForm'
 import T from '~/components/utils/T'
 import t from '~/utils/i18n/t'
@@ -21,6 +22,7 @@ class ResendActivationMessage extends Component {
   render() {
     return (
       <div id="pageResendActivationMessage">
+        <RequireNotLoggedIn />
         <div className="container">
           <div className="wrapper">
             <h1 className="title"><span><T t="Resend activation message" /></span></h1>

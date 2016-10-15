@@ -11,3 +11,17 @@ strong { font-weight: 600; }
 img { max-width: 100%; height: auto; }
 
 .__react_component_tooltip { line-height: 1.5rem; }
+
+body { overflow-y: scroll; }
+
+#app {
+  min-height: 100vh; display: flex; flex-direction: column;  
+  main {
+    flex: 1;
+    #page {
+      &.loading {
+        position: relative; height: 200px;
+      }
+    }
+  }
+}

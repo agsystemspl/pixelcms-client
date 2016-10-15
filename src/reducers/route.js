@@ -28,8 +28,6 @@ const route = (state = {}, action) => {
         path: pathWithoutLang,
         query: action.query || {}
       }
-    case 'SERVER_REDIRECT':
-      return Object.assign({}, state, { serverRedirect: action.path })
     default:
       return state
   }

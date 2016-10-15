@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import withRouter from 'react-router/lib/withRouter'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 
@@ -32,7 +31,7 @@ class ActivateForm extends Component {
     return (
       <form
         onSubmit={this.props.handleSubmit(
-          () => this.props.activate({key: this.props.params.key})
+          () => this.props.activate({key: this.props.activationKey})
         )}
       >
         <div className="info">
@@ -62,10 +61,8 @@ ActivateForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   activate: PropTypes.func.isRequired,
-  params: PropTypes.object.isRequired
+  activationKey: PropTypes.string.isRequired
 }
-
-ActivateForm = withRouter(ActivateForm)
 
 ActivateForm = reduxForm({
   form: 'activate',

@@ -112,18 +112,6 @@ describe('route reducer', () => {
       action.query
     )
   })
-  it('handles SERVER_REDIRECT', () => {
-    const action = {
-      type: 'SERVER_REDIRECT',
-      path: '/foo'
-    }
-    expect(
-      route(null, action)
-    )
-    .toEqual(
-      { serverRedirect: action.path }
-    )
-  })
   it('handles other actions and returns unchanged state', () => {
     const state = {
       lang: {

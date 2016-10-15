@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import withRouter from 'react-router/lib/withRouter'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 
@@ -32,7 +31,7 @@ class ResetPasswordForm extends Component {
     return (
       <form
         onSubmit={this.props.handleSubmit(
-          (data) => this.props.resetPassword({ ...data, key: this.props.params.key })
+          data => this.props.resetPassword({ ...data, key: this.props.resetPasswordKey })
         )}
       >
         {this.props.error && <div className="error">{this.props.error}</div>}
@@ -62,10 +61,8 @@ ResetPasswordForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   resetPassword: PropTypes.func.isRequired,
-  params: PropTypes.object.isRequired
+  resetPasswordKey: PropTypes.string.isRequired
 }
-
-ResetPasswordForm = withRouter(ResetPasswordForm)
 
 ResetPasswordForm = reduxForm({
   form: 'resetPassword',

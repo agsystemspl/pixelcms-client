@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import Link from 'react-router/lib/Link'
+import Link from 'react-router/Link'
 
 let LangSwitch = props => (
   <div className="langSwitch">

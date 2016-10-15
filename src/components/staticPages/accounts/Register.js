@@ -1,11 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import browserHistory from 'react-router/lib/browserHistory'
 
 import StaticPage from '~/components/staticPages/StaticPage'
+import RequireNotLoggedIn from '~/components/utils/RequireNotLoggedIn'
 import RegisterForm from './Register/RegisterForm'
 import addToast from '~/actions/toaster/addToast'
-import langPrefix from '~/utils/langPrefix'
 import T from '~/components/utils/T'
 import t from '~/utils/i18n/t'
 
@@ -23,13 +22,13 @@ class Register extends Component {
       })
     }
     else {
-      browserHistory.push(langPrefix('/', this.props.lang))
       this.props.addToast('success', res.msg, null)
     }
   }
   render() {
     return (
       <div id="pageRegister">
+        <RequireNotLoggedIn />
         <div className="container">
           <div className="wrapper">
             <h1 className="title"><span><T t="Register" /></span></h1>

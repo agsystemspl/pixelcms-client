@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import browserHistory from 'react-router/lib/browserHistory'
+import Redirect from 'react-router/Redirect'
 
 import StaticPage from '~/components/staticPages/StaticPage'
+import RequireNotLoggedIn from '~/components/utils/RequireNotLoggedIn'
 import ActivateForm from './Activate/ActivateForm'
 import addToast from '~/actions/toaster/addToast'
 import langPrefix from '~/utils/langPrefix'
@@ -15,22 +16,29 @@ class Activate extends Component {
     super()
     this.state = {
       msg: null,
-      expired: null
+      expired: null,
+      success: null
     }
   }
   handleSubmitSuccess(res) {
-    browserHistory.push(langPrefix('/login', this.props.lang))
+    this.setState(Object.assign({}, this.state, {
+      success: true
+    }))
     this.props.addToast('success', res.msg, null)
   }
   handleSubmitFail(err) {
-    this.setState({
+    this.setState(Object.assign({}, this.state, {
       msg: err._error,
       expired: err.expired
-    })
+    }))
   }
   render() {
+    if (this.state.success) {
+      return <Redirect to={langPrefix('/login', this.props.lang)} />
+    }
     return (
       <div id="pageActivate">
+        <RequireNotLoggedIn />
         <div className="container">
           <div className="wrapper">
             <h1 className="title"><span><T t="Activate your account" /></span></h1>
@@ -46,6 +54,7 @@ class Activate extends Component {
               <ActivateForm
                 onSubmitSuccess={(res) => this.handleSubmitSuccess(res)}
                 onSubmitFail={(err) => this.handleSubmitFail(err)}
+                activationKey={this.props.params.key}
               />
             )}
           </div>
@@ -55,6 +64,9 @@ class Activate extends Component {
   }
 }
 Activate.propTypes = {
+  params: PropTypes.shape({
+    key: PropTypes.string.isRequired
+  }).isRequired,
   lang: PropTypes.shape({
     code: PropTypes.string.isRequired,
     default: PropTypes.bool.isRequired

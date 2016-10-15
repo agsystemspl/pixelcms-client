@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
-import BareLink from 'react-router/lib/Link'
-import withRouter from 'react-router/lib/withRouter'
+import BareLink from 'react-router/Link'
+// import withRouter from 'react-router/lib/withRouter'
 
 let QueryLink = props => {
   let propsToPass = Object.assign({}, props)
@@ -23,6 +23,6 @@ QueryLink.propTypes = {
   children: PropTypes.node
 }
 
-QueryLink = withRouter(QueryLink)
+// QueryLink = withRouter(QueryLink)
 
 export default QueryLink

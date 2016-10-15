@@ -1,6 +1,7 @@
 import queryString from 'query-string'
 
 import ApiRequest from '~/utils/ApiRequest'
+import t from '~/utils/i18n/t'
 
 const requestPage = () => (dispatch, getState) => {
   dispatch({ type: 'LOADING_PAGE' })
@@ -32,7 +33,7 @@ const requestPage = () => (dispatch, getState) => {
         dispatch({
           type: 'CHANGE_META',
           meta: {
-            title: (res.notFound) ? 'Page not found' : 'Error'
+            title: t(getState(), (res.notFound) ? 'Not found' : 'Error')
           }
         })
       }

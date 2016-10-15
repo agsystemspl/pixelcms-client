@@ -16,13 +16,10 @@ let MetaHandler = props => {
     }
   }
   return (
-    <DocumentMeta {...meta}>
-      {props.children}
-    </DocumentMeta>
+    <DocumentMeta {...meta} />
   )
 }
 MetaHandler.propTypes = {
-  children: PropTypes.element.isRequired,
   meta: PropTypes.shape({
     title: PropTypes.string,
     description: PropTypes.string,

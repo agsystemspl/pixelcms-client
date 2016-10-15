@@ -1,12 +1,29 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import merge from 'lodash/merge'
 import isEmpty from 'lodash/isEmpty'
 import isEqual from 'lodash/isEqual'
 
 import { page as pageActions } from '~/actions'
-import Loading from './utils/Loading'
+import Category from '~/components/pages/Category'
+import Article from '~/components/pages/Article'
+import NotFound from '~/components/pages/NotFound'
+import Error from '~/components/pages/Error'
+import Loading from '~/components/utils/Loading'
 
 class PageHandler extends Component {
+  constructor() {
+    super()
+    this.pageComponentsRegistry = merge(
+      {
+        Category,
+        Article,
+        NotFound,
+        Error
+      },
+      require('../../../../../src/config').pageComponentsRegistry
+    )
+  }
   componentWillMount() {
     if (isEmpty(this.props.page)) {
       this.props.requestPage()
@@ -26,13 +43,13 @@ class PageHandler extends Component {
     }
     else {
       let component
-      component = this.context.pageComponentRegistry[this.props.page.componentName]
+      component = this.pageComponentsRegistry[this.props.page.componentName]
       if (typeof component !== 'undefined') {
         let componentData = this.props.page.componentData
         component = React.createElement(component, componentData)
       }
       else {
-        component = React.createElement(this.context.pageComponentRegistry.Error)
+        component = React.createElement(this.pageComponentsRegistry.Error)
       }
       return (
         <div id="page">
@@ -53,7 +70,7 @@ PageHandler.propTypes = {
   clearPage: PropTypes.func.isRequired
 }
 PageHandler.contextTypes = {
-  pageComponentRegistry: PropTypes.object.isRequired
+  router: PropTypes.object
 }
 
 const mapStateToProps = (state) => ({

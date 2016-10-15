@@ -1,20 +1,16 @@
-import React, { PropTypes } from 'react'
-import { LiveAdminSidebar } from 'pixelcms-client'
+import React from 'react'
+import { Routes as PixelcmsRoutes, Toaster, LiveAdminSidebar } from 'pixelcms-client'
 
 import styles from '~/assets/scss/styles.scss'  // eslint-disable-line no-unused-vars
 
-const App = props => {
-  return (
-    <div id="app">
-      <main>
-        {props.children}
-      </main>
-      <LiveAdminSidebar />
-    </div>
-  )
-}
-App.propTypes = {
-  children: PropTypes.node
-}
+const App = props => (
+  <div id="app">
+    <main>
+      <PixelcmsRoutes />
+    </main>
+    <Toaster />
+    <LiveAdminSidebar />
+  </div>
+)
 
 export default App

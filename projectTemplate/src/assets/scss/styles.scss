@@ -8,8 +8,10 @@
 @import '../../../node_modules/bootstrap/scss/reboot';
 @import '../../../node_modules/bootstrap/scss/grid';
 
-@import '_setup';
-@import '_base';
-@import '_liveAdmin';
-@import '_toaster';
-@import '_loading';
+@import 'general/_liveAdmin';
+@import 'general/_toaster';
+@import 'general/_loading';
+@import 'general/_noscript';
+
+// site-specific styles goes here
+@import 'site/_base';

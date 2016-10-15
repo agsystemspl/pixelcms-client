@@ -1,8 +1,17 @@
 // Core
-export initClient from './utils/initClient'
-export MetaHandler from './components/MetaHandler'
-export PageHandler from './components/PageHandler'
-export getRoutes from './routes'
+export configureStore from './store/configureStore'
+export LocationHandler from './components/core/LocationHandler'
+export MetaHandler from './components/core/MetaHandler'
+export PageHandler from './components/core/PageHandler'
+
+// Routes
+export Routes from './routes'
+
+// Pages components
+export Category from './components/pages/Category'
+export Article from './components/pages/Article'
+export NotFound from './components/pages/NotFound'
+export Error from './components/pages/Error'
 
 // Modules components
 export Module from './components/modules/Module'
@@ -22,6 +31,8 @@ export ContactForm from './components/utils/ContactForm'
 export AuthLinks from './components/utils/AuthLinks'
 export Toaster from './components/utils/Toaster'
 export Loading from './components/utils/Loading'
+export RequireLoggedIn from './components/utils/RequireLoggedIn'
+export RequireNotLoggedIn from './components/utils/RequireNotLoggedIn'
 
 // Translations
 export T from './components/utils/T'
