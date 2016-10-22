@@ -39,23 +39,14 @@ class PageHandler extends Component {
   }
   render() {
     if (this.props.page.loading) {
-      return <div id="page" className="loading"><Loading /></div>
+      return <div className="page loading"><Loading /></div>
     }
     else {
-      let component
-      component = this.pageComponentsRegistry[this.props.page.componentName]
-      if (typeof component !== 'undefined') {
-        let componentData = this.props.page.componentData
-        component = React.createElement(component, componentData)
+      let Component = this.pageComponentsRegistry[this.props.page.componentName]
+      if (typeof Component === 'undefined') {
+        Component = this.pageComponentsRegistry.Error
       }
-      else {
-        component = React.createElement(this.pageComponentsRegistry.Error)
-      }
-      return (
-        <div id="page">
-          {component}
-        </div>
-      )
+      return <Component {...this.props.page.componentData} />
     }
   }
 }

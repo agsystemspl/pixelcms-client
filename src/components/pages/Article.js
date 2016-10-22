@@ -64,20 +64,18 @@ const Article = props => {
     )
   }
   return (
-    <div id="pageArticle">
-      <div className="container">
-        <div className="wrapper">
-          {breadcrumbs}
-          <header style={{ position: 'relative' }}>
-            <AdminLink url={`/admin/content/article/${props.pk}/change/`} />
-            <h1 className="title"><span>{props.title}</span></h1>
-            {created}
-          </header>
-          {intro}
-          {content}
-          {images}
-          {backLink}
-        </div>
+    <div className="page" id="pageArticle">
+      <div className="wrapper">
+        {breadcrumbs}
+        <header style={{ position: 'relative' }}>
+          <AdminLink url={`/admin/content/article/${props.pk}/change/`} />
+          <h1 className="title"><span>{props.title}</span></h1>
+          {created}
+        </header>
+        {intro}
+        {content}
+        {images}
+        {backLink}
       </div>
     </div>
   )

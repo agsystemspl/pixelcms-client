@@ -54,22 +54,20 @@ const Category = props => {
     )
   }
   return (
-    <div id="pageCategory">
-      <div className="container">
-        <div className="wrapper">
-          {breadcrumbs}
-          <header>
-            <div className="titleWrapper" style={{ position: 'relative' }}>
-              <AdminLink url={`/admin/content/category/${props.pk}/change/`} />
-              <h1 className="title"><span>{props.name}</span></h1>
-            </div>
-            {description}
-          </header>
-          {subcategories}
-          {articles}
-          {pagination}
-          {backLink}
-        </div>
+    <div className="page" id="pageCategory">
+      <div className="wrapper">
+        {breadcrumbs}
+        <header>
+          <div className="titleWrapper" style={{ position: 'relative' }}>
+            <AdminLink url={`/admin/content/category/${props.pk}/change/`} />
+            <h1 className="title"><span>{props.name}</span></h1>
+          </div>
+          {description}
+        </header>
+        {subcategories}
+        {articles}
+        {pagination}
+        {backLink}
       </div>
     </div>
   )
