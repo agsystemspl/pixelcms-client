@@ -2,7 +2,7 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import merge from 'lodash/merge'
 
-import messages from '~/locale'
+import pixelcmsLocale from '~/locale'
 import * as pixelcmsReducers from '~/reducers'
 import applyMiddlewareUniversal from '~/renderUniversal'
 
@@ -15,7 +15,7 @@ const configureStore = (config, locale, reducers) => {
   return createStore(
     combineReducers({
       config: (state = { ...config }) => { return state },
-      locale: (state = merge({}, messages, locale)) => { return state },
+      locale: (state = merge({}, pixelcmsLocale, locale)) => { return state },
       ...pixelcmsReducers,
       ...reducers
     }),

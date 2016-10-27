@@ -1,4 +1,4 @@
-const messages = {
+const locale = {
   default: {
     pl: {
       // general
@@ -63,4 +63,4 @@ const messages = {
   }
 }
 
-export default messages
+export default locale
