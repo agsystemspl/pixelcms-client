@@ -12,8 +12,8 @@ import Error from '~/components/pages/Error'
 import Loading from '~/components/utils/Loading'
 
 class PageHandler extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.pageComponentsRegistry = merge(
       {
         Category,
@@ -21,7 +21,7 @@ class PageHandler extends Component {
         NotFound,
         Error
       },
-      require('../../../../../src/config').pageComponentsRegistry
+      props.pageComponentsRegistry
     )
   }
   componentWillMount() {
@@ -51,6 +51,7 @@ class PageHandler extends Component {
   }
 }
 PageHandler.propTypes = {
+  pageComponentsRegistry: PropTypes.object.isRequired,
   page: PropTypes.shape({
     componentName: PropTypes.string,
     componentData: PropTypes.object,

@@ -52,11 +52,12 @@ let Routes = props => {
   }
 
   routes.push(
-    <Miss key="page" component={PageHandler} />
+    <Miss key="page" component={() => <PageHandler pageComponentsRegistry={props.pageComponentsRegistry} />} />
   )
   return <div>{routes}</div>
 }
 Routes.propTypes = {
+  pageComponentsRegistry: PropTypes.object.isRequired,
   exclude: PropTypes.arrayOf(PropTypes.string),
   langs: PropTypes.arrayOf(React.PropTypes.shape({
     name: PropTypes.string.isRequired,

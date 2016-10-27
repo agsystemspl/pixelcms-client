@@ -4,7 +4,15 @@ import mustacheExpress from 'mustache-express'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 
-const server = (webpackConfig, { ssrEnabled, trustSelfSignedCerts, port }) => {
+const server = (webpackConfig, {
+  ssrEnabled,
+  trustSelfSignedCerts,
+  port,
+  config,
+  locale,
+  reducers,
+  App
+}) => {
   // allow self-signed certificates (always in dev)
   if (process.env.NODE_ENV !== 'production' || trustSelfSignedCerts) {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
@@ -46,7 +54,7 @@ const server = (webpackConfig, { ssrEnabled, trustSelfSignedCerts, port }) => {
   const serverRender = require('./serverRender').default
   app.get('*', (req, res) => {
     if (ssrEnabled) {
-      serverRender(req, res, data => {
+      serverRender(req, res, { config, locale, reducers, App }, data => {
         if (data.initialState.page.componentName === 'NotFound') {
           res.status(404)
         }

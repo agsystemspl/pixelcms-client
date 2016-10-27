@@ -19,7 +19,11 @@ global.webpack_isomorphic_tools = new WebpackIsomorphicTools(
         {
           ssrEnabled: true,
           trustSelfSignedCerts: true,
-          port: 3000
+          port: 3000,
+          config: require('./src/config').config,
+          locale: require('./src/locale').default,
+          reducers: require('./src/reducers'),
+          App: require('./src/components/App').default
         }
       )
     }

@@ -6,13 +6,9 @@ import messages from '~/locale'
 import * as pixelcmsReducers from '~/reducers'
 import applyMiddlewareUniversal from '~/renderUniversal'
 
-const config = require('../../../../src/config').config
-const locale = require('../../../../src/locale').default
-const reducers = require('../../../../src/reducers').reducers
-
 /* global __SERVER__ */
 /* global __CLIENT__ */
-const configureStore = () => {
+const configureStore = (config, locale, reducers) => {
   const middleware = [thunkMiddleware]
   const applyProperMiddleware = __SERVER__ ? applyMiddlewareUniversal : applyMiddleware
   const initialState = __CLIENT__ ? window.__INITIAL_STATE__ : {}
