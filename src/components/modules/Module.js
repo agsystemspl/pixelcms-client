@@ -57,7 +57,7 @@ let Module = (moduleType, getApiPath, moduleTypeHtmlClass) => {
         loading: PropTypes.bool,
         data: PropTypes.shape({
           name: PropTypes.string,
-          moduleNameHeaderLevel: PropTypes.number,
+          moduleNameHeaderLevel: PropTypes.string,
           htmlClass: PropTypes.string
         })
       }),
