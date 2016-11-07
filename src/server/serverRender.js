@@ -24,6 +24,7 @@ const serverRender = (req, res, { configPath, localePath, reducersPath, AppPath 
   store.dispatch(setSsrCookie(req.get('cookie')))
 
   new ApiRequest().get('accounts/auth-info/', store.dispatch, store.getState)
+    .catch(err => console.log(err))
     .then()
     .then(() => {
       const context = createServerRenderContext()
@@ -56,6 +57,7 @@ const serverRender = (req, res, { configPath, localePath, reducersPath, AppPath 
       }
 
       store.renderUniversal(renderToString, markup(store, context))
+        .catch(err => console.log(err))
         .then(
           data => {
             const result = context.getResult()
