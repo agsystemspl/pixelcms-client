@@ -9,6 +9,7 @@ require('babel-register')({
 })
 require.extensions['.scss'] = function() { return }
 
+var path = require('path')
 var WebpackIsomorphicTools = require('webpack-isomorphic-tools')
 
 global.webpack_isomorphic_tools = new WebpackIsomorphicTools(
@@ -20,10 +21,10 @@ global.webpack_isomorphic_tools = new WebpackIsomorphicTools(
           ssrEnabled: true,
           trustSelfSignedCerts: true,
           port: 3000,
-          config: require('./src/config').config,
-          locale: require('./src/locale').default,
-          reducers: require('./src/reducers'),
-          App: require('./src/components/App').default
+          configPath: path.resolve(__dirname, 'src/config'),
+          localePath: path.resolve(__dirname, 'src/locale'),
+          reducersPath: path.resolve(__dirname, 'src/reducers'),
+          AppPath: path.resolve(__dirname, 'src/components/App')
         }
       )
     }

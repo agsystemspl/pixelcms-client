@@ -6,7 +6,12 @@ import createServerRenderContext from 'react-router/createServerRenderContext'
 import { Subscriber } from 'react-broadcast'
 import DocumentMeta from 'react-document-meta'
 
-const serverRender = (req, res, { config, locale, reducers, App }, cb) => {
+const serverRender = (req, res, { configPath, localePath, reducersPath, AppPath }, cb) => {
+  const config = require(configPath).config
+  const locale = require(localePath).default
+  const reducers = require(reducersPath)
+  const App = require(AppPath).default
+
   const configureStore = require('../store/configureStore').default
   const locationChanged = require('../actions/route/locationChanged').default
   const setSsrCookie = require('../actions/auth/setSsrCookie').default

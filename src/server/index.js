@@ -8,10 +8,10 @@ const server = (webpackConfig, {
   ssrEnabled,
   trustSelfSignedCerts,
   port,
-  config,
-  locale,
-  reducers,
-  App
+  configPath,
+  localePath,
+  reducersPath,
+  AppPath
 }) => {
   // allow self-signed certificates (always in dev)
   if (process.env.NODE_ENV !== 'production' || trustSelfSignedCerts) {
@@ -21,7 +21,9 @@ const server = (webpackConfig, {
   const app = express()
   app.use(compression())
 
-  // update server cache when sources change (dev only)
+  // (dev only)
+  // clear cache when sources change
+  // only modules required "below" this module are subject to clear
   if (process.env.NODE_ENV !== 'production') {
     const compiler = webpack(webpackConfig)
 
@@ -54,7 +56,7 @@ const server = (webpackConfig, {
   const serverRender = require('./serverRender').default
   app.get('*', (req, res) => {
     if (ssrEnabled) {
-      serverRender(req, res, { config, locale, reducers, App }, data => {
+      serverRender(req, res, { configPath, localePath, reducersPath, AppPath }, data => {
         if (data.initialState.page.componentName === 'NotFound') {
           res.status(404)
         }
