@@ -5,7 +5,7 @@ export MetaHandler from './components/core/MetaHandler'
 export PageHandler from './components/core/PageHandler'
 
 // Routes
-export Routes from './routes'
+export Routes from './routes/Routes'
 
 // Pages components
 export Category from './components/pages/Category'
