@@ -7,7 +7,7 @@ import styles from '~/assets/scss/styles.scss'  // eslint-disable-line no-unused
 const App = props => (
   <div id="app">
     <main>
-      <PixelcmsRoutes pageComponentsRegistry={pageComponentsRegistry} />
+      <PixelcmsRoutes pageComponentsRegistry={pageComponentsRegistry} exclude={['accounts']} />
     </main>
     <Toaster />
     <LiveAdminSidebar />
