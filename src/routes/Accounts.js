@@ -22,22 +22,22 @@ const Accounts = props => (
       component={Register}
     />
     <Match
-      pattern={langPrefix('/activate/:key', props.lang)}
+      pattern={langPrefix('/accounts/activate/:key', props.lang)}
       exactly={true}
       component={Activate}
     />
     <Match
-      pattern={langPrefix('/resend-activation-message', props.lang)}
+      pattern={langPrefix('/accounts/resend-activation-message', props.lang)}
       exactly={true}
       component={ResendActivationMessage}
     />
     <Match
-      pattern={langPrefix('/forgotten-password', props.lang)}
+      pattern={langPrefix('/accounts/forgotten-password', props.lang)}
       exactly={true}
       component={ForgottenPassword}
     />
     <Match
-      pattern={langPrefix('/reset-password/:key', props.lang)}
+      pattern={langPrefix('/accounts/reset-password/:key', props.lang)}
       exactly={true}
       component={ResetPassword}
     />
