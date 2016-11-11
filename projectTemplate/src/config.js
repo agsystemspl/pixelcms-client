@@ -1,7 +1,7 @@
 const config = {
   apiRoot: '/api/',
   langs: [
-    {code: 'en', name: 'English'}
+    { code: 'en', name: 'English', default: true }
   ],
   loadingConfig: {
     size: '35px',

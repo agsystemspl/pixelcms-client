@@ -8,21 +8,28 @@ import PageHandler from '~/components/core/PageHandler'
 
 let Routes = props => (
   <div>
-    {!includes(props.exclude, 'accounts') && <Accounts lang={props.lang} />}
-    <Miss component={() => <PageHandler pageComponentsRegistry={props.pageComponentsRegistry} />} />
+    {!includes(props.exclude, 'accounts') && props.langs.map((lang, key) => (
+      <Accounts key={key} lang={lang} />
+    ))}
+    <Miss component={({ location }) => (
+      <PageHandler
+        location={location}
+        pageComponentsRegistry={props.pageComponentsRegistry}
+      />
+    )} />
   </div>
 )
 Routes.propTypes = {
   pageComponentsRegistry: PropTypes.object.isRequired,
   exclude: PropTypes.arrayOf(PropTypes.string),
-  lang: PropTypes.shape({
+  langs: PropTypes.arrayOf(React.PropTypes.shape({
     name: PropTypes.string.isRequired,
     code: PropTypes.string.isRequired
-  }).isRequired
+  })).isRequired
 }
 
 const mapStateToProps = state => ({
-  lang: state.route.lang
+  langs: state.config.langs
 })
 Routes = connect(
   mapStateToProps,

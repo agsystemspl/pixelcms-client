@@ -44,10 +44,7 @@ const Accounts = props => (
   </div>
 )
 Accounts.propTypes = {
-  lang: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    code: PropTypes.string.isRequired
-  }).isRequired
+  lang: PropTypes.object.isRequired
 }
 
 export default Accounts
