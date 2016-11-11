@@ -1,7 +1,7 @@
 const config = {
   apiRoot: '/api/',
   langs: [
-    { code: 'en', name: 'English', default: true }
+    { code: 'en', name: 'English' }
   ],
   pageTransitionScrollProps: {
     duration: 0,
