@@ -3,15 +3,6 @@ const config = {
   langs: [
     { code: 'en', name: 'English', default: true }
   ],
-  loadingConfig: {
-    size: '35px',
-    borderWidth: '4px',
-    borderColor: '#000 #000 #000 #fff',
-    borderStyle: 'solid',
-    borderRadius: '50%',
-    speed: '2s',
-    easing: 'linear'
-  },
   pageTransitionScrollProps: {
     duration: 0,
     delay: 0

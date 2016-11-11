@@ -1,6 +1,3 @@
-.loadingSpinner {
-  @include vh-center;
-}
 @keyframes loadingFade {
   0% { opacity: 0; }
   100% { opacity: 1; }
@@ -10,17 +7,19 @@
   100% { transform: rotate(360deg) translateZ(0); }
 }
 
-#appLoading {
-  position: fixed; top: 0; left: 0; z-index: 100000; width: 100%; height: 100%;
-  background: #fff;
-  .loadingSpinner {
-    div {
-      width: 35px; height: 35px; border: solid 4px;
-      border-color: #000 #000 #000 #fff;
-      border-radius: 50%;
-      animation: loadingSpin 2s infinite linear;
-    }
+.loadingSpinner {
+  @include vh-center;
+  div {
+    width: 25px; height: 25px; border: solid 2px;
+    border-color: #000 #000 #000 #fff; border-radius: 50%;
+    animation: loadingFade .5s .2s backwards, loadingSpin .5s infinite linear;
   }
+}
+
+#appLoading {
+  position: fixed; top: 0; left: 0; z-index: 100000;
+  width: 100%; height: 100%;
+  background: #fff;
 }
 
 body.loading { overflow: hidden !important; }
