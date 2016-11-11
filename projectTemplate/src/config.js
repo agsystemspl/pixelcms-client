@@ -1,5 +1,4 @@
 const config = {
-  apiRoot: '/api/',
   langs: [
     { code: 'en', name: 'English' }
   ],
