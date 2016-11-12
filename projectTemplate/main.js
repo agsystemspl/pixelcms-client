@@ -2,6 +2,12 @@
 
 global.__SERVER__ = true
 global.__CLIENT__ = false
+if (process.env.NODE_ENV !== 'production') {
+  global.__API_ROOT__ = 'http://localhost:8000/api/'
+}
+else {
+  global.__API_ROOT__ = 'http://backend.domain.com/api/'
+}
 
 require('babel-register')({
   presets: ['react', 'es2015', 'stage-0'],
