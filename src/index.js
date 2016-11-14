@@ -1,5 +1,6 @@
 // Core
 export configureStore from './store/configureStore'
+export AuthHandler from './components/core/AuthHandler'
 export LocationHandler from './components/core/LocationHandler'
 export MetaHandler from './components/core/MetaHandler'
 export PageHandler from './components/core/PageHandler'
@@ -21,7 +22,6 @@ export ArticlesModule from './components/modules/ArticlesModule'
 
 // Utils components
 export Link from './components/utils/Link'
-export QueryLink from './components/utils/QueryLink'
 export Pagination from './components/utils/Pagination'
 export LangSwitch from './components/utils/LangSwitch'
 export Mailto from './components/utils/Mailto'
@@ -39,12 +39,12 @@ export T from './components/utils/T'
 export t from './utils/i18n/t'
 
 // Live admin
-export LiveAdminSidebar from './components/LiveAdmin/LiveAdminSidebar'
-export EditableContent from './components/LiveAdmin/EditableContent'
-export AdminLink from './components/LiveAdmin/AdminLink'
+export LiveAdminSidebar from './components/liveAdmin/LiveAdminSidebar'
+export EditableContent from './components/liveAdmin/EditableContent'
+export AdminLink from './components/liveAdmin/AdminLink'
 
 // Utils
-export ApiRequest from './utils/ApiRequest'
+export apiRequest from './utils/apiRequest'
 
 // Actions
 export * as actions from './actions'

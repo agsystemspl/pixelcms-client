@@ -1,8 +1,8 @@
 const page = (state = {}, action) => {
   switch (action.type) {
-    case 'LOADING_PAGE':
+    case 'REQUSTING_PAGE':
       return {
-        loading: true
+        requesting: true
       }
     case 'RECEIVE_PAGE':
       return {

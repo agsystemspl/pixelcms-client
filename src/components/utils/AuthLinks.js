@@ -7,10 +7,10 @@ import T from './T'
 
 let AuthLinks = props => (
   <div className="authLinks">
-    {props.authInfo.user && (
+    {props.isAuthenticated && (
       <div className="loggedIn">
         <div className="hello">
-          <T t="Hello" /> <span>{props.authInfo.user}</span>!
+          <T t="Hello" /> <span>{props.username}</span>!
         </div>
         <div className="links">
           <span onClick={() => props.logout()}>
@@ -21,8 +21,8 @@ let AuthLinks = props => (
     ) || (
       <div className="notLoggedIn">
         <div className="links">
-          <Link to="/login"><T t="Login" /></Link>
-          <Link to="/register"><T t="Register" /></Link>
+          <Link to="/accounts/login"><T t="Login" /></Link>
+          <Link to="/accounts/register"><T t="Register" /></Link>
         </div>
       </div>
     )}
@@ -30,15 +30,14 @@ let AuthLinks = props => (
 )
 
 AuthLinks.propTypes = {
-  authInfo: PropTypes.shape({
-    user: PropTypes.string,
-    isAdmin: PropTypes.bool
-  }).isRequired,
+  isAuthenticated: PropTypes.bool,
+  username: PropTypes.string,
   logout: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) => ({
-  authInfo: state.auth.authInfo
+const mapStateToProps = state => ({
+  isAuthenticated: state.authInfo.isAuthenticated,
+  username: state.authInfo.user.username
 })
 AuthLinks = connect(
   mapStateToProps,

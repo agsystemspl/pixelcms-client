@@ -62,7 +62,8 @@ module.exports = {
       'process.env.NODE_ENV': '"production"',
       __SERVER__: false,
       __CLIENT__: true,
-      __API_ROOT__: '"http://backend.domain.com/api/"'
+      __API_ROOT__: '""',
+      __ADMIN_ROOT__: '""'
     }),
     new HtmlWebpackPlugin({
       template: 'src/templates/index.html',

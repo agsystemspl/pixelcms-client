@@ -1,20 +1,37 @@
 import React, { Component, PropTypes } from 'react'
-import { Field, reduxForm } from 'redux-form'
-import { connect } from 'react-redux'
+import { Field, reduxForm, SubmissionError } from 'redux-form'
 
-import { auth as authActions } from '~/actions'
-import Link from '~/components/utils/Link'
+import apiRequest from '~/utils/apiRequest'
+import FormHoneypot from '~/components/utils/FormHoneypot'
+import validateFormHoneypot from '~/utils/validateFormHoneypot'
 import T from '~/components/utils/T'
-
-const validate = (data) => {
-  const errors = {}
-  if (data.yourName) {
-    errors.yourName = true
-  }
-  return errors
-}
+import t from '~/utils/i18n/t'
 
 class RegisterForm extends Component {
+  constructor() {
+    super()
+    this.submit = this.submit.bind(this)
+  }
+  submit(formData) {
+    return apiRequest(
+      this.context.store.dispatch, this.context.store.getState,
+      'accounts/register/',
+      {
+        method: 'POST',
+        body: JSON.stringify(formData)
+      }
+    )
+      .then(({ data, ok, status }) => {
+        if (ok) {
+          return data
+        }
+        else {
+          throw new SubmissionError(
+            data || { _error: t(this.context.store.getState(), 'Error occured.') }
+          )
+        }
+      })
+  }
   renderField({ input, type, label, meta: { error } }) {
     return (
       <div className={'field' + (error && ' error' || '')}>
@@ -25,16 +42,10 @@ class RegisterForm extends Component {
     )
   }
   render() {
-    const honeypotStyle = {
-      position: 'absolute',
-      left: '-10000px'
-    }
     return (
-      <form onSubmit={this.props.handleSubmit(this.props.register)}>
+      <form onSubmit={this.props.handleSubmit(this.submit)}>
         {this.props.error && <div className="error">{this.props.error}</div>}
-        <div style={honeypotStyle}>
-          <Field name="yourName" type="text" label="Your name" component={this.renderField} />
-        </div>
+        <FormHoneypot component={this.renderField} />
         <Field name="username" type="text" label="Username" component={this.renderField} />
         <Field name="email" type="text" label="Email address" component={this.renderField} />
         <Field name="password" type="password" label="Password" component={this.renderField} />
@@ -48,16 +59,12 @@ class RegisterForm extends Component {
             <T t="Register" />
           </button>
         </div>
-        <div className="links">
-          <div>
-            <Link to="/login">
-              <T t="I already have an account" />
-            </Link>
-          </div>
-        </div>
       </form>
     )
   }
+}
+RegisterForm.contextTypes = {
+  store: PropTypes.object.isRequired
 }
 RegisterForm.propTypes = {
   error: PropTypes.oneOfType([
@@ -65,18 +72,12 @@ RegisterForm.propTypes = {
     PropTypes.array
   ]),
   handleSubmit: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
-  register: PropTypes.func.isRequired
+  submitting: PropTypes.bool.isRequired
 }
 
 RegisterForm = reduxForm({
   form: 'register',
-  validate
+  validate: validateFormHoneypot
 })(RegisterForm)
-
-RegisterForm = connect(
-  null,
-  { register: authActions.register }
-)(RegisterForm)
 
 export default RegisterForm

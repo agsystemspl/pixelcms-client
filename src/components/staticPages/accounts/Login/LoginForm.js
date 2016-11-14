@@ -1,20 +1,41 @@
 import React, { Component, PropTypes } from 'react'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, SubmissionError } from 'redux-form'
 import { connect } from 'react-redux'
 
-import { auth as authActions } from '~/actions'
-import Link from '~/components/utils/Link'
+import apiRequest from '~/utils/apiRequest'
+import authenticated from '~/actions/auth/authenticated'
+import addToast from '~/actions/toaster/addToast'
+import FormHoneypot from '~/components/utils/FormHoneypot'
+import validateFormHoneypot from '~/utils/validateFormHoneypot'
+import t from '~/utils/i18n/t'
 import T from '~/components/utils/T'
 
-const validate = (data) => {
-  const errors = {}
-  if (data.yourName) {
-    errors.yourName = true
-  }
-  return errors
-}
-
 class LoginForm extends Component {
+  constructor() {
+    super()
+    this.submit = this.submit.bind(this)
+  }
+  submit(formData) {
+    return apiRequest(
+      this.context.store.dispatch, this.context.store.getState,
+      'accounts/login/',
+      {
+        method: 'POST',
+        body: JSON.stringify(formData)
+      }
+    )
+      .then(({ data, ok, status }) => {
+        if (ok) {
+          this.props.authenticated(data.authInfo.token, data.authInfo.user)
+          this.props.addToast('success', data.msg, null)
+        }
+        else {
+          throw new SubmissionError(
+            data || { _error: t(this.context.store.getState(), 'Error occured.') }
+          )
+        }
+      })
+  }
   renderField({ input, type, label, meta: { error } }) {
     return (
       <div className="field">
@@ -24,16 +45,10 @@ class LoginForm extends Component {
     )
   }
   render() {
-    const honeypotStyle = {
-      position: 'absolute',
-      left: '-10000px'
-    }
     return (
-      <form onSubmit={this.props.handleSubmit(this.props.login)}>
+      <form onSubmit={this.props.handleSubmit(this.submit)}>
         {this.props.error && <div className="error">{this.props.error}</div>}
-        <div style={honeypotStyle}>
-          <Field name="yourName" type="text" label="Your name" component={this.renderField} />
-        </div>
+        <FormHoneypot component={this.renderField} />
         <Field name="usernameOrEmail" type="text" label="Username or email" component={this.renderField} />
         <Field name="password" type="password" label="Password" component={this.renderField} />
         <div className="btnWrapper">
@@ -45,21 +60,12 @@ class LoginForm extends Component {
             <T t="Login" />
           </button>
         </div>
-        <div className="links">
-          <div>
-            <Link to="/forgotten-password">
-              <T t="I forgot my password" />
-            </Link>
-          </div>
-          <div>
-            <Link to="/register">
-              <T t="I don't have an account yet" />
-            </Link>
-          </div>
-        </div>
       </form>
     )
   }
+}
+LoginForm.contextTypes = {
+  store: PropTypes.object.isRequired
 }
 LoginForm.propTypes = {
   error: PropTypes.oneOfType([
@@ -68,17 +74,21 @@ LoginForm.propTypes = {
   ]),
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
-  login: PropTypes.func.isRequired
+  authenticated: PropTypes.func.isRequired,
+  addToast: PropTypes.func.isRequired
 }
 
 LoginForm = reduxForm({
   form: 'login',
-  validate
+  validate: validateFormHoneypot
 })(LoginForm)
 
 LoginForm = connect(
   null,
-  { login: authActions.login }
+  {
+    authenticated,
+    addToast
+  }
 )(LoginForm)
 
 export default LoginForm

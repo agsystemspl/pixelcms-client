@@ -13,25 +13,24 @@ class ResendActivationMessage extends Component {
     this.state = {
       msg: null
     }
+    this.handleSubmitSuccess = this.handleSubmitSuccess.bind(this)
   }
-  handleSubmitSuccess(res) {
+  handleSubmitSuccess(data) {
     this.setState({
-      msg: res.msg
+      msg: data.msg
     })
   }
   render() {
     return (
       <div id="pageResendActivationMessage">
-        <RequireNotLoggedIn />
         <div className="container">
           <div className="wrapper">
             <h1 className="title"><span><T t="Resend activation message" /></span></h1>
             {this.state.msg && (
               <div className="msg">{this.state.msg}</div>
-            )}
-            {!this.state.msg && (
+            ) || (
               <ResendActivationMessageForm
-                onSubmitSuccess={(res) => this.handleSubmitSuccess(res)}
+                onSubmitSuccess={this.handleSubmitSuccess}
               />
             )}
           </div>
@@ -51,5 +50,7 @@ const mapStateToProps = (state) => ({
 ResendActivationMessage = connect(
   mapStateToProps
 )(ResendActivationMessage)
+
+ResendActivationMessage = RequireNotLoggedIn(ResendActivationMessage)
 
 export default ResendActivationMessage

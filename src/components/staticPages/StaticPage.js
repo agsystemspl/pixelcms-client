@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import isEqual from 'lodash/isEqual'
 import { connect } from 'react-redux'
-import { meta as metaActions } from '~/actions'
+import changeMeta from '~/actions/meta/changeMeta'
 
 const StaticPage = ComposedComponent => {
   class StaticPage extends Component {
@@ -25,7 +25,7 @@ const StaticPage = ComposedComponent => {
   })
   return connect(
     mapStateToProps,
-    { changeMeta: metaActions.changeMeta }
+    { changeMeta }
   )(StaticPage)
 }
 

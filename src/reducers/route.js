@@ -25,8 +25,10 @@ const route = (state = {}, action) => {
 
       return {
         lang,
-        path: pathWithoutLang,
-        query: action.query || {}
+        path: action.path,
+        pathWithoutLang,
+        query: action.query || {},
+        search: action.search
       }
     default:
       return state

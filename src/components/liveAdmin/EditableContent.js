@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import uniqueId from 'lodash/uniqueId'
+import queryString from 'query-string'
 
-import ApiRequest from '~/utils/ApiRequest'
+import apiRequest from '~/utils/apiRequest'
 import addToast from '~/actions/toaster/addToast'
 import t from '~/utils/i18n/t'
 
@@ -25,16 +26,21 @@ class EditableContent extends Component {
       field: this.props.field,
       content: this.editor.getContent()
     }
-    new ApiRequest().patch('live-admin/editable-content/', this.context.store.dispatch, this.context.store.getState, { data })
-      .then(
-        () => {
+    apiRequest(
+      this.context.store.dispatch, this.context.store.getState,
+      'live-admin/editable-content/',
+      {
+        method: 'PATCH',
+        body: JSON.stringify(data)
+      }
+    )
+      .then(({ data, ok, status }) => {
+        if (ok) {
           this.props.addToast('success', t(this.context.store.getState(), 'Changes has been saved.'), null)
-        },
-        () => {
+        }
+        else {
           this.props.addToast('error', t(this.context.store.getState(), 'Error occured while saving changes.'), null)
         }
-      )
-      .then(() => {
         this.setState(Object.assign({}, this.state, { processing: false }))
       })
   }
@@ -45,17 +51,18 @@ class EditableContent extends Component {
       pk: this.props.pk,
       field: this.props.field
     }
-    new ApiRequest().get('live-admin/editable-content/', this.context.store.dispatch, this.context.store.getState, { params })
-      .then(
-        (res) => {
+    apiRequest(
+      this.context.store.dispatch, this.context.store.getState,
+      `live-admin/editable-content/?${queryString.stringify(params)}`
+    )
+      .then(({ data, ok, status }) => {
+        if (ok) {
           this.props.addToast('success', t(this.context.store.getState(), 'Changes has been reverted.'), null)
-          this.editor.setContent(res.body.content)
-        },
-        () => {
+          this.editor.setContent(data.content)
+        }
+        else {
           this.props.addToast('error', t(this.context.store.getState(), 'Error occured while reverting changes.'), null)
         }
-      )
-      .then(() => {
         this.setState(Object.assign({}, this.state, { processing: false }))
       })
   }
@@ -84,7 +91,7 @@ class EditableContent extends Component {
     }
   }
   render() {
-    if (!this.props.authInfo.isAdmin) {
+    if (!this.props.isAdmin) {
       return <div dangerouslySetInnerHTML={{__html: this.props.content}} />
     }
     return (
@@ -107,9 +114,7 @@ EditableContent.propTypes = {
   pk: PropTypes.number.isRequired,
   field: PropTypes.string.isRequired,
   content: PropTypes.string,
-  authInfo: PropTypes.shape({
-    isAdmin: PropTypes.bool
-  }).isRequired,
+  isAdmin: PropTypes.bool,
   liveAdmin: PropTypes.shape({
     markEditableContent: PropTypes.bool.isRequired
   }).isRequired,
@@ -117,7 +122,7 @@ EditableContent.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  authInfo: state.auth.authInfo,
+  isAdmin: state.authInfo.user.isAdmin,
   liveAdmin: state.liveAdmin
 })
 EditableContent = connect(

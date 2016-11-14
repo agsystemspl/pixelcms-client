@@ -14,14 +14,21 @@ class LocationHandler extends Component {
     }
   }
   componentWillMount() {
-    this.dispatchLocationChanged()
+    this.handleLocationChange()
   }
   componentDidUpdate() {
+    this.handleLocationChange()
+  }
+  handleLocationChange() {
     this.dispatchLocationChanged()
+    this.gaLogPageView()
   }
   dispatchLocationChanged() {
-    this.props.locationChanged(this.props.location.pathname, this.props.location.query)
-    this.gaLogPageView()
+    this.props.locationChanged(
+      this.props.location.pathname,
+      this.props.location.query,
+      this.props.location.search
+    )
   }
   gaLogPageView() {
     if (!this.props.gaTrackingId) { return }

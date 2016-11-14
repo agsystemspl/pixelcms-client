@@ -1,19 +1,39 @@
 import React, { Component, PropTypes } from 'react'
-import { Field, reduxForm } from 'redux-form'
-import { connect } from 'react-redux'
+import { reduxForm, SubmissionError } from 'redux-form'
 
-import { auth as authActions } from '~/actions'
+import apiRequest from '~/utils/apiRequest'
+import FormHoneypot from '~/components/utils/FormHoneypot'
+import validateFormHoneypot from '~/utils/validateFormHoneypot'
+import t from '~/utils/i18n/t'
 import T from '~/components/utils/T'
 
-const validate = (data) => {
-  const errors = {}
-  if (data.yourName) {
-    errors.yourName = true
-  }
-  return errors
-}
-
 class ActivateForm extends Component {
+  constructor() {
+    super()
+    this.submit = this.submit.bind(this)
+  }
+  submit(formData) {
+    return apiRequest(
+      this.context.store.dispatch, this.context.store.getState,
+      'accounts/activate/',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          key: this.props.activationKey
+        })
+      }
+    )
+      .then(({ data, ok, status }) => {
+        if (ok) {
+          return data
+        }
+        else {
+          throw new SubmissionError(
+            data || { _error: t(this.context.store.getState(), 'Error occured.') }
+          )
+        }
+      })
+  }
   renderField({ input, type, label, meta: { error } }) {
     return (
       <div className={'field' + (error && ' error' || '')}>
@@ -24,22 +44,12 @@ class ActivateForm extends Component {
     )
   }
   render() {
-    const honeypotStyle = {
-      position: 'absolute',
-      left: '-10000px'
-    }
     return (
-      <form
-        onSubmit={this.props.handleSubmit(
-          () => this.props.activate({key: this.props.activationKey})
-        )}
-      >
+      <form onSubmit={this.props.handleSubmit(this.submit)}>
         <div className="info">
           <T t="Click button below to activate your account." />
         </div>
-        <div style={honeypotStyle}>
-          <Field name="yourName" type="text" label="Your name" component={this.renderField} />
-        </div>
+        <FormHoneypot component={this.renderField} />
         <div className="btnWrapper">
           <button
             type="submit"
@@ -53,6 +63,9 @@ class ActivateForm extends Component {
     )
   }
 }
+ActivateForm.contextTypes = {
+  store: PropTypes.object.isRequired
+}
 ActivateForm.propTypes = {
   error: PropTypes.oneOfType([
     PropTypes.string,
@@ -60,18 +73,12 @@ ActivateForm.propTypes = {
   ]),
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
-  activate: PropTypes.func.isRequired,
   activationKey: PropTypes.string.isRequired
 }
 
 ActivateForm = reduxForm({
   form: 'activate',
-  validate
+  validate: validateFormHoneypot
 })(ActivateForm)
-
-ActivateForm = connect(
-  null,
-  { activate: authActions.activate }
-)(ActivateForm)
 
 export default ActivateForm

@@ -62,7 +62,8 @@ module.exports = {
     new webpack.DefinePlugin({
       __SERVER__: false,
       __CLIENT__: true,
-      __API_ROOT__: '"http://localhost:8000/api/"'
+      __API_ROOT__: '"http://localhost:8000/api/"',
+      __ADMIN_ROOT__: '"http://localhost:8000/admin/"'
     }),
     new HtmlWebpackPlugin({
       template: 'src/templates/index.html',

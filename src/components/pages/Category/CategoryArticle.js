@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react'
 
 import Link from '~/components/utils/Link'
-import EditableContent from '~/components/LiveAdmin/EditableContent'
-import AdminLink from '~/components/LiveAdmin/AdminLink'
+import EditableContent from '~/components/liveAdmin/EditableContent'
+import AdminLink from '~/components/liveAdmin/AdminLink'
 
 const CategoryArticle = props => {
   let created
@@ -55,7 +55,7 @@ const CategoryArticle = props => {
   }
   return (
     <div className="article" style={{ position: 'relative' }}>
-      <AdminLink url={`/admin/content/article/${props.pk}/change/`} />
+      <AdminLink path={`content/article/${props.pk}/change/`} />
       <h2 className="title">
         <span>
           <Link to={props.route}>

@@ -4,23 +4,30 @@ import Redirect from 'react-router/Redirect'
 
 import langPrefix from '~/utils/langPrefix'
 
-let RequiredNotLoggedIn = props => {
-  return props.user ? <Redirect to={langPrefix('/', props.lang)} /> : null
-}
-RequiredNotLoggedIn.propTypes = {
-  user: PropTypes.string,
-  lang: PropTypes.shape({
-    code: PropTypes.string.isRequired,
-    default: PropTypes.bool.isRequired
-  }).isRequired
-}
+const RequiredNotLoggedIn = ComposedComponent => {
+  let RequiredNotLoggedIn = props => {
+    if (!props.isAuthenticated) {
+      return <ComposedComponent {...props} />
+    }
+    else {
+      return <Redirect to={langPrefix('/', props.lang)} />
+    }
+  }
+  RequiredNotLoggedIn.propTypes = {
+    isAuthenticated: PropTypes.bool,
+    lang: PropTypes.shape({
+      code: PropTypes.string.isRequired,
+      default: PropTypes.bool.isRequired
+    }).isRequired
+  }
 
-const mapStateToProps = state => ({
-  user: state.auth.authInfo.user,
-  lang: state.route.lang
-})
-RequiredNotLoggedIn = connect(
-  mapStateToProps
-)(RequiredNotLoggedIn)
+  const mapStateToProps = state => ({
+    isAuthenticated: state.authInfo.isAuthenticated,
+    lang: state.route.lang
+  })
+  return connect(
+    mapStateToProps
+  )(RequiredNotLoggedIn)
+}
 
 export default RequiredNotLoggedIn

@@ -4,9 +4,11 @@ global.__SERVER__ = true
 global.__CLIENT__ = false
 if (process.env.NODE_ENV !== 'production') {
   global.__API_ROOT__ = 'http://localhost:8000/api/'
+  global.__ADMIN_ROOT__ = 'http://localhost:8000/admin/'
 }
 else {
-  global.__API_ROOT__ = 'http://backend.domain.com/api/'
+  global.__API_ROOT__ = ''
+  global.__ADMIN_ROOT__ = ''
 }
 
 require('babel-register')({

@@ -1,6 +1,6 @@
 import { animateScroll } from 'react-scroll'
 
-const locationChanged = (path, query) => (dispatch, getState) => {
+const locationChanged = (path, query, search) => (dispatch, getState) => {
   /* global __CLIENT__ */
   if (__CLIENT__) {
     animateScroll.scrollToTop(getState().config.pageTransitionScrollProps)
@@ -9,6 +9,7 @@ const locationChanged = (path, query) => (dispatch, getState) => {
     type: 'LOCATION_CHANGED',
     path,
     query,
+    search,
     availableLangs: getState().config.langs
   })
 }

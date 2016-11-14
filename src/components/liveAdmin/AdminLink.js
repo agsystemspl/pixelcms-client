@@ -7,13 +7,14 @@ import t from '~/utils/i18n/t'
 
 let AdminLink = props => {
   /* global __SERVER__ */
-  if (__SERVER__ || !props.authInfo.isAdmin || !props.liveAdmin.showAdminLinks) { return null }
+  if (__SERVER__ || !props.isAdmin || !props.liveAdmin.showAdminLinks) { return null }
   const tooltipId = uniqueId('tooltip')
   return (
     <div>
       <a
         className="adminLink"
-        href={props.url}
+        /* global __ADMIN_ROOT__ */
+        href={`${__ADMIN_ROOT__}${props.path}`}
         target="_blank"
         data-tip={`${t(props.state, 'Go to element in admin panel')}`}
         data-for={tooltipId}
@@ -25,11 +26,9 @@ let AdminLink = props => {
   )
 }
 AdminLink.propTypes = {
-  url: PropTypes.string.isRequired,
+  path: PropTypes.string.isRequired,
   state: PropTypes.object.isRequired,
-  authInfo: PropTypes.shape({
-    isAdmin: PropTypes.bool
-  }).isRequired,
+  isAdmin: PropTypes.bool,
   liveAdmin: PropTypes.shape({
     showAdminLinks: PropTypes.bool.isRequired
   }).isRequired
@@ -37,7 +36,7 @@ AdminLink.propTypes = {
 
 const mapStateToProps = state => ({
   state,
-  authInfo: state.auth.authInfo,
+  isAdmin: state.authInfo.user.isAdmin,
   liveAdmin: state.liveAdmin
 })
 AdminLink = connect(

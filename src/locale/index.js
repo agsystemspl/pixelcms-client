@@ -35,6 +35,7 @@ const locale = {
       'Password': 'Hasło',
       'Repeat password': 'Powtórz hasło',
       'Logout': 'Wyloguj się',
+      'You have been logged out.': 'Wylogowano.',
       'Activate your account': 'Aktywuj swoje konto',
       'Click button below to activate your account.': 'Kliknij przycisk poniżej, aby aktywować swoje konto.',
       'Activate': 'Aktywuj',
@@ -46,6 +47,7 @@ const locale = {
       'Repeat new password': 'Powtórz nowe hasło',
       'Change': 'Zmień',
       'Hello': 'Witaj',
+      'Session has expired. You have been logged out.': 'Sesja wygasła. Wylogowano.',
 
       // contact form
       'Your name / company name': 'Imię i nazwisko / nazwa firmy',

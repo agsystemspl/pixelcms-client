@@ -1,4 +1,4 @@
-import ApiRequest from '~/utils/ApiRequest'
+import apiRequest from '~/utils/apiRequest'
 
 const requestModule = (moduleType, templateId, apiPath) => (dispatch, getState) => {
   dispatch({
@@ -6,21 +6,25 @@ const requestModule = (moduleType, templateId, apiPath) => (dispatch, getState) 
     moduleType,
     templateId
   })
-  return new ApiRequest().get(apiPath, dispatch, getState)
-    .then(
-      (res) => dispatch({
-        type: 'RECEIVE_MODULE',
-        moduleType,
-        templateId,
-        data: res.body
-      }),
-      () => dispatch({
-        type: 'RECEIVE_MODULE',
-        moduleType,
-        templateId,
-        data: null
-      })
-    )
+  return apiRequest(dispatch, getState, apiPath)
+    .then(({ data, ok, status }) => {
+      if (ok) {
+        dispatch({
+          type: 'RECEIVE_MODULE',
+          moduleType,
+          templateId,
+          data
+        })
+      }
+      else {
+        dispatch({
+          type: 'RECEIVE_MODULE',
+          moduleType,
+          templateId,
+          data: null
+        })
+      }
+    })
 }
 
 export default requestModule

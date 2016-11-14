@@ -1,4 +1,5 @@
 import React from 'react'
+import reactCookie from 'react-cookie'
 import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
 import ServerRouter from 'react-router/ServerRouter'
@@ -13,77 +14,58 @@ const serverRender = (req, res, { configPath, localePath, reducersPath, AppPath 
   const App = require(AppPath).default
 
   const configureStore = require('../store/configureStore').default
-  const locationChanged = require('../actions/route/locationChanged').default
-  const setSsrCookie = require('../actions/auth/setSsrCookie').default
-  const ApiRequest = require('../utils/ApiRequest').default
+  const AuthHandler = require('../components/core/AuthHandler').default
   const LocationHandler = require('../components/core/LocationHandler').default
   const MetaHandler = require('../components/core/MetaHandler').default
 
+  const unplug = reactCookie.plugToRequest(req, res)
+
   const store = configureStore(config, locale, reducers)
-  store.dispatch(locationChanged(req.path, req.query))
-  store.dispatch(setSsrCookie(req.get('cookie')))
 
-  new ApiRequest().get('accounts/auth-info/', store.dispatch, store.getState)
-    .catch(err => console.log(err))
-    .then()
-    .then(() => {
-      const context = createServerRenderContext()
+  const context = createServerRenderContext()
 
-      const markup = (store, context) => (
-        <Provider store={store}>
-          <ServerRouter
-            location={req.url}
-            context={context}
-          >
-            <div>
-              <Subscriber channel="location">
-                {location => <LocationHandler location={location} />}
-              </Subscriber>
-              <MetaHandler />
-              <App />
-            </div>
-          </ServerRouter>
-        </Provider>
-      )
+  const returnData = output => {
+    var state = store.getState()
+    var meta = DocumentMeta.renderAsHTML()
+    unplug()
+    cb({
+      appRoot: output,
+      initialState: state,
+      meta: meta
+    })
+  }
 
-      const returnData = data => {
-        var state = store.getState()
-        var meta = DocumentMeta.renderAsHTML()
-        cb({
-          appRoot: data.output,
-          initialState: state,
-          meta: meta
-        })
+  store.renderUniversal(renderToString, (
+    <Provider store={store}>
+      <ServerRouter
+        location={req.url}
+        context={context}
+      >
+        <div>
+          <AuthHandler />
+          <Subscriber channel="location">
+            {location => <LocationHandler location={location} />}
+          </Subscriber>
+          <MetaHandler />
+          <App />
+        </div>
+      </ServerRouter>
+    </Provider>
+  ))
+    .then(
+      ({ output }) => {
+        const result = context.getResult()
+        if (result.redirect) {
+          res.status(302).set({ 'Location': result.redirect.pathname }).end()
+        }
+        else {
+          returnData(output)
+        }
       }
-
-      store.renderUniversal(renderToString, markup(store, context))
-        .catch(err => console.log(err))
-        .then(
-          data => {
-            const result = context.getResult()
-            if (result.missed) {
-              store.renderUniversal(renderToString, markup(store, context))
-                .then(
-                  data => {
-                    if (result.redirect) {
-                      res.status(302).set({ 'Location': result.redirect.pathname }).end()
-                    }
-                    else {
-                      returnData(data)
-                    }
-                  }
-                )
-            }
-            else {
-              if (result.redirect) {
-                res.status(302).set({ 'Location': result.redirect.pathname }).end()
-              }
-              else {
-                returnData(data)
-              }
-            }
-          }
-        )
+    )
+    .catch(({ output, error }) => {
+      console.log(error)
+      returnData(output)
     })
 }
 

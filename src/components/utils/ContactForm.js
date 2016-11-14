@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Field, reduxForm, SubmissionError } from 'redux-form'
 
-import ApiRequest from '~/utils/ApiRequest'
+import apiRequest from '~/utils/apiRequest'
 import T from '~/components/utils/T'
 import t from '~/utils/i18n/t'
 
@@ -13,17 +13,18 @@ const validate = (data) => {
   return errors
 }
 
-const send = (data, dispatch, getState) => {
-  return new ApiRequest().post('emails/contact-form/', dispatch, getState, { data })
-    .then(
-      (res) => {},
-      (res) => {
-        let errors
-        if (res.body) { errors = { ...res.body } }
-        else { errors = {_error: t(getState(), 'Error occured.')} }
-        throw new SubmissionError(errors)
+const send = (formData, dispatch, getState) => {
+  return apiRequest(dispatch, getState, 'emails/contact-form/', {
+    method: 'POST',
+    body: JSON.stringify(formData)
+  })
+    .then(({ data, ok, status }) => {
+      if (!ok) {
+        throw new SubmissionError(
+          data || { _error: t(getState(), 'Error occured.') }
+        )
       }
-    )
+    })
 }
 
 class ContactForm extends Component {
@@ -63,7 +64,7 @@ class ContactForm extends Component {
       left: '-10000px'
     }
     return (
-      <form onSubmit={this.props.handleSubmit((data) => send(data, this.props.dispatch, this.context.store.getState))}>
+      <form onSubmit={this.props.handleSubmit(data => send(data, this.context.store.dispatch, this.context.store.getState))}>
         {this.props.error && <div className="error">{this.props.error}</div>}
         <div style={honeypotStyle}>
           <Field name="yourName" type="text" label="Your name" component={this.renderTextInput} />

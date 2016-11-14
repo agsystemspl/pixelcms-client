@@ -4,8 +4,8 @@ import Link from '~/components/utils/Link'
 import Breadcrumbs from '~/components/utils/Breadcrumbs'
 import Lightbox from '~/components/utils/Lightbox'
 import T from '~/components/utils/T'
-import EditableContent from '~/components/LiveAdmin/EditableContent'
-import AdminLink from '~/components/LiveAdmin/AdminLink'
+import EditableContent from '~/components/liveAdmin/EditableContent'
+import AdminLink from '~/components/liveAdmin/AdminLink'
 
 const Article = props => {
   let breadcrumbs
@@ -68,7 +68,7 @@ const Article = props => {
       <div className="wrapper">
         {breadcrumbs}
         <header style={{ position: 'relative' }}>
-          <AdminLink url={`/admin/content/article/${props.pk}/change/`} />
+          <AdminLink path={`content/article/${props.pk}/change/`} />
           <h1 className="title"><span>{props.title}</span></h1>
           {created}
         </header>

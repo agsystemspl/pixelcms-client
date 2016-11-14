@@ -13,25 +13,24 @@ class ForgottenPassword extends Component {
     this.state = {
       msg: null
     }
+    this.handleSubmitSuccess = this.handleSubmitSuccess.bind(this)
   }
-  handleSubmitSuccess(res) {
+  handleSubmitSuccess(data) {
     this.setState({
-      msg: res.msg
+      msg: data.msg
     })
   }
   render() {
     return (
       <div id="pageForgottenPassword">
-        <RequireNotLoggedIn />
         <div className="container">
           <div className="wrapper">
             <h1 className="title"><span><T t="Forgotten password" /></span></h1>
             {this.state.msg && (
               <div className="msg">{this.state.msg}</div>
-            )}
-            {!this.state.msg && (
+            ) || (
               <ForgottenPasswordForm
-                onSubmitSuccess={(res) => this.handleSubmitSuccess(res)}
+                onSubmitSuccess={this.handleSubmitSuccess}
               />
             )}
           </div>
@@ -51,5 +50,7 @@ const mapStateToProps = (state) => ({
 ForgottenPassword = connect(
   mapStateToProps
 )(ForgottenPassword)
+
+ForgottenPassword = RequireNotLoggedIn(ForgottenPassword)
 
 export default ForgottenPassword

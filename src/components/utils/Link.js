@@ -32,4 +32,4 @@ const mapStateToProps = (state) => ({
 })
 Link = connect(mapStateToProps)(Link)
 
-export default BareLink
+export default Link

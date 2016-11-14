@@ -10,7 +10,7 @@ import t from '~/utils/i18n/t'
 
 class LiveAdminSidebar extends Component {
   componentDidMount() {
-    if (this.props.authInfo.isAdmin) {
+    if (this.props.isAdmin) {
       if (cookie.load('liveAdminMarkEditableContent') && !this.props.liveAdmin.markEditableContent) {
         this.props.toggleMarkEditableContent(false)
       }
@@ -20,7 +20,7 @@ class LiveAdminSidebar extends Component {
     }
   }
   render() {
-    if (!this.props.authInfo.isAdmin) { return null }
+    if (!this.props.isAdmin) { return null }
     return (
       <div id="liveAdminSidebar">
         <div
@@ -41,7 +41,8 @@ class LiveAdminSidebar extends Component {
         </div>
         <a
           className="icon"
-          href="/admin/"
+          /* global __ADMIN_ROOT__ */
+          href={__ADMIN_ROOT__}
           target="_blank"
           data-tip={`${t(this.props.state, 'Go to admin panel')}`}
           data-for="liveAdminSidebar"
@@ -64,9 +65,7 @@ class LiveAdminSidebar extends Component {
 
 LiveAdminSidebar.propTypes = {
   state: PropTypes.object.isRequired,
-  authInfo: PropTypes.shape({
-    isAdmin: PropTypes.bool
-  }).isRequired,
+  isAdmin: PropTypes.bool,
   liveAdmin: PropTypes.shape({
     markEditableContent: PropTypes.bool.isRequired,
     showAdminLinks: PropTypes.bool.isRequired
@@ -78,7 +77,7 @@ LiveAdminSidebar.propTypes = {
 
 const mapStateToProps = state => ({
   state,
-  authInfo: state.auth.authInfo,
+  isAdmin: state.authInfo.user.isAdmin,
   liveAdmin: state.liveAdmin
 })
 LiveAdminSidebar = connect(

@@ -16,39 +16,37 @@ class ResetPassword extends Component {
     this.state = {
       msg: null,
       expired: null,
-      success: null
+      redirect: null
     }
+    this.handleSubmitSuccess = this.handleSubmitSuccess.bind(this)
+    this.handleSubmitFail = this.handleSubmitFail.bind(this)
   }
-  handleSubmitSuccess(res) {
-    this.setState(Object.assign({}, this.state, {
-      success: true
-    }))
-    this.props.addToast('success', res.msg, null)
+  handleSubmitSuccess(data) {
+    this.setState(Object.assign({}, this.state, { redirect: true }))
+    this.props.addToast('success', data.msg, null)
   }
-  handleSubmitFail(err) {
-    if (err.keyError) {
+  handleSubmitFail(data) {
+    if (data.keyError) {
       this.setState({
-        msg: err._error
+        msg: data._error
       })
     }
   }
   render() {
-    if (this.state.success) {
-      return <Redirect to={langPrefix('/login', this.props.lang)} />
+    if (this.state.redirect) {
+      return <Redirect to={langPrefix('/accounts/login', this.props.lang)} />
     }
     return (
       <div id="pageResetPassword">
-        <RequireNotLoggedIn />
         <div className="container">
           <div className="wrapper">
             <h1 className="title"><span><T t="Reset password" /></span></h1>
             {this.state.msg && (
               <div className="msg">{this.state.msg}</div>
-            )}
-            {!this.state.msg && (
+            ) || (
               <ResetPasswordForm
-                onSubmitSuccess={(res) => this.handleSubmitSuccess(res)}
-                onSubmitFail={(err) => this.handleSubmitFail(err)}
+                onSubmitSuccess={this.handleSubmitSuccess}
+                onSubmitFail={this.handleSubmitFail}
                 resetPasswordKey={this.props.params.key}
               />
             )}
@@ -81,5 +79,7 @@ ResetPassword = connect(
   mapStateToProps,
   { addToast }
 )(ResetPassword)
+
+ResetPassword = RequireNotLoggedIn(ResetPassword)
 
 export default ResetPassword

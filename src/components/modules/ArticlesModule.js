@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 
 import Module from './Module'
 import ArticlesModuleArticle from './ArticlesModule/ArticlesModuleArticle'
-import AdminLink from '~/components/LiveAdmin/AdminLink'
+import AdminLink from '~/components/liveAdmin/AdminLink'
 
 let ArticlesModule = props => {
   let articles
@@ -20,7 +20,7 @@ let ArticlesModule = props => {
   }
   return (
     <div className={props.getHtmlClassName()} style={{ position: 'relative' }}>
-      <AdminLink url={`/admin/content/articlesmodule/${props.module.data.pk}/change/`} />
+      <AdminLink path={`content/articlesmodule/${props.module.data.pk}/change/`} />
       <div className="wrapper">
         {props.getHeader()}
         {articles}

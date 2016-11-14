@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
 
-import { modules as modulesActions } from '~/actions'
+import requestModule from '~/actions/modules/requestModule'
 import Loading from '~/components/utils/Loading'
 
 let Module = (moduleType, getApiPath, moduleTypeHtmlClass) => {
@@ -74,7 +74,7 @@ let Module = (moduleType, getApiPath, moduleTypeHtmlClass) => {
     })
     return connect(
       mapStateToProps,
-      { requestModule: modulesActions.requestModule }
+      { requestModule }
     )(Module)
   }
 }

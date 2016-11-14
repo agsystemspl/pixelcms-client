@@ -4,6 +4,9 @@ import mustacheExpress from 'mustache-express'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 
+require('es6-promise').polyfill()
+require('isomorphic-fetch')
+
 const server = (webpackConfig, {
   ssrEnabled,
   trustSelfSignedCerts,
@@ -72,7 +75,7 @@ const server = (webpackConfig, {
     }
     else {
       if (process.env.NODE_ENV !== 'production') {
-        console.log('Server side rendering is disabled.')
+        console.log('SSR is disabled.')
       }
       res.render('index')
     }

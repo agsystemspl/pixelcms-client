@@ -2,9 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import merge from 'lodash/merge'
 import isEmpty from 'lodash/isEmpty'
-import isEqual from 'lodash/isEqual'
 
-import { page as pageActions } from '~/actions'
+import requestPage from '~/actions/page/requestPage'
+import clearPage from '~/actions/page/clearPage'
 import Category from '~/components/pages/Category'
 import Article from '~/components/pages/Article'
 import NotFound from '~/components/pages/NotFound'
@@ -25,20 +25,18 @@ class PageHandler extends Component {
     )
   }
   componentWillMount() {
-    if (isEmpty(this.props.page)) {
-      this.props.requestPage()
+    if (isEmpty(this.props.page) && !this.props.page.requesting) {
+      this._requestTimeout = setTimeout(() => {
+        this.props.requestPage()
+      }, 0)
     }
   }
   componentWillUnmount() {
+    clearTimeout(this._requestTimeout)
     this.props.clearPage()
   }
-  componentDidUpdate(prevProps) {
-    if (!isEqual(this.props.route, prevProps.route)) {
-      this.props.requestPage()
-    }
-  }
   render() {
-    if (this.props.page.loading) {
+    if (isEmpty(this.props.page) || this.props.page.requesting) {
       return <div className="page loading"><Loading /></div>
     }
     else {
@@ -52,28 +50,26 @@ class PageHandler extends Component {
 }
 PageHandler.propTypes = {
   pageComponentsRegistry: PropTypes.object.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired
+  }),
   page: PropTypes.shape({
+    requesting: PropTypes.bool,
     componentName: PropTypes.string,
-    componentData: PropTypes.object,
-    loading: PropTypes.bool
+    componentData: PropTypes.object
   }).isRequired,
-  route: PropTypes.object.isRequired,
   requestPage: PropTypes.func.isRequired,
   clearPage: PropTypes.func.isRequired
 }
-PageHandler.contextTypes = {
-  router: PropTypes.object
-}
 
 const mapStateToProps = (state) => ({
-  page: state.page,
-  route: state.route
+  page: state.page
 })
 PageHandler = connect(
   mapStateToProps,
   {
-    requestPage: pageActions.requestPage,
-    clearPage: pageActions.clearPage
+    requestPage,
+    clearPage
   }
 )(PageHandler)
 

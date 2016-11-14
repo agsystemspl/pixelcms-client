@@ -1,11 +1,11 @@
 import React, { PropTypes } from 'react'
 
 import Link from '~/components/utils/Link'
-import AdminLink from '~/components/LiveAdmin/AdminLink'
+import AdminLink from '~/components/liveAdmin/AdminLink'
 
 const Subcategory = props => (
   <div className="subcategory" style={{ position: 'relative' }}>
-    <AdminLink url={`/admin/content/category/${props.pk}/change/`} />
+    <AdminLink path={`content/category/${props.pk}/change/`} />
     <h2 className="title">
       <Link to={props.route}>
         {props.name}

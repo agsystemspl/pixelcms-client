@@ -1,23 +1,32 @@
 import React, { PropTypes } from 'react'
+import Link from 'react-router/Link'
 
-import QueryLink from '~/components/utils/QueryLink'
 import T from '~/components/utils/T'
 
 const Pagination = props => {
   const pages = [...Array(props.numPages).keys()].map((i, key) => {
-    return (
-      <QueryLink key={key} query={{ page: i + 1 }}>
-        <span>{i + 1}</span>
-      </QueryLink>
-    )
+    if (props.currentPage === i + 1) {
+      return (
+        <span key={key}>
+          <span>{i + 1}</span>
+        </span>
+      )
+    }
+    else {
+      return (
+        <Link key={key} to={`?page=${i + 1}`}>
+          <span>{i + 1}</span>
+        </Link>
+      )
+    }
   })
   let prev
   if (props.currentPage > 1) {
     prev = (
       <div className="prev">
-        <QueryLink query={{ page: props.currentPage - 1 }}>
+        <Link to={`?page=${props.currentPage - 1}`}>
           <span><T t="Previous" /></span>
-        </QueryLink>
+        </Link>
       </div>
     )
   }
@@ -25,18 +34,18 @@ const Pagination = props => {
   if (props.currentPage < props.numPages) {
     next = (
       <div className="next">
-        <QueryLink query={{ page: props.currentPage + 1 }}>
+        <Link to={`?page=${props.currentPage + 1}`}>
           <span><T t="Next" /></span>
-        </QueryLink>
+        </Link>
       </div>
     )
   }
   return (
     <div className="pagination">
       <div className="first">
-        <QueryLink query={{ page: 1 }}>
+        <Link to="?page=1">
           <span><T t="First" /></span>
-        </QueryLink>
+        </Link>
       </div>
       {prev}
       <div className="pages">
@@ -44,9 +53,9 @@ const Pagination = props => {
       </div>
       {next}
       <div className="last">
-        <QueryLink query={{ page: props.numPages }}>
+        <Link to={`?page=${props.numPages}`}>
           <span><T t="Last" /></span>
-        </QueryLink>
+        </Link>
       </div>
     </div>
   )

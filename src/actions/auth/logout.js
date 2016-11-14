@@ -1,13 +1,10 @@
-import ApiRequest from '~/utils/ApiRequest'
+import clearAuth from '~/actions/auth/clearAuth'
 import addToast from '~/actions/toaster/addToast'
+import t from '~/utils/i18n/t'
 
 const logout = () => (dispatch, getState) => {
-  return new ApiRequest().delete('accounts/auth-info/', dispatch, getState)
-    .then(
-      (res) => {
-        dispatch(addToast('success', res.body.msg, null))
-      }
-    )
+  dispatch(clearAuth())
+  dispatch(addToast('success', t(getState(), 'You have been logged out.'), null))
 }
 
 export default logout

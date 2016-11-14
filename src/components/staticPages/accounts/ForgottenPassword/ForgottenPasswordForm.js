@@ -1,19 +1,37 @@
 import React, { Component, PropTypes } from 'react'
-import { Field, reduxForm } from 'redux-form'
-import { connect } from 'react-redux'
+import { Field, reduxForm, SubmissionError } from 'redux-form'
 
-import { auth as authActions } from '~/actions'
+import apiRequest from '~/utils/apiRequest'
+import FormHoneypot from '~/components/utils/FormHoneypot'
+import validateFormHoneypot from '~/utils/validateFormHoneypot'
 import T from '~/components/utils/T'
-
-const validate = (data) => {
-  const errors = {}
-  if (data.yourName) {
-    errors.yourName = true
-  }
-  return errors
-}
+import t from '~/utils/i18n/t'
 
 class ForgottenPasswordForm extends Component {
+  constructor() {
+    super()
+    this.submit = this.submit.bind(this)
+  }
+  submit(formData) {
+    return apiRequest(
+      this.context.store.dispatch, this.context.store.getState,
+      'accounts/send-reset-password-message/',
+      {
+        method: 'POST',
+        body: JSON.stringify(formData)
+      }
+    )
+      .then(({ data, ok, status }) => {
+        if (ok) {
+          return data
+        }
+        else {
+          throw new SubmissionError(
+            data || { _error: t(this.context.store.getState(), 'Error occured.') }
+          )
+        }
+      })
+  }
   renderField({ input, type, label, meta: { error } }) {
     return (
       <div className={'field' + (error && ' error' || '')}>
@@ -24,16 +42,10 @@ class ForgottenPasswordForm extends Component {
     )
   }
   render() {
-    const honeypotStyle = {
-      position: 'absolute',
-      left: '-10000px'
-    }
     return (
-      <form onSubmit={this.props.handleSubmit(this.props.sendResetPasswordMessage)}>
+      <form onSubmit={this.props.handleSubmit(this.submit)}>
         {this.props.error && <div className="error">{this.props.error}</div>}
-        <div style={honeypotStyle}>
-          <Field name="yourName" type="text" label="Your name" component={this.renderField} />
-        </div>
+        <FormHoneypot component={this.renderField} />
         <Field name="email" type="text" label="Email address" component={this.renderField} />
         <div className="btnWrapper">
           <button
@@ -48,24 +60,21 @@ class ForgottenPasswordForm extends Component {
     )
   }
 }
+ForgottenPasswordForm.contextTypes = {
+  store: PropTypes.object.isRequired
+}
 ForgottenPasswordForm.propTypes = {
   error: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.array
   ]),
   handleSubmit: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
-  sendResetPasswordMessage: PropTypes.func.isRequired
+  submitting: PropTypes.bool.isRequired
 }
 
 ForgottenPasswordForm = reduxForm({
   form: 'forgottenPassword',
-  validate
+  validate: validateFormHoneypot
 })(ForgottenPasswordForm)
-
-ForgottenPasswordForm = connect(
-  null,
-  { sendResetPasswordMessage: authActions.sendResetPasswordMessage }
-)(ForgottenPasswordForm)
 
 export default ForgottenPasswordForm

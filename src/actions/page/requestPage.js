@@ -1,43 +1,41 @@
-import queryString from 'query-string'
-
-import ApiRequest from '~/utils/ApiRequest'
+import apiRequest from '~/utils/apiRequest'
 import t from '~/utils/i18n/t'
 
 const requestPage = () => (dispatch, getState) => {
-  dispatch({ type: 'LOADING_PAGE' })
-  const route = getState().route
-  const query = queryString.stringify(route.query)
-  const path = route.path + ((route.path !== '/') ? '/' : '') + (query ? '?' + query : '')
-  return new ApiRequest().get('route' + path, dispatch, getState)
-    .then(
-      (res) => {
+  dispatch({ type: 'REQUSTING_PAGE' })
+  let pathname = getState().route.pathWithoutLang
+  pathname += pathname !== '/' ? '/' : ''
+  pathname += getState().route.search
+  return apiRequest(dispatch, getState, `route${pathname}`)
+    .then(({ data, ok, status }) => {
+      if (ok) {
         dispatch({
           type: 'RECEIVE_PAGE',
           page: {
-            componentName: res.body.componentName,
-            componentData: res.body.componentData
+            componentName: data.componentName,
+            componentData: data.componentData
           }
         })
         dispatch({
           type: 'CHANGE_META',
-          meta: res.body.meta
+          meta: data.meta
         })
-      },
-      (res) => {
+      }
+      else {
         dispatch({
           type: 'RECEIVE_PAGE',
           page: {
-            componentName: (res.notFound) ? 'NotFound' : 'Error'
+            componentName: status === 404 ? 'NotFound' : 'Error'
           }
         })
         dispatch({
           type: 'CHANGE_META',
           meta: {
-            title: t(getState(), (res.notFound) ? 'Not found' : 'Error')
+            title: t(getState(), status === 404 ? 'Not found' : 'Error')
           }
         })
       }
-    )
+    })
 }
 
 export default requestPage

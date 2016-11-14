@@ -9,7 +9,7 @@ import PageHandler from '~/components/core/PageHandler'
 let Routes = props => (
   <div>
     {!includes(props.exclude, 'accounts') && props.langs.map((lang, key) => (
-      <Accounts key={key} lang={lang} />
+      <Accounts key={key} lang={lang.code === props.langs[0].code ? null : lang} />
     ))}
     <Miss component={({ location }) => (
       <PageHandler

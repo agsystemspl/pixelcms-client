@@ -6,8 +6,8 @@ import Subcategory from './Category/Subcategory'
 import CategoryArticle from './Category/CategoryArticle'
 import Pagination from '~/components/utils/Pagination'
 import T from '~/components/utils/T'
-import EditableContent from '~/components/LiveAdmin/EditableContent'
-import AdminLink from '~/components/LiveAdmin/AdminLink'
+import EditableContent from '~/components/liveAdmin/EditableContent'
+import AdminLink from '~/components/liveAdmin/AdminLink'
 
 const Category = props => {
   let breadcrumbs
@@ -59,7 +59,7 @@ const Category = props => {
         {breadcrumbs}
         <header>
           <div className="titleWrapper" style={{ position: 'relative' }}>
-            <AdminLink url={`/admin/content/category/${props.pk}/change/`} />
+            <AdminLink path={`content/category/${props.pk}/change/`} />
             <h1 className="title"><span>{props.name}</span></h1>
           </div>
           {description}

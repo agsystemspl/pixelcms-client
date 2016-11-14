@@ -4,7 +4,7 @@ import { Link as ScrollLink } from 'react-scroll'
 
 import Module from './Module'
 import Link from '~/components/utils/Link'
-import AdminLink from '~/components/LiveAdmin/AdminLink'
+import AdminLink from '~/components/liveAdmin/AdminLink'
 
 let NavModule = props => {
   let items = props.module.data.items.map((item, i) => {
@@ -44,7 +44,7 @@ let NavModule = props => {
   })
   return (
     <div className={props.getHtmlClassName()} style={{ position: 'relative' }}>
-      <AdminLink url={`/admin/nav/navmodule/${props.module.data.pk}/change/`} />
+      <AdminLink path={`nav/navmodule/${props.module.data.pk}/change/`} />
       <div className="wrapper">
         {props.getHeader()}
         <nav>

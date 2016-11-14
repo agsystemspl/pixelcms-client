@@ -1,12 +1,12 @@
 import React, { PropTypes } from 'react'
 
 import Module from './Module'
-import EditableContent from '~/components/LiveAdmin/EditableContent'
-import AdminLink from '~/components/LiveAdmin/AdminLink'
+import EditableContent from '~/components/liveAdmin/EditableContent'
+import AdminLink from '~/components/liveAdmin/AdminLink'
 
 let ContentModule = props => (
   <div className={props.getHtmlClassName()} style={{ position: 'relative' }}>
-    <AdminLink url={`/admin/content/contentmodule/${props.module.data.pk}/change/`} />
+    <AdminLink path={`content/contentmodule/${props.module.data.pk}/change/`} />
     <div className="wrapper">
       {props.getHeader()}
       <div className="content">
