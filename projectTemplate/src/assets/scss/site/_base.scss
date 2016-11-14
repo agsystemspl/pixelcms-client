@@ -1,12 +1,10 @@
-.container, .row, .col { height: inherit; }
-
 h1, h2, h3, h4, h5, h6 {
   line-height: inherit; margin-bottom: 0;
 }
 
 p:last-child { margin-bottom: 0; }
 
-strong { font-weight: 600; }
+strong { font-weight: 700; }
 
 img { max-width: 100%; height: auto; }
 
@@ -15,13 +13,8 @@ img { max-width: 100%; height: auto; }
 body { overflow-y: scroll; }
 
 #app {
-  min-height: 100vh; display: flex; flex-direction: column;  
+  min-height: 100vh; display: flex; flex-direction: column;
   main {
     flex: 1;
-    #page {
-      &.loading {
-        position: relative; height: 200px;
-      }
-    }
   }
 }
