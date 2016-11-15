@@ -45,7 +45,7 @@ class RegisterForm extends Component {
     return (
       <form onSubmit={this.props.handleSubmit(this.submit)}>
         {this.props.error && <div className="error">{this.props.error}</div>}
-        <FormHoneypot component={this.renderField} />
+        <FormHoneypot />
         <Field name="username" type="text" label="Username" component={this.renderField} />
         <Field name="email" type="text" label="Email address" component={this.renderField} />
         <Field name="password" type="password" label="Password" component={this.renderField} />

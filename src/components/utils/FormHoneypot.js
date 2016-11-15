@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { Field } from 'redux-form'
 
 const FormHoneypot = props => (
@@ -11,13 +11,10 @@ const FormHoneypot = props => (
     <Field
       name="yourName"
       type="text"
-      label="Your name"
-      component={props.component}
+      placeholder="Your name"
+      component="input"
     />
   </div>
 )
-FormHoneypot.propTypes = {
-  component: PropTypes.func.isRequired
-}
 
 export default FormHoneypot

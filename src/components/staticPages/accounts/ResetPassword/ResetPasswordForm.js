@@ -45,7 +45,7 @@ class ResetPasswordForm extends Component {
     return (
       <form onSubmit={this.props.handleSubmit(this.submit)} >
         {this.props.error && <div className="error">{this.props.error}</div>}
-        <FormHoneypot component={this.renderField} />
+        <FormHoneypot />
         <Field name="password" type="password" label="New password" component={this.renderField} />
         <Field name="password2" type="password" label="Repeat new password" component={this.renderField} />
         <div className="btnWrapper">

@@ -49,7 +49,7 @@ class ActivateForm extends Component {
         <div className="info">
           <T t="Click button below to activate your account." />
         </div>
-        <FormHoneypot component={this.renderField} />
+        <FormHoneypot />
         <div className="btnWrapper">
           <button
             type="submit"

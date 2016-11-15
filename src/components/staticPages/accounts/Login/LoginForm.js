@@ -48,7 +48,7 @@ class LoginForm extends Component {
     return (
       <form onSubmit={this.props.handleSubmit(this.submit)}>
         {this.props.error && <div className="error">{this.props.error}</div>}
-        <FormHoneypot component={this.renderField} />
+        <FormHoneypot />
         <Field name="usernameOrEmail" type="text" label="Username or email" component={this.renderField} />
         <Field name="password" type="password" label="Password" component={this.renderField} />
         <div className="btnWrapper">
