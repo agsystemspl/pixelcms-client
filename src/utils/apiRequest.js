@@ -1,5 +1,5 @@
 import merge from 'lodash/merge'
-import clearAuth from '~/actions/auth/clearAuth'
+import notAuthenticated from '~/actions/auth/notAuthenticated'
 import addToast from '~/actions/toaster/addToast'
 import t from '~/utils/i18n/t'
 
@@ -31,7 +31,7 @@ const apiRequest = (dispatch, getState, path, options = {}) => {
       res => {
         if (!res.ok) {
           if (token && res.status === 401) {
-            dispatch(clearAuth({}))
+            dispatch(notAuthenticated())
             dispatch(addToast('warning', t(getState(), 'Session has expired. You have been logged out.'), null))
             // TODO: redirect to homepage
           }
