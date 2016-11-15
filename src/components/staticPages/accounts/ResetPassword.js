@@ -37,20 +37,18 @@ class ResetPassword extends Component {
       return <Redirect to={langPrefix('/accounts/login', this.props.lang)} />
     }
     return (
-      <div id="pageResetPassword">
-        <div className="container">
-          <div className="wrapper">
-            <h1 className="title"><span><T t="Reset password" /></span></h1>
-            {this.state.msg && (
-              <div className="msg">{this.state.msg}</div>
-            ) || (
-              <ResetPasswordForm
-                onSubmitSuccess={this.handleSubmitSuccess}
-                onSubmitFail={this.handleSubmitFail}
-                resetPasswordKey={this.props.params.key}
-              />
-            )}
-          </div>
+      <div className="page" id="pageResetPassword">
+        <div className="wrapper">
+          <h1 className="title"><span><T t="Reset password" /></span></h1>
+          {this.state.msg && (
+            <div className="msg">{this.state.msg}</div>
+          ) || (
+            <ResetPasswordForm
+              onSubmitSuccess={this.handleSubmitSuccess}
+              onSubmitFail={this.handleSubmitFail}
+              resetPasswordKey={this.props.params.key}
+            />
+          )}
         </div>
       </div>
     )

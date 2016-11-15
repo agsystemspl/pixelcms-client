@@ -22,18 +22,16 @@ class ForgottenPassword extends Component {
   }
   render() {
     return (
-      <div id="pageForgottenPassword">
-        <div className="container">
-          <div className="wrapper">
-            <h1 className="title"><span><T t="Forgotten password" /></span></h1>
-            {this.state.msg && (
-              <div className="msg">{this.state.msg}</div>
-            ) || (
-              <ForgottenPasswordForm
-                onSubmitSuccess={this.handleSubmitSuccess}
-              />
-            )}
-          </div>
+      <div className="page" id="pageForgottenPassword">
+        <div className="wrapper">
+          <h1 className="title"><span><T t="Forgotten password" /></span></h1>
+          {this.state.msg && (
+            <div className="msg">{this.state.msg}</div>
+          ) || (
+            <ForgottenPasswordForm
+              onSubmitSuccess={this.handleSubmitSuccess}
+            />
+          )}
         </div>
       </div>
     )

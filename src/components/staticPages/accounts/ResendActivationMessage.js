@@ -22,18 +22,16 @@ class ResendActivationMessage extends Component {
   }
   render() {
     return (
-      <div id="pageResendActivationMessage">
-        <div className="container">
-          <div className="wrapper">
-            <h1 className="title"><span><T t="Resend activation message" /></span></h1>
-            {this.state.msg && (
-              <div className="msg">{this.state.msg}</div>
-            ) || (
-              <ResendActivationMessageForm
-                onSubmitSuccess={this.handleSubmitSuccess}
-              />
-            )}
-          </div>
+      <div className="page" id="pageResendActivationMessage">
+        <div className="wrapper">
+          <h1 className="title"><span><T t="Resend activation message" /></span></h1>
+          {this.state.msg && (
+            <div className="msg">{this.state.msg}</div>
+          ) || (
+            <ResendActivationMessageForm
+              onSubmitSuccess={this.handleSubmitSuccess}
+            />
+          )}
         </div>
       </div>
     )

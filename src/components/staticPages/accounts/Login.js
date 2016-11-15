@@ -9,26 +9,24 @@ import T from '~/components/utils/T'
 import t from '~/utils/i18n/t'
 
 let Login = props => (
-  <div id="pageLogin">
-    <div className="container">
-      <div className="wrapper">
-        <h1 className="title"><span><T t="Login" /></span></h1>
-        <LoginForm />
-        {!props.loginOnly && (
-          <div className="links">
-            <div>
-              <Link to="/accounts/forgotten-password">
-                <T t="I forgot my password" />
-              </Link>
-            </div>
-            <div>
-              <Link to="/accounts/register">
-                <T t="I don't have an account yet" />
-              </Link>
-            </div>
+  <div className="page" id="pageLogin">
+    <div className="wrapper">
+      <h1 className="title"><span><T t="Login" /></span></h1>
+      <LoginForm />
+      {!props.loginOnly && (
+        <div className="links">
+          <div>
+            <Link to="/accounts/forgotten-password">
+              <T t="I forgot my password" />
+            </Link>
           </div>
-        )}
-      </div>
+          <div>
+            <Link to="/accounts/register">
+              <T t="I don't have an account yet" />
+            </Link>
+          </div>
+        </div>
+      )}
     </div>
   </div>
 )

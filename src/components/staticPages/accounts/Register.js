@@ -34,27 +34,25 @@ class Register extends Component {
       return <Redirect to={langPrefix('/accounts/login', this.props.lang)} />
     }
     return (
-      <div id="pageRegister">
-        <div className="container">
-          <div className="wrapper">
-            <h1 className="title"><span><T t="Register" /></span></h1>
-            {this.state.msg && (
-              <div className="msg">{this.state.msg}</div>
-            ) || (
-              <div>
-                <RegisterForm
-                  onSubmitSuccess={this.handleSubmitSuccess}
-                />
-                <div className="links">
-                  <div>
-                    <Link to="/accounts/login">
-                      <T t="I already have an account" />
-                    </Link>
-                  </div>
+      <div className="page" id="pageRegister">
+        <div className="wrapper">
+          <h1 className="title"><span><T t="Register" /></span></h1>
+          {this.state.msg && (
+            <div className="msg">{this.state.msg}</div>
+          ) || (
+            <div>
+              <RegisterForm
+                onSubmitSuccess={this.handleSubmitSuccess}
+              />
+              <div className="links">
+                <div>
+                  <Link to="/accounts/login">
+                    <T t="I already have an account" />
+                  </Link>
                 </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     )

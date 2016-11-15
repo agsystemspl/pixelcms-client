@@ -37,26 +37,24 @@ class Activate extends Component {
       return <Redirect to={langPrefix('/accounts/login', this.props.lang)} />
     }
     return (
-      <div id="pageActivate">
-        <div className="container">
-          <div className="wrapper">
-            <h1 className="title"><span><T t="Activate your account" /></span></h1>
-            {this.state.msg && (
-              <div className="msg">{this.state.msg}</div>
-            )}
-            {this.state.expired && (
-              <Link to="/accounts/resend-activation-message">
-                <T t="Resend activation message" />
-              </Link>
-            )}
-            {!this.state.msg && (
-              <ActivateForm
-                onSubmitSuccess={this.handleSubmitSuccess}
-                onSubmitFail={this.handleSubmitFail}
-                activationKey={this.props.params.key}
-              />
-            )}
-          </div>
+      <div className="page" id="pageActivate">
+        <div className="wrapper">
+          <h1 className="title"><span><T t="Activate your account" /></span></h1>
+          {this.state.msg && (
+            <div className="msg">{this.state.msg}</div>
+          )}
+          {this.state.expired && (
+            <Link to="/accounts/resend-activation-message">
+              <T t="Resend activation message" />
+            </Link>
+          )}
+          {!this.state.msg && (
+            <ActivateForm
+              onSubmitSuccess={this.handleSubmitSuccess}
+              onSubmitFail={this.handleSubmitFail}
+              activationKey={this.props.params.key}
+            />
+          )}
         </div>
       </div>
     )
