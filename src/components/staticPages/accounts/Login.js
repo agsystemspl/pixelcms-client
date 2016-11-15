@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import StaticPage from '~/components/staticPages/StaticPage'
@@ -8,28 +8,33 @@ import Link from '~/components/utils/Link'
 import T from '~/components/utils/T'
 import t from '~/utils/i18n/t'
 
-let Login = () => (
+let Login = props => (
   <div id="pageLogin">
     <div className="container">
       <div className="wrapper">
         <h1 className="title"><span><T t="Login" /></span></h1>
         <LoginForm />
-        <div className="links">
-          <div>
-            <Link to="/accounts/forgotten-password">
-              <T t="I forgot my password" />
-            </Link>
+        {!props.loginOnly && (
+          <div className="links">
+            <div>
+              <Link to="/accounts/forgotten-password">
+                <T t="I forgot my password" />
+              </Link>
+            </div>
+            <div>
+              <Link to="/accounts/register">
+                <T t="I don't have an account yet" />
+              </Link>
+            </div>
           </div>
-          <div>
-            <Link to="/accounts/register">
-              <T t="I don't have an account yet" />
-            </Link>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   </div>
 )
+Login.propTypes = {
+  loginOnly: PropTypes.bool
+}
 
 Login = StaticPage(Login)
 
