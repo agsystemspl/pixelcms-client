@@ -1,4 +1,5 @@
-export setAuthenticating from './setAuthenticating'
+export refreshTokenFromCookie from './refreshTokenFromCookie'
+export authenticating from './authenticating'
 export authenticated from './authenticated'
-export clearAuth from './clearAuth'
+export notAuthenticated from './notAuthenticated'
 export logout from './logout'

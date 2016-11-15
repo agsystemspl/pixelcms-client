@@ -18,16 +18,20 @@ const serverRender = (req, res, { configPath, localePath, reducersPath, AppPath 
   const LocationHandler = require('../components/core/LocationHandler').default
   const MetaHandler = require('../components/core/MetaHandler').default
 
-  const unplug = reactCookie.plugToRequest(req, res)
+  const unplugCookie = reactCookie.plugToRequest(req, res)
 
-  const store = configureStore(config, locale, reducers)
+  // action creators dispatching async actions have to push their
+  // promises to this array
+  global.__PROMISES__ = []
+  /* global __PROMISES__ */
+  const store = configureStore(config, locale, reducers, __PROMISES__)
 
   const context = createServerRenderContext()
 
   const returnData = output => {
     var state = store.getState()
     var meta = DocumentMeta.renderAsHTML()
-    unplug()
+    unplugCookie()
     cb({
       appRoot: output,
       initialState: state,
@@ -35,7 +39,7 @@ const serverRender = (req, res, { configPath, localePath, reducersPath, AppPath 
     })
   }
 
-  store.renderUniversal(renderToString, (
+  const markup = (
     <Provider store={store}>
       <ServerRouter
         location={req.url}
@@ -51,22 +55,33 @@ const serverRender = (req, res, { configPath, localePath, reducersPath, AppPath 
         </div>
       </ServerRouter>
     </Provider>
-  ))
-    .then(
-      ({ output }) => {
-        const result = context.getResult()
-        if (result.redirect) {
-          res.status(302).set({ 'Location': result.redirect.pathname }).end()
-        }
-        else {
-          returnData(output)
-        }
-      }
+  )
+  renderToString(markup) // don't need it's value yet
+  const result = context.getResult()
+  if (result.redirect) {
+    res.status(302).set({ 'Location': result.redirect.pathname }).end()
+  }
+  Promise.all(__PROMISES__).then(() => {
+    // all promises resolved, now render final html
+    const html = renderToString(
+      <Provider store={store}>
+        <ServerRouter
+          location={req.url}
+          context={context}
+        >
+          <div>
+            <AuthHandler />
+            <Subscriber channel="location">
+              {location => <LocationHandler location={location} />}
+            </Subscriber>
+            <MetaHandler />
+            <App />
+          </div>
+        </ServerRouter>
+      </Provider>
     )
-    .catch(({ output, error }) => {
-      console.log(error)
-      returnData(output)
-    })
+    returnData(html)
+  })
 }
 
 export default serverRender

@@ -1,9 +1,9 @@
-import clearAuth from '~/actions/auth/clearAuth'
+import notAuthenticated from '~/actions/auth/notAuthenticated'
 import addToast from '~/actions/toaster/addToast'
 import t from '~/utils/i18n/t'
 
 const logout = () => (dispatch, getState) => {
-  dispatch(clearAuth())
+  dispatch(notAuthenticated())
   dispatch(addToast('success', t(getState(), 'You have been logged out.'), null))
 }
 

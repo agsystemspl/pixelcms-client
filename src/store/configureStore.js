@@ -4,14 +4,9 @@ import merge from 'lodash/merge'
 
 import pixelcmsLocale from '~/locale'
 import * as pixelcmsReducers from '~/reducers'
-import applyMiddlewareUniversal from '~/renderUniversal'
 
-/* global __SERVER__ */
 /* global __CLIENT__ */
-const configureStore = (config, locale, reducers) => {
-  const middleware = [thunkMiddleware]
-  const applyProperMiddleware = __SERVER__ ? applyMiddlewareUniversal : applyMiddleware
-  const initialState = __CLIENT__ ? window.__INITIAL_STATE__ : {}
+const configureStore = (config, locale, reducers, promises = []) => {
   return createStore(
     combineReducers({
       config: (state = { ...config }) => { return state },
@@ -19,10 +14,12 @@ const configureStore = (config, locale, reducers) => {
       ...pixelcmsReducers,
       ...reducers
     }),
-    initialState,
+    __CLIENT__ ? window.__INITIAL_STATE__ : {},
     compose(
-      applyProperMiddleware(...middleware),
-      process.env.NODE_ENV !== 'production' && !__SERVER__ && window.devToolsExtension ? window.devToolsExtension() : f => f
+      applyMiddleware(
+        thunkMiddleware.withExtraArgument(promises)
+      ),
+      process.env.NODE_ENV !== 'production' && __CLIENT__ && window.devToolsExtension ? window.devToolsExtension() : f => f
     )
   )
 }

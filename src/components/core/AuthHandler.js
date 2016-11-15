@@ -3,61 +3,89 @@ import cookie from 'react-cookie'
 import { connect } from 'react-redux'
 
 import apiRequest from '~/utils/apiRequest'
-import setAuthenticating from '~/actions/auth/setAuthenticating'
+import refreshTokenFromCookie from '~/actions/auth/refreshTokenFromCookie'
+import authenticating from '~/actions/auth/authenticating'
 import authenticated from '~/actions/auth/authenticated'
-import clearAuth from '~/actions/auth/clearAuth'
+import notAuthenticated from '~/actions/auth/notAuthenticated'
 import addToast from '~/actions/toaster/addToast'
 import t from '~/utils/i18n/t'
 
 class AuthHandler extends Component {
+  /* global __CLIENT__ */
   componentWillMount() {
     // this will happen both on client and server
     // (SSR needs authInfo to avoid wrong redirects)
     if (this.props.authInfo.isAuthenticated === null && !this.props.authInfo.isAuthenticating) {
-      // refresh token only if it did not already happen (isAuthenticated === null)
+      // token only if it did not already happen (isAuthenticated === null)
       // and if it's not already happening (!this.props.isAuthenticating) - avoid racing
       const tokenFromCookie = cookie.load('authToken')
       if (tokenFromCookie) {
-        this.props.setAuthenticating(true)
-        apiRequest(
-          this.context.store.dispatch, this.context.store.getState,
-          'accounts/refresh-token/',
-          {
-            method: 'POST',
-            body: JSON.stringify({ token: tokenFromCookie })
-          }
-        )
-          .then(({ data, ok }) => {
-            this.props.setAuthenticating(false)
+        this.props.authenticating()
+        // apiRequest(
+        //   this.context.store.dispatch, this.context.store.getState,
+        //   'accounts/refresh-token/',
+        //   {
+        //     method: 'POST',
+        //     body: JSON.stringify({ token: tokenFromCookie })
+        //   }
+        // )
+        this.props.refreshTokenFromCookie(
+          tokenFromCookie,
+          ({ data, ok }) => {
             if (ok) {
               this.props.authenticated(data.token, data.user)
-              this.setRefreshInterval() // for the case of disabled SSR
+              // for the case of disabled SSR when CWM fires only on client
+              if (__CLIENT__) {
+                this.setRefreshInterval()
+              }
             }
-          })
+            else {
+              this.props.notAuthenticated()
+            }
+          }
+        )
+          // .then(({ data, ok }) => {
+          //   if (ok) {
+          //     this.props.authenticated(data.token, data.user)
+          //     // for the case of disabled SSR when CWM fires only on client
+          //     if (__CLIENT__) {
+          //       this.setRefreshInterval()
+          //     }
+          //   }
+          //   else {
+          //     this.props.notAuthenticated()
+          //   }
+          // })
+      }
+      else {
+        this.props.notAuthenticated()
       }
     }
-    else if (this.props.authInfo.isAuthenticated) {
+  }
+  componentDidMount() {
+    if (this.props.authInfo.isAuthenticated) {
       // token have been already refreshed on the server
       // and now we start refresh inteval on client
       this.setRefreshInterval()
     }
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.authInfo.isAuthenticated !== this.props.authInfo.isAuthenticated) {
-      if (!this.props.authInfo.isAuthenticated) {
-        // user logged OUT
-        clearInterval(this._refreshTokenInterval)
-        this._refreshTokenInterval = null
-      }
-      else {
-        // user logged IN
-        this.setRefreshInterval()
+    if (__CLIENT__) {
+      if (prevProps.authInfo.isAuthenticated !== this.props.authInfo.isAuthenticated) {
+        if (!this.props.authInfo.isAuthenticated) {
+          // user logged OUT
+          clearInterval(this._refreshTokenInterval)
+          this._refreshTokenInterval = null
+        }
+        else {
+          // user logged IN
+          this.setRefreshInterval()
+        }
       }
     }
   }
   setRefreshInterval() {
-    /* global __CLIENT__ */
-    if (__CLIENT__ && !this._refreshTokenInterval) {
+    if (!this._refreshTokenInterval) {
       this._refreshTokenInterval = setInterval(() => {
         apiRequest(
           this.context.store.dispatch, this.context.store.getState,
@@ -72,11 +100,11 @@ class AuthHandler extends Component {
               this.props.authenticated(data.token, data.user)
             }
             else {
-              this.props.clearAuth()
+              this.props.notAuthenticated()
               this.props.addToast('warning', t(this.props.state, 'Session has expired. You have been logged out.'), null)
             }
           })
-      }, 10 * 60000)
+      }, 5 * 60 * 1000)
     }
   }
   render() {
@@ -93,9 +121,10 @@ AuthHandler.propTypes = {
     isAuthenticating: PropTypes.bool.isRequired,
     token: PropTypes.string
   }).isRequired,
-  setAuthenticating: PropTypes.func.isRequired,
+  refreshTokenFromCookie: PropTypes.func.isRequired,
+  authenticating: PropTypes.func.isRequired,
   authenticated: PropTypes.func.isRequired,
-  clearAuth: PropTypes.func.isRequired,
+  notAuthenticated: PropTypes.func.isRequired,
   addToast: PropTypes.func.isRequired
 }
 
@@ -106,9 +135,10 @@ const mapStateToProps = state => ({
 AuthHandler = connect(
   mapStateToProps,
   {
-    setAuthenticating,
+    refreshTokenFromCookie,
+    authenticating,
     authenticated,
-    clearAuth,
+    notAuthenticated,
     addToast
   }
 )(AuthHandler)

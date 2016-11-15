@@ -1,12 +1,12 @@
 import apiRequest from '~/utils/apiRequest'
 
-const requestModule = (moduleType, templateId, apiPath) => (dispatch, getState) => {
+const requestModule = (moduleType, templateId, apiPath) => (dispatch, getState, promises) => {
   dispatch({
     type: 'LOADING_MODULE',
     moduleType,
     templateId
   })
-  return apiRequest(dispatch, getState, apiPath)
+  promises.push(apiRequest(dispatch, getState, apiPath)
     .then(({ data, ok, status }) => {
       if (ok) {
         dispatch({
@@ -25,6 +25,7 @@ const requestModule = (moduleType, templateId, apiPath) => (dispatch, getState) 
         })
       }
     })
+  )
 }
 
 export default requestModule

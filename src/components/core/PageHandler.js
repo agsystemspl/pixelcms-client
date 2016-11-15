@@ -25,10 +25,21 @@ class PageHandler extends Component {
     )
   }
   componentWillMount() {
+    /* global __CLIENT__ */
+    /* global __PROMISES__ */
     if (isEmpty(this.props.page) && !this.props.page.requesting) {
-      this._requestTimeout = setTimeout(() => {
-        this.props.requestPage()
-      }, 0)
+      if (__CLIENT__) {
+        this._requestTimeout = setTimeout(() => {
+          this.props.requestPage()
+        }, 0)
+      }
+      else {
+        __PROMISES__.push(new Promise((resolve, reject) => {
+          this._requestTimeout = setTimeout(() => {
+            this.props.requestPage(resolve)
+          }, 0)
+        }))
+      }
     }
   }
   componentWillUnmount() {

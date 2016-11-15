@@ -1,8 +1,0 @@
-This is modified version of redux-universal (0.0.2)
-
-Authors: Sebastian Siemssen & Nik Graf
-Github: https://github.com/reducks/redux-universal
-
-Changes:
-  * mechanism responsible for detecting and catching multiple action calls was
-  removed

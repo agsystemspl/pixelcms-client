@@ -1,10 +1,10 @@
 import cookie from 'react-cookie'
 
-const clearAuth = () => {
+const notAuthenticated = () => {
   cookie.remove('authToken', { path: '/' })
   return {
-    type: 'CLEAR_AUTH'
+    type: 'NOT_AUTHENTICATED'
   }
 }
 
-export default clearAuth
+export default notAuthenticated

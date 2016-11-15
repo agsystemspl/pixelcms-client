@@ -7,8 +7,8 @@ const initialState = {
 
 const authInfo = (state = initialState, action) => {
   switch (action.type) {
-    case 'SET_AUTHENTICATING':
-      return Object.assign({}, state, { isAuthenticating: action.isAuthenticating })
+    case 'AUTHENTICATING':
+      return Object.assign({}, state, { isAuthenticating: true })
     case 'AUTHENTICATED':
       return {
         isAuthenticated: true,
@@ -16,7 +16,7 @@ const authInfo = (state = initialState, action) => {
         token: action.token,
         user: action.user
       }
-    case 'CLEAR_AUTH':
+    case 'NOT_AUTHENTICATED':
       return {
         isAuthenticated: false,
         isAuthenticating: false,

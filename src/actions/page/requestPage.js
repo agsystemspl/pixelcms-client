@@ -1,12 +1,12 @@
 import apiRequest from '~/utils/apiRequest'
 import t from '~/utils/i18n/t'
 
-const requestPage = () => (dispatch, getState) => {
+const requestPage = (resolve = f => f) => (dispatch, getState, promises) => {
   dispatch({ type: 'REQUSTING_PAGE' })
   let pathname = getState().route.pathWithoutLang
   pathname += pathname !== '/' ? '/' : ''
   pathname += getState().route.search
-  return apiRequest(dispatch, getState, `route${pathname}`)
+  promises.push(apiRequest(dispatch, getState, `route${pathname}`)
     .then(({ data, ok, status }) => {
       if (ok) {
         dispatch({
@@ -35,7 +35,9 @@ const requestPage = () => (dispatch, getState) => {
           }
         })
       }
+      resolve()
     })
+  )
 }
 
 export default requestPage

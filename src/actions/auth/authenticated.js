@@ -4,7 +4,7 @@ const authenticated = (token, user) => {
   if (token) {
     cookie.save('authToken', token, {
       path: '/',
-      expires: new Date(new Date().setMinutes(new Date().getMinutes() + 5))
+      expires: new Date(new Date().setDate(new Date().getDate() + 7))
     })
   }
   return {
