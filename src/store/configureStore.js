@@ -6,7 +6,7 @@ import pixelcmsLocale from '~/locale'
 import * as pixelcmsReducers from '~/reducers'
 
 /* global __CLIENT__ */
-const configureStore = (config, locale, reducers, promises = []) => {
+const configureStore = (config, locale, reducers) => {
   return createStore(
     combineReducers({
       config: (state = { ...config }) => { return state },
@@ -17,7 +17,7 @@ const configureStore = (config, locale, reducers, promises = []) => {
     __CLIENT__ ? window.__INITIAL_STATE__ : {},
     compose(
       applyMiddleware(
-        thunkMiddleware.withExtraArgument(promises)
+        thunkMiddleware
       ),
       process.env.NODE_ENV !== 'production' && __CLIENT__ && window.devToolsExtension ? window.devToolsExtension() : f => f
     )

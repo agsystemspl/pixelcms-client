@@ -6,6 +6,7 @@ import ServerRouter from 'react-router/ServerRouter'
 import createServerRenderContext from 'react-router/createServerRenderContext'
 import { Subscriber } from 'react-broadcast'
 import DocumentMeta from 'react-document-meta'
+import isEqual from 'lodash/isEqual'
 
 const serverRender = (req, res, { configPath, localePath, reducersPath, AppPath }, cb) => {
   const config = require(configPath).config
@@ -24,20 +25,10 @@ const serverRender = (req, res, { configPath, localePath, reducersPath, AppPath 
   // promises to this array
   global.__PROMISES__ = []
   /* global __PROMISES__ */
-  const store = configureStore(config, locale, reducers, __PROMISES__)
+
+  const store = configureStore(config, locale, reducers)
 
   const context = createServerRenderContext()
-
-  const returnData = output => {
-    var state = store.getState()
-    var meta = DocumentMeta.renderAsHTML()
-    unplugCookie()
-    cb({
-      appRoot: output,
-      initialState: state,
-      meta: meta
-    })
-  }
 
   const markup = (
     <Provider store={store}>
@@ -56,32 +47,47 @@ const serverRender = (req, res, { configPath, localePath, reducersPath, AppPath 
       </ServerRouter>
     </Provider>
   )
-  renderToString(markup) // don't need it's value yet
+  let html = renderToString(markup) // don't need it's value yet
   const result = context.getResult()
   if (result.redirect) {
     res.status(302).set({ 'Location': result.redirect.pathname }).end()
   }
-  Promise.all(__PROMISES__).then(() => {
-    // all promises resolved, now render final html
-    const html = renderToString(
-      <Provider store={store}>
-        <ServerRouter
-          location={req.url}
-          context={context}
-        >
-          <div>
-            <AuthHandler />
-            <Subscriber channel="location">
-              {location => <LocationHandler location={location} />}
-            </Subscriber>
-            <MetaHandler />
-            <App />
-          </div>
-        </ServerRouter>
-      </Provider>
-    )
-    returnData(html)
-  })
+
+  let currentState
+  const render = () => {
+    currentState = Object.assign({}, store.getState())
+    Promise.all(__PROMISES__).then(() => {
+      if (isEqual(store.getState(), currentState)) {
+        unplugCookie()
+        cb({
+          appRoot: html,
+          initialState: store.getState(),
+          meta: DocumentMeta.renderAsHTML()
+        })
+      }
+      else {
+        html = renderToString(
+          <Provider store={store}>
+            <ServerRouter
+              location={req.url}
+              context={context}
+            >
+              <div>
+                <AuthHandler />
+                <Subscriber channel="location">
+                  {location => <LocationHandler location={location} />}
+                </Subscriber>
+                <MetaHandler />
+                <App />
+              </div>
+            </ServerRouter>
+          </Provider>
+        )
+        render()
+      }
+    })
+  }
+  render()
 }
 
 export default serverRender
