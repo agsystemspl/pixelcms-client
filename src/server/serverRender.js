@@ -47,7 +47,7 @@ const serverRender = (req, res, { configPath, localePath, reducersPath, AppPath 
       </ServerRouter>
     </Provider>
   )
-  let html = renderToString(markup) // don't need it's value yet
+  renderToString(markup) // don't need it's value yet
   const result = context.getResult()
   if (result.redirect) {
     res.status(302).set({ 'Location': result.redirect.pathname }).end()
@@ -60,29 +60,13 @@ const serverRender = (req, res, { configPath, localePath, reducersPath, AppPath 
       if (isEqual(store.getState(), currentState)) {
         unplugCookie()
         cb({
-          appRoot: html,
+          appRoot: renderToString(markup), // render with final store state
           initialState: store.getState(),
           meta: DocumentMeta.renderAsHTML()
         })
       }
       else {
-        html = renderToString(
-          <Provider store={store}>
-            <ServerRouter
-              location={req.url}
-              context={context}
-            >
-              <div>
-                <AuthHandler />
-                <Subscriber channel="location">
-                  {location => <LocationHandler location={location} />}
-                </Subscriber>
-                <MetaHandler />
-                <App />
-              </div>
-            </ServerRouter>
-          </Provider>
-        )
+        renderToString(markup) // don't need it's value yet
         render()
       }
     })
