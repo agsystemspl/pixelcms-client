@@ -21,14 +21,6 @@ class AuthHandler extends Component {
       const tokenFromCookie = cookie.load('authToken')
       if (tokenFromCookie) {
         this.props.authenticating()
-        // apiRequest(
-        //   this.context.store.dispatch, this.context.store.getState,
-        //   'accounts/refresh-token/',
-        //   {
-        //     method: 'POST',
-        //     body: JSON.stringify({ token: tokenFromCookie })
-        //   }
-        // )
         this.props.refreshTokenFromCookie(
           tokenFromCookie,
           ({ data, ok }) => {
@@ -44,18 +36,6 @@ class AuthHandler extends Component {
             }
           }
         )
-          // .then(({ data, ok }) => {
-          //   if (ok) {
-          //     this.props.authenticated(data.token, data.user)
-          //     // for the case of disabled SSR when CWM fires only on client
-          //     if (__CLIENT__) {
-          //       this.setRefreshInterval()
-          //     }
-          //   }
-          //   else {
-          //     this.props.notAuthenticated()
-          //   }
-          // })
       }
       else {
         this.props.notAuthenticated()
