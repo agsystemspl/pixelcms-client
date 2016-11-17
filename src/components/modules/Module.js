@@ -55,11 +55,14 @@ let Module = (moduleType, getApiPath, moduleTypeHtmlClass) => {
       langCode: PropTypes.string.isRequired,
       module: PropTypes.shape({
         loading: PropTypes.bool,
-        data: PropTypes.shape({
-          name: PropTypes.string,
-          moduleNameHeaderLevel: PropTypes.string,
-          htmlClass: PropTypes.string
-        })
+        data: PropTypes.oneOfType([
+          PropTypes.shape({
+            name: PropTypes.string,
+            moduleNameHeaderLevel: PropTypes.string,
+            htmlClass: PropTypes.string
+          }),
+          PropTypes.array
+        ])
       }),
       requestModule: PropTypes.func.isRequired
     }
