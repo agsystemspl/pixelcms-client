@@ -14,7 +14,7 @@ let NavModule = props => {
         var attrs = {target: '_blank'}
       }
       navItem = (
-        <a href={item.link} {...attrs}><span>{item.name}</span></a>
+        <Link to={item.link} {...attrs}><span>{item.name}</span></Link>
       )
     }
     else if (item.scrollToElement) {
