@@ -24,6 +24,7 @@ const server = (webpackConfig, {
   }
 
   const app = express()
+  app.set('trust proxy', true)
   if (process.env.NODE_ENV === 'production') {
     if (forceHttps) {
       app.use((req, res, next) => {
