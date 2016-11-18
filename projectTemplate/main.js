@@ -27,6 +27,7 @@ global.webpack_isomorphic_tools = new WebpackIsomorphicTools(
         process.env.NODE_ENV === 'production' ? require('./webpack.config.prod') : require('./webpack.config.dev'),
         {
           ssrEnabled: true,
+          forceHttps: true,
           trustSelfSignedCerts: true,
           port: 3000,
           configPath: path.resolve(__dirname, 'src/config'),

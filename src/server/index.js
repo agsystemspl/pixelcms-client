@@ -1,4 +1,5 @@
 import express from 'express'
+import helmet from 'helmet'
 import compression from 'compression'
 import mustacheExpress from 'mustache-express'
 import webpack from 'webpack'
@@ -9,6 +10,7 @@ require('isomorphic-fetch')
 
 const server = (webpackConfig, {
   ssrEnabled,
+  forceHttps,
   trustSelfSignedCerts,
   port,
   configPath,
@@ -22,6 +24,19 @@ const server = (webpackConfig, {
   }
 
   const app = express()
+  if (process.env.NODE_ENV === 'production') {
+    if (forceHttps) {
+      app.use((req, res, next) => {
+        if (!req.secure) {
+          res.redirect('https://' + req.hostname + req.url)
+        }
+        else {
+          next()
+        }
+      })
+    }
+    app.use(helmet())
+  }
   app.use(compression())
 
   // (dev only)
