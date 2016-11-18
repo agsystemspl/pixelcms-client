@@ -44,6 +44,6 @@
     "webpack-dev-middleware": "^1.6.1"
   },
   "dependencies": {
-    "pixelcms-client": "^0.5.0"
+    "pixelcms-client": "^0.6.0"
   }
 }
