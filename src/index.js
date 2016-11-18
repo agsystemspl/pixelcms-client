@@ -46,6 +46,7 @@ export AdminLink from './components/liveAdmin/AdminLink'
 
 // Utils
 export apiRequest from './utils/apiRequest'
+export langPrefix from './utils/langPrefix'
 export validateFormHoneypot from './utils/validateFormHoneypot'
 
 // Actions
