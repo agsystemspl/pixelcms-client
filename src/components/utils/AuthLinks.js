@@ -28,7 +28,6 @@ let AuthLinks = props => (
     )}
   </div>
 )
-
 AuthLinks.propTypes = {
   isAuthenticated: PropTypes.bool,
   username: PropTypes.string,
