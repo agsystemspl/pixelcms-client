@@ -4,7 +4,9 @@ const locale = {
       // general
       'Loading...': 'Ładowanie...',
       'Not found': 'Nie odnaleziono',
+      'The page you are looking for does not exist, or has been moved.': 'Strona której szukasz nie istnieje, lub została przeniesiona.',
       'Error': 'Błąd',
+      'Error occured. We\'ve been informed about this issue.': 'Wystąpił błąd. Zostaliśmy poinformowani o problemie.',
       'Error occured.': 'Wystąpił błąd.',
       'Go back': 'Wróć',
 
