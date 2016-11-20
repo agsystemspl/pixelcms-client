@@ -19,6 +19,7 @@ export Module from './components/modules/Module'
 export NavModule from './components/modules/NavModule'
 export ContentModule from './components/modules/ContentModule'
 export ArticlesModule from './components/modules/ArticlesModule'
+export CategoriesModule from './components/modules/CategoriesModule'
 
 // Utils components
 export Link from './components/utils/Link'

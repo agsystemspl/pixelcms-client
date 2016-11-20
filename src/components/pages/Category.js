@@ -27,6 +27,17 @@ const Category = props => {
       </div>
     )
   }
+  let image
+  if (props.image) {
+    image = (
+      <div className="image">
+        <img
+          src={props.image}
+          alt=""
+        />
+      </div>
+    )
+  }
   let subcategories
   if (props.subcategories) {
     let items = props.subcategories.map((item, key) => {
@@ -63,6 +74,7 @@ const Category = props => {
             <h1 className="title"><span>{props.name}</span></h1>
           </div>
           {description}
+          {image}
         </header>
         {subcategories}
         {articles}
@@ -76,6 +88,7 @@ Category.propTypes = {
   pk: PropTypes.number.isRequired,
   breadcrumbs: PropTypes.array,
   description: PropTypes.string,
+  image: PropTypes.string,
   subcategories: PropTypes.array.isRequired,
   articles: PropTypes.array.isRequired,
   pagination: PropTypes.object,
