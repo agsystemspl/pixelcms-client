@@ -11,6 +11,8 @@ class ContactForm extends Component {
   constructor() {
     super()
     this.submit = this.submit.bind(this)
+    this.renderTextInput = this.renderTextInput.bind(this)
+    this.renderTextarea = this.renderTextarea.bind(this)
   }
   submit(formData) {
     return apiRequest(
@@ -32,8 +34,10 @@ class ContactForm extends Component {
   renderTextInput({ input, type, label, meta: { error } }) {
     return (
       <div className={'field' + (error && ' error' || '')}>
-        <label htmlFor={input.name}><T t={label} /></label>
-        <input id={input.name} {...input} type={type} />
+        {!this.props.placeholders && <label htmlFor={input.name}><T t={label} /></label>}
+        {!this.props.placeholders &&
+          <input id={input.name} {...input} type={type} /> ||
+          <input id={input.name} placeholder={t(this.context.store.getState(), label)} {...input} type={type} />}
         {error && <div className="error">{error}</div>}
       </div>
     )
@@ -41,8 +45,10 @@ class ContactForm extends Component {
   renderTextarea({ input, type, label, meta: { error } }) {
     return (
       <div className={'field' + (error && ' error' || '')}>
-        <label htmlFor={input.name}><T t={label} /></label>
-        <textarea id={input.name} {...input} />
+        {!this.props.placeholders && <label htmlFor={input.name}><T t={label} /></label>}
+        {!this.props.placeholders &&
+          <textarea id={input.name} {...input} /> ||
+          <textarea id={input.name} placeholder={t(this.context.store.getState(), label)} {...input} />}
         {error && <div className="error">{error}</div>}
       </div>
     )
@@ -84,7 +90,11 @@ class ContactForm extends Component {
 ContactForm.contextTypes = {
   store: PropTypes.object.isRequired
 }
+ContactForm.defaultProps = {
+  placeholders: false
+}
 ContactForm.propTypes = {
+  placeholders: PropTypes.bool,
   error: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.array
