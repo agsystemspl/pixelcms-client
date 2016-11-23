@@ -46,7 +46,7 @@ class Register extends Component {
               />
               <div className="links">
                 <div>
-                  <Link to={langPrefix('/accounts/login', this.props.lang)}>
+                  <Link to="/accounts/login">
                     <T t="I already have an account" />
                   </Link>
                 </div>

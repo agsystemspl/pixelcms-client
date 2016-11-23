@@ -44,7 +44,7 @@ class Activate extends Component {
             <div className="msg">{this.state.msg}</div>
           )}
           {this.state.expired && (
-            <Link to={langPrefix('/accounts/resend-activation-message', this.props.lang)}>
+            <Link to="/accounts/resend-activation-message">
               <T t="Resend activation message" />
             </Link>
           )}

@@ -14,36 +14,41 @@ const Accounts = props => (
     <Match
       pattern={langPrefix('/accounts/login', props.lang)}
       exactly={true}
-      component={Login}
+      component={() => <Login loginOnly={props.loginOnly} />}
     />
-    <Match
-      pattern={langPrefix('/accounts/register', props.lang)}
-      exactly={true}
-      component={Register}
-    />
-    <Match
-      pattern={langPrefix('/accounts/activate/:key', props.lang)}
-      exactly={true}
-      component={Activate}
-    />
-    <Match
-      pattern={langPrefix('/accounts/resend-activation-message', props.lang)}
-      exactly={true}
-      component={ResendActivationMessage}
-    />
-    <Match
-      pattern={langPrefix('/accounts/forgotten-password', props.lang)}
-      exactly={true}
-      component={ForgottenPassword}
-    />
-    <Match
-      pattern={langPrefix('/accounts/reset-password/:key', props.lang)}
-      exactly={true}
-      component={ResetPassword}
-    />
+    {!props.loginOnly && (
+      <div>
+        <Match
+          pattern={langPrefix('/accounts/register', props.lang)}
+          exactly={true}
+          component={Register}
+        />
+        <Match
+          pattern={langPrefix('/accounts/activate/:key', props.lang)}
+          exactly={true}
+          component={Activate}
+        />
+        <Match
+          pattern={langPrefix('/accounts/resend-activation-message', props.lang)}
+          exactly={true}
+          component={ResendActivationMessage}
+        />
+        <Match
+          pattern={langPrefix('/accounts/forgotten-password', props.lang)}
+          exactly={true}
+          component={ForgottenPassword}
+        />
+        <Match
+          pattern={langPrefix('/accounts/reset-password/:key', props.lang)}
+          exactly={true}
+          component={ResetPassword}
+        />
+      </div>
+    )}
   </div>
 )
 Accounts.propTypes = {
+  loginOnly: PropTypes.bool.isRequired,
   lang: PropTypes.object
 }
 

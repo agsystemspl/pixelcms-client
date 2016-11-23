@@ -5,7 +5,6 @@ import StaticPage from '~/components/staticPages/StaticPage'
 import RequireNotLoggedIn from '~/components/utils/RequireNotLoggedIn'
 import LoginForm from './Login/LoginForm'
 import Link from '~/components/utils/Link'
-import langPrefix from '~/utils/langPrefix'
 import T from '~/components/utils/T'
 import t from '~/utils/i18n/t'
 
@@ -17,12 +16,12 @@ let Login = props => (
       {!props.loginOnly && (
         <div className="links">
           <div>
-            <Link to={langPrefix('/accounts/forgotten-password', props.lang)}>
+            <Link to="/accounts/forgotten-password">
               <T t="I forgot my password" />
             </Link>
           </div>
           <div>
-            <Link to={langPrefix('/accounts/register', props.lang)}>
+            <Link to="/accounts/register">
               <T t="I don't have an account yet" />
             </Link>
           </div>
@@ -32,17 +31,12 @@ let Login = props => (
   </div>
 )
 Login.propTypes = {
-  loginOnly: PropTypes.bool,
-  lang: PropTypes.shape({
-    code: PropTypes.string.isRequired,
-    default: PropTypes.bool.isRequired
-  }).isRequired
+  loginOnly: PropTypes.bool
 }
 
 Login = StaticPage(Login)
 
 const mapStateToProps = state => ({
-  lang: state.route.lang,
   meta: {
     title: t(state, 'Login')
   }
