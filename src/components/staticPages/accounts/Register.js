@@ -1,13 +1,12 @@
 import React, { Component, PropTypes } from 'react'
-import Redirect from 'react-router/Redirect'
 import { connect } from 'react-redux'
 
 import StaticPage from '~/components/staticPages/StaticPage'
 import RequireNotLoggedIn from '~/components/utils/RequireNotLoggedIn'
 import RegisterForm from './Register/RegisterForm'
 import addToast from '~/actions/toaster/addToast'
-import langPrefix from '~/utils/langPrefix'
 import Link from '~/components/utils/Link'
+import Redirect from '~/components/utils/Redirect'
 import T from '~/components/utils/T'
 import t from '~/utils/i18n/t'
 
@@ -31,7 +30,7 @@ class Register extends Component {
   }
   render() {
     if (this.state.redirect) {
-      return <Redirect to={langPrefix('/accounts/login', this.props.lang)} />
+      return <Redirect to="/accounts/login" />
     }
     return (
       <div className="page" id="pageRegister">
@@ -59,17 +58,12 @@ class Register extends Component {
   }
 }
 Register.propTypes = {
-  lang: PropTypes.shape({
-    code: PropTypes.string.isRequired,
-    default: PropTypes.bool.isRequired
-  }).isRequired,
   addToast: PropTypes.func.isRequired
 }
 
 Register = StaticPage(Register)
 
 const mapStateToProps = (state) => ({
-  lang: state.route.lang,
   meta: {
     title: t(state, 'Register')
   }

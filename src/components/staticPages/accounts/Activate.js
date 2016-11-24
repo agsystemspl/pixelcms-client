@@ -1,13 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import Redirect from 'react-router/Redirect'
 
 import StaticPage from '~/components/staticPages/StaticPage'
 import RequireNotLoggedIn from '~/components/utils/RequireNotLoggedIn'
 import ActivateForm from './Activate/ActivateForm'
 import addToast from '~/actions/toaster/addToast'
-import langPrefix from '~/utils/langPrefix'
 import Link from '~/components/utils/Link'
+import Redirect from '~/components/utils/Redirect'
 import T from '~/components/utils/T'
 import t from '~/utils/i18n/t'
 
@@ -34,7 +33,7 @@ class Activate extends Component {
   }
   render() {
     if (this.state.redirect) {
-      return <Redirect to={langPrefix('/accounts/login', this.props.lang)} />
+      return <Redirect to="/accounts/login" />
     }
     return (
       <div className="page" id="pageActivate">
@@ -64,17 +63,12 @@ Activate.propTypes = {
   params: PropTypes.shape({
     key: PropTypes.string.isRequired
   }).isRequired,
-  lang: PropTypes.shape({
-    code: PropTypes.string.isRequired,
-    default: PropTypes.bool.isRequired
-  }).isRequired,
   addToast: PropTypes.func.isRequired
 }
 
 Activate = StaticPage(Activate)
 
-const mapStateToProps = (state) => ({
-  lang: state.route.lang,
+const mapStateToProps = state => ({
   meta: {
     title: t(state, 'Activate your account')
   }

@@ -23,6 +23,7 @@ export CategoriesModule from './components/modules/CategoriesModule'
 
 // Utils components
 export Link from './components/utils/Link'
+export Redirect from './components/utils/Redirect'
 export Pagination from './components/utils/Pagination'
 export LangSwitch from './components/utils/LangSwitch'
 export Mailto from './components/utils/Mailto'

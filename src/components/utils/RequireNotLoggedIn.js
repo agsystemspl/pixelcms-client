@@ -1,8 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import Redirect from 'react-router/Redirect'
 
-import langPrefix from '~/utils/langPrefix'
+import Redirect from '~/components/utils/Redirect'
 
 const RequiredNotLoggedIn = ComposedComponent => {
   let RequiredNotLoggedIn = props => {
@@ -10,20 +9,15 @@ const RequiredNotLoggedIn = ComposedComponent => {
       return <ComposedComponent {...props} />
     }
     else {
-      return <Redirect to={langPrefix('/', props.lang)} />
+      return <Redirect to="/" />
     }
   }
   RequiredNotLoggedIn.propTypes = {
-    isAuthenticated: PropTypes.bool,
-    lang: PropTypes.shape({
-      code: PropTypes.string.isRequired,
-      default: PropTypes.bool.isRequired
-    }).isRequired
+    isAuthenticated: PropTypes.bool
   }
 
   const mapStateToProps = state => ({
-    isAuthenticated: state.authInfo.isAuthenticated,
-    lang: state.route.lang
+    isAuthenticated: state.authInfo.isAuthenticated
   })
   return connect(
     mapStateToProps
