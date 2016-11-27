@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import isEmpty from 'lodash/isEmpty'
 
 import Link from '~/components/utils/Link'
 import Breadcrumbs from '~/components/utils/Breadcrumbs'
@@ -39,14 +40,14 @@ const Category = props => {
     )
   }
   let subcategories
-  if (props.subcategories) {
+  if (!isEmpty(props.subcategories)) {
     let items = props.subcategories.map((item, key) => {
       return <Subcategory key={key} {...item} />
     })
     subcategories = <div className="subcategories">{items}</div>
   }
   let articles
-  if (props.articles) {
+  if (!isEmpty(props.articles)) {
     let items = props.articles.map((item, key) => {
       return <CategoryArticle key={key} {...item} />
     })
