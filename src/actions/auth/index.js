@@ -1,5 +1,4 @@
 export refreshTokenFromCookie from './refreshTokenFromCookie'
-export authenticating from './authenticating'
 export authenticated from './authenticated'
 export notAuthenticated from './notAuthenticated'
 export logout from './logout'

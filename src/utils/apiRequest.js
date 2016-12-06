@@ -3,7 +3,7 @@ import notAuthenticated from '~/actions/auth/notAuthenticated'
 import addToast from '~/actions/toaster/addToast'
 import t from '~/utils/i18n/t'
 
-const apiRequest = (dispatch, getState, path, options = {}) => {
+const apiRequest = (dispatch, getState, path, options = {}, waitForAuth = true) => {
   const defaultOptions = {
     mode: 'cors',
     cache: 'default',
@@ -63,4 +63,15 @@ const apiRequest = (dispatch, getState, path, options = {}) => {
     })
 }
 
-export default apiRequest
+const apiRequestWaitForAuthWrapper = (dispatch, getState, path, options = {}, waitForAuth = true) => {
+  if (waitForAuth && getState().authInfo.isAuthenticating) {
+    return getState().authInfo.isAuthenticating.then(() => {
+      return apiRequest(dispatch, getState, path, options, waitForAuth)
+    })
+  }
+  else {
+    return apiRequest(dispatch, getState, path, options, waitForAuth)
+  }
+}
+
+export default apiRequestWaitForAuthWrapper

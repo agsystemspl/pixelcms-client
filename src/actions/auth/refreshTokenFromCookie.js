@@ -7,9 +7,14 @@ const refreshTokenFromCookie = (token, then) => (dispatch, getState) => {
     {
       method: 'POST',
       body: JSON.stringify({ token })
-    }
+    },
+    false
   )
     .then(then)
+  dispatch({
+    type: 'AUTHENTICATING',
+    promise
+  })
   /* global __SERVER__ */
   /* global __PROMISES__ */
   if (__SERVER__) {

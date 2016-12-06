@@ -1,6 +1,7 @@
 const initialState = {
   isAuthenticated: null,  // notice null not false
   isAuthenticating: false,
+  waitFor: null,
   token: null,
   user: {}
 }
@@ -8,7 +9,7 @@ const initialState = {
 const authInfo = (state = initialState, action) => {
   switch (action.type) {
     case 'AUTHENTICATING':
-      return Object.assign({}, state, { isAuthenticating: true })
+      return Object.assign({}, state, { isAuthenticating: action.promise })
     case 'AUTHENTICATED':
       return {
         isAuthenticated: true,

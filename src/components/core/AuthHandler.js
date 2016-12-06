@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 
 import apiRequest from '~/utils/apiRequest'
 import refreshTokenFromCookie from '~/actions/auth/refreshTokenFromCookie'
-import authenticating from '~/actions/auth/authenticating'
 import authenticated from '~/actions/auth/authenticated'
 import notAuthenticated from '~/actions/auth/notAuthenticated'
 import addToast from '~/actions/toaster/addToast'
@@ -16,11 +15,10 @@ class AuthHandler extends Component {
     // this will happen both on client and server
     // (SSR needs authInfo to avoid wrong redirects)
     if (this.props.authInfo.isAuthenticated === null && !this.props.authInfo.isAuthenticating) {
-      // token only if it did not already happen (isAuthenticated === null)
+      // refresh token only if it did not already happen (isAuthenticated === null)
       // and if it's not already happening (!this.props.isAuthenticating) - avoid racing
       const tokenFromCookie = cookie.load('authToken')
       if (tokenFromCookie) {
-        this.props.authenticating()
         this.props.refreshTokenFromCookie(
           tokenFromCookie,
           ({ data, ok }) => {
@@ -98,11 +96,13 @@ AuthHandler.propTypes = {
   state: PropTypes.object.isRequired,
   authInfo: PropTypes.shape({
     isAuthenticated: PropTypes.bool,
-    isAuthenticating: PropTypes.bool.isRequired,
+    isAuthenticating: PropTypes.oneOfType([
+      PropTypes.bool.isRequired,
+      PropTypes.object.isRequired
+    ]).isRequired,
     token: PropTypes.string
   }).isRequired,
   refreshTokenFromCookie: PropTypes.func.isRequired,
-  authenticating: PropTypes.func.isRequired,
   authenticated: PropTypes.func.isRequired,
   notAuthenticated: PropTypes.func.isRequired,
   addToast: PropTypes.func.isRequired
@@ -116,7 +116,6 @@ AuthHandler = connect(
   mapStateToProps,
   {
     refreshTokenFromCookie,
-    authenticating,
     authenticated,
     notAuthenticated,
     addToast
