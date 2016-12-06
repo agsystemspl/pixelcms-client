@@ -54,7 +54,7 @@ const server = (webpackConfig, {
     compiler.plugin('done', () => {
       let count = 0
       Object.keys(require.cache).forEach((id) => {
-        if (!/\/node_modules\//.test(id) || /\/node_modules\/pixelcms-client\//.test(id)) {
+        if (!/\/node_modules\//.test(id) || /\/node_modules\/pixelcms-.*\//.test(id)) {
           delete require.cache[id]
           count++
         }
