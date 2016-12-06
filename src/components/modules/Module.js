@@ -12,7 +12,7 @@ let Module = (moduleType, getApiPath, moduleTypeHtmlClass) => {
         this.props.requestModule(
           moduleType,
           this.props.templateId,
-          getApiPath(this.props.templateId)
+          getApiPath(this.props)
         )
       }
       componentWillMount() {

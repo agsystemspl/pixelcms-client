@@ -34,7 +34,7 @@ ContentModule.propTypes = {
 
 ContentModule = Module(
   'content',
-  templateId => `content/content-module/${templateId}/`,
+  props => `content/content-module/${props.templateId}/`,
   'contentModule'
 )(ContentModule)
 

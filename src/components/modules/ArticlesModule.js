@@ -43,7 +43,7 @@ ArticlesModule.propTypes = {
 
 ArticlesModule = Module(
   'articles',
-  templateId => `content/articles-module/${templateId}/`,
+  props => `content/articles-module/${props.templateId}/`,
   'articlesModule'
 )(ArticlesModule)
 

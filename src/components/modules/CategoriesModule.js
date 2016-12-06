@@ -43,7 +43,7 @@ CategoriesModule.propTypes = {
 
 CategoriesModule = Module(
   'categories',
-  templateId => `content/categories-module/${templateId}/`,
+  props => `content/categories-module/${props.templateId}/`,
   'categoriesModule'
 )(CategoriesModule)
 

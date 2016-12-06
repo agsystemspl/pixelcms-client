@@ -86,7 +86,7 @@ NavModule = connect(
 
 NavModule = Module(
   'nav',
-  templateId => `nav/${templateId}/`,
+  props => `nav/${props.templateId}/`,
   'navModule'
 )(NavModule)
 
