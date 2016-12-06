@@ -9,7 +9,7 @@ import isEqual from 'lodash/isEqual'
 const serverRender = (req, res, { configPath, localePath, reducersPath, AppPath }, cb) => {
   const config = require(configPath).config
   const locale = require(localePath).default
-  const reducers = require(reducersPath)
+  const reducers = require(reducersPath).default
   const App = require(AppPath).default
 
   const configureStore = require('../store/configureStore').default
