@@ -7,9 +7,8 @@ import removeToast from '~/actions/toaster/removeToast'
 class Toaster extends Component {
   render() {
     let toasts = []
-    for (let key of Object.keys(this.props.toaster).reverse()) {
-      if (!this.props.toaster.hasOwnProperty(key)) { continue }
-      const toast = this.props.toaster[key]
+    Object.keys(this.props.toaster).reverse().map((item, key) => {
+      const toast = this.props.toaster[item]
       let icon
       if (toast.icon) {
         icon = toast.icon
@@ -45,7 +44,7 @@ class Toaster extends Component {
           </div>
         </div>
       )
-    }
+    })
     return (
       <div id="toaster">
         <ReactCSSTransitionGroup
