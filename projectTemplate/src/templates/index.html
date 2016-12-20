@@ -11,8 +11,7 @@
     <div id="root">{{{ appRoot }}}</div>
     {{{ initialState }}}
     <noscript id="noscript">
-      It seems that you have disabled JavaScript in your browser settings.
-      Because of that some part of this site functionality may be unavailable.
+      Please enable JavaScript to get the full functionality of this website.
     </noscript>
     <script>
       (function() {
@@ -27,7 +26,7 @@
         loadingSpinner.appendChild(document.createElement('div'))
 
         window.onload = function() {
-          document.getElementById('appLoading').remove()
+          appLoading.parentNode.removeChild(appLoading)
           document.body.className = document.body.className.replace('loading', '')
         }
       })();
