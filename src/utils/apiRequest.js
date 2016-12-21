@@ -33,7 +33,6 @@ const apiRequest = (dispatch, getState, path, options = {}, waitForAuth = true) 
           if (token && res.status === 401) {
             dispatch(notAuthenticated())
             dispatch(addToast('warning', t(getState(), 'Session has expired. You have been logged out.'), null))
-            // TODO: redirect to homepage
           }
         }
         return res

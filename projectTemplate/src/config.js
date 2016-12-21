@@ -20,6 +20,6 @@ const config = {
   gaTrackingId: null
 }
 
-const pageComponentsRegistry = {}
+const dynamicPageComponents = {}
 
-export { config, pageComponentsRegistry }
+export { config, dynamicPageComponents }

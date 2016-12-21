@@ -3,16 +3,17 @@ export configureStore from './store/configureStore'
 export AuthHandler from './components/core/AuthHandler'
 export LocationHandler from './components/core/LocationHandler'
 export MetaHandler from './components/core/MetaHandler'
-export PageHandler from './components/core/PageHandler'
+export DynamicPageHandler from './components/core/DynamicPageHandler'
 
 // Routes
-export Routes from './routes/Routes'
+export routes from './routes'
 
 // Pages components
 export Category from './components/pages/Category'
 export Article from './components/pages/Article'
 export NotFound from './components/pages/NotFound'
 export Error from './components/pages/Error'
+export StaticPage from './components/staticPages/StaticPage'
 
 // Modules components
 export Module from './components/modules/Module'
@@ -49,6 +50,7 @@ export AdminLink from './components/liveAdmin/AdminLink'
 // Utils
 export apiRequest from './utils/apiRequest'
 export langPrefix from './utils/langPrefix'
+export cutLangPrefix from './utils/cutLangPrefix'
 export validateFormHoneypot from './utils/validateFormHoneypot'
 
 // Actions

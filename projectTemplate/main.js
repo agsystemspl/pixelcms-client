@@ -26,13 +26,10 @@ global.webpack_isomorphic_tools = new WebpackIsomorphicTools(
       require('pixelcms-client/lib/server').default(
         process.env.NODE_ENV === 'production' ? require('./webpack.config.prod') : require('./webpack.config.dev'),
         {
-          ssrEnabled: true,
-          forceHttps: true,
-          trustSelfSignedCerts: true,
-          port: 3000,
           configPath: path.resolve(__dirname, 'src/config'),
           localePath: path.resolve(__dirname, 'src/locale'),
           reducersPath: path.resolve(__dirname, 'src/reducers'),
+          routesPath: path.resolve(__dirname, 'src/routes'),
           AppPath: path.resolve(__dirname, 'src/components/App')
         }
       )

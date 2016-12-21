@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import merge from 'lodash/merge'
 import isEmpty from 'lodash/isEmpty'
+import isEqual from 'lodash/isEqual'
 
 import requestPage from '~/actions/page/requestPage'
 import clearPage from '~/actions/page/clearPage'
@@ -9,19 +10,21 @@ import Category from '~/components/pages/Category'
 import Article from '~/components/pages/Article'
 import NotFound from '~/components/pages/NotFound'
 import Error from '~/components/pages/Error'
+import Redirect from '~/components/utils/Redirect'
 import Loading from '~/components/utils/Loading'
 
-class PageHandler extends Component {
+class DynamicPageHandler extends Component {
   constructor(props) {
     super(props)
-    this.pageComponentsRegistry = merge(
+    this.dynamicPageComponents = merge(
       {
         Category,
         Article,
         NotFound,
-        Error
+        Error,
+        Redirect // kinda hack, but works fine
       },
-      props.pageComponentsRegistry
+      props.dynamicPageComponents
     )
   }
   componentWillMount() {
@@ -31,15 +34,20 @@ class PageHandler extends Component {
       if (__SERVER__) {
         __PROMISES__.push(new Promise((resolve, reject) => {
           this._requestTimeout = setTimeout(() => {
-            this.props.requestPage(resolve)
+            this.props.requestPage(this.props.location, resolve)
           }, 0)
         }))
       }
       else {
         this._requestTimeout = setTimeout(() => {
-          this.props.requestPage()
+          this.props.requestPage(this.props.location)
         }, 0)
       }
+    }
+  }
+  componentDidUpdate(prevProps) {
+    if (!isEqual(this.props.location, prevProps.location) && !this.props.page.requesting) {
+      this.props.requestPage(this.props.location)
     }
   }
   componentWillUnmount() {
@@ -51,16 +59,16 @@ class PageHandler extends Component {
       return <div className="page loading"><Loading /></div>
     }
     else {
-      let Component = this.pageComponentsRegistry[this.props.page.componentName]
+      let Component = this.dynamicPageComponents[this.props.page.componentName]
       if (typeof Component === 'undefined') {
-        Component = this.pageComponentsRegistry.Error
+        Component = this.dynamicPageComponents.Error
       }
       return <Component {...this.props.page.componentData} />
     }
   }
 }
-PageHandler.propTypes = {
-  pageComponentsRegistry: PropTypes.object.isRequired,
+DynamicPageHandler.propTypes = {
+  dynamicPageComponents: PropTypes.object.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired
   }),
@@ -76,12 +84,12 @@ PageHandler.propTypes = {
 const mapStateToProps = (state) => ({
   page: state.page
 })
-PageHandler = connect(
+DynamicPageHandler = connect(
   mapStateToProps,
   {
     requestPage,
     clearPage
   }
-)(PageHandler)
+)(DynamicPageHandler)
 
-export default PageHandler
+export default DynamicPageHandler

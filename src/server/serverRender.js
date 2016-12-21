@@ -1,15 +1,19 @@
 import React from 'react'
 import reactCookie from 'react-cookie'
+import match from 'react-router/lib/match'
+import RouterContext from 'react-router/lib/RouterContext'
+import createMemoryHistory from 'react-router/lib/createMemoryHistory'
+import concat from 'lodash/concat'
 import { renderToString } from 'react-dom/server'
-import ServerRouter from 'react-router/ServerRouter'
-import createServerRenderContext from 'react-router/createServerRenderContext'
 import DocumentMeta from 'react-document-meta'
 import isEqual from 'lodash/isEqual'
 
-const serverRender = (req, res, { configPath, localePath, reducersPath, AppPath }, cb) => {
+const serverRender = (req, res, { configPath, localePath, reducersPath, routesPath, AppPath }, cb) => {
   const config = require(configPath).config
+  const dynamicPageComponents = require(configPath).dynamicPageComponents
   const locale = require(localePath).default
   const reducers = require(reducersPath).default
+  const customRoutes = require(routesPath).default
   const App = require(AppPath).default
 
   const configureStore = require('../store/configureStore').default
@@ -23,43 +27,57 @@ const serverRender = (req, res, { configPath, localePath, reducersPath, AppPath 
 
   const store = configureStore(config, locale, reducers)
 
-  const context = createServerRenderContext()
+  const history = createMemoryHistory(req.url)
 
-  const markup = (
-    <App
-      store={store}
-      router={ServerRouter}
-      routerProps={{
-        location: req.url,
-        context: context
-      }}
-    />
-  )
-  renderToString(markup) // don't need it's value yet
-  const result = context.getResult()
-  if (result.redirect) {
-    res.status(302).set({ 'Location': result.redirect.pathname }).end()
+  const routes = {
+    component: props => (
+      <App
+        store={store}
+        history={history}
+        children={props.children} // eslint-disable-line react/prop-types
+      />
+    ),
+    childRoutes: concat(
+      customRoutes,
+      require('../routes').default(dynamicPageComponents, store)
+    )
   }
 
-  let currentState
-  const render = () => {
-    currentState = Object.assign({}, store.getState())
-    Promise.all(__PROMISES__).then(() => {
-      if (isEqual(store.getState(), currentState)) {
-        unplugCookie()
-        cb({
-          appRoot: renderToString(markup), // render with final store state
-          initialState: store.getState(),
-          meta: DocumentMeta.renderAsHTML()
-        })
+  match({ routes, location: req.url, history }, (error, redirectLocation, renderProps) => {
+    if (error) { console.log(error) }
+    else if (redirectLocation) {
+      // redirect based on route onEnter
+      res.status(302).set({ 'Location': redirectLocation.pathname + redirectLocation.search }).end()
+      return
+    }
+
+    let currentState
+    const render = () => {
+      currentState = Object.assign({}, store.getState())
+      let storeUrl = store.getState().route.path + store.getState().route.search
+      if (storeUrl !== req.url) {
+        // redirect based on store value
+        res.status(302).set({ 'Location': storeUrl }).end()
+        return
       }
-      else {
-        renderToString(markup) // don't need it's value yet
-        render()
-      }
-    })
-  }
-  render()
+      Promise.all(__PROMISES__).then(() => {
+        if (isEqual(store.getState(), currentState)) {
+          unplugCookie()
+          cb({
+            appRoot: renderToString(<RouterContext {...renderProps} />), // render with final store state
+            initialState: store.getState(),
+            meta: DocumentMeta.renderAsHTML()
+          })
+        }
+        else {
+          renderToString(<RouterContext {...renderProps} />) // don't need it's value yet
+          render()
+        }
+      })
+    }
+    renderToString(<RouterContext {...renderProps} />)
+    render()
+  })
 }
 
 export default serverRender

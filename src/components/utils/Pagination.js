@@ -1,75 +1,69 @@
 import React, { PropTypes } from 'react'
-import Link from 'react-router/Link'
+import Link from 'react-router/lib/Link'
+import withRouter from 'react-router/lib/withRouter'
 
-import T from '~/components/utils/T'
-
-const Pagination = props => {
-  const pages = [...Array(props.numPages).keys()].map((i, key) => {
-    if (props.currentPage === i + 1) {
-      return (
-        <span key={key}>
-          <span>{i + 1}</span>
+let Pagination = props => (
+  <div className="pagination">
+    {props.showFirstLast && (props.location.query.page > 1) && (
+      <span className="firstWrapper">
+        <Link to={{
+          pathname: props.location.pathname,
+          query: Object.assign({}, props.location.query, { page: 1 })
+        }}>
+          <span className="first" />
+        </Link>
+      </span>
+    )}
+    {props.showPrevNext && (props.location.query.page > 1) && (
+      <span className="prevWrapper">
+        <Link to={{
+          pathname: props.location.pathname,
+          query: Object.assign({}, props.location.query, { page: props.currentPage - 1 })
+        }}>
+          <span className="prev" />
+        </Link>
+      </span>
+    )}
+    <span className="pages">
+      {[...Array(props.numPages).keys()].map((item, key) => (
+        <span key={key} className="pageWrapper">
+          {props.currentPage === key + 1 && (
+            <span>
+              <span className="item">{item + 1}</span>
+            </span>
+          ) || (
+            <Link to={{
+              pathname: props.location.pathname,
+              query: Object.assign({}, props.location.query, { page: item + 1 })
+            }}>
+              <span className="item">{item + 1}</span>
+            </Link>
+          )}
         </span>
-      )
-    }
-    else {
-      return (
-        <Link key={key} to={`?page=${i + 1}`}>
-          <span>{i + 1}</span>
+      ))}
+    </span>
+    {props.showPrevNext && (props.location.query.page < props.numPages || !props.location.query.page) && (
+      <span className="nextWrapper">
+        <Link to={{
+          pathname: props.location.pathname,
+          query: Object.assign({}, props.location.query, { page: props.currentPage + 1 })
+        }}>
+          <span className="next" />
         </Link>
-      )
-    }
-  })
-  let prev, next
-  if (props.showPrevNext) {
-    if (props.currentPage > 1) {
-      prev = (
-        <div className="prev">
-          <Link to={`?page=${props.currentPage - 1}`}>
-            <span><T t="Previous" /></span>
-          </Link>
-        </div>
-      )
-    }
-    if (props.currentPage < props.numPages) {
-      next = (
-        <div className="next">
-          <Link to={`?page=${props.currentPage + 1}`}>
-            <span><T t="Next" /></span>
-          </Link>
-        </div>
-      )
-    }
-  }
-  let first, last
-  if (props.showFirstLast) {
-    first = (
-      <div className="first">
-        <Link to="?page=1">
-          <span><T t="First" /></span>
+      </span>
+    )}
+    {props.showFirstLast && (props.location.query.page < props.numPages || !props.location.query.page) && (
+      <span className="lastWrapper">
+        <Link to={{
+          pathname: props.location.pathname,
+          query: Object.assign({}, props.location.query, { page: props.numPages })
+        }}>
+          <span className="last" />
         </Link>
-      </div>
-    )
-    last = (
-      <div className="last">
-        <Link to={`?page=${props.numPages}`}>
-          <span><T t="Last" /></span>
-        </Link>
-      </div>
-    )
-  }
-  return (
-    <div className="pagination">
-      {first}
-      {prev}
-      <div className="pages">
-        {pages}
-      </div>
-      {next}
-      {last}
-    </div>
-  )
-}
+      </span>
+    )}
+  </div>
+)
 Pagination.defaultProps = {
   showFirstLast: true,
   showPrevNext: true
@@ -79,7 +73,13 @@ Pagination.propTypes = {
   numPages: PropTypes.number.isRequired,
   currentPage: PropTypes.number.isRequired,
   showFirstLast: PropTypes.bool.isRequired,
-  showPrevNext: PropTypes.bool.isRequired
+  showPrevNext: PropTypes.bool.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+    query: PropTypes.object.isRequired
+  }).isRequired
 }
+
+Pagination = withRouter(Pagination)
 
 export default Pagination

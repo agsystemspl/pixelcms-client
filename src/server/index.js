@@ -9,14 +9,15 @@ require('es6-promise').polyfill()
 require('isomorphic-fetch')
 
 const server = (webpackConfig, {
-  ssrEnabled,
-  forceHttps,
-  trustSelfSignedCerts,
-  port,
   configPath,
   localePath,
   reducersPath,
-  AppPath
+  routesPath,
+  AppPath,
+  ssr = true,
+  forceHttps = true,
+  trustSelfSignedCerts = true,
+  port = 3000
 }) => {
   // allow self-signed certificates (always in dev)
   if (process.env.NODE_ENV !== 'production' || trustSelfSignedCerts) {
@@ -74,8 +75,8 @@ const server = (webpackConfig, {
   // request handler
   const serverRender = require('./serverRender').default
   app.get('*', (req, res) => {
-    if (ssrEnabled) {
-      serverRender(req, res, { configPath, localePath, reducersPath, AppPath }, data => {
+    if (ssr) {
+      serverRender(req, res, { configPath, localePath, reducersPath, routesPath, AppPath }, data => {
         if (data.initialState.page.componentName === 'NotFound') {
           res.status(404)
         }

@@ -1,6 +1,7 @@
 const route = (state = {}, action) => {
   switch (action.type) {
     case 'LOCATION_CHANGED':
+      // TODO: use cutLangPrefix()
       let langs = action.availableLangs
       let defaultLang = langs[0]
       let splitedPath = action.path.split('/').filter(i => i)

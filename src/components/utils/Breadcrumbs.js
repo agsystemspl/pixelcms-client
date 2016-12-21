@@ -5,30 +5,23 @@ import Link from './Link'
 
 let Breadcrumbs = props => {
   if (props.path === '/') { return null }
-  let items = props.items.map((item, i) => {
-    if (i < props.items.length - 1) {
-      return (
-        <span key={i}>
-          <i className="arrow material-icons">chevron_right</i>
-          <Link to={item.route}><span>{item.name}</span></Link>
-        </span>
-      )
-    }
-    else {
-      return (
-        <span key={i} className="active">
-          <i className="arrow material-icons">chevron_right</i>
-          <span>{item.name}</span>
-        </span>
-      )
-    }
-  })
   return (
     <div id="breadcrumbs">
-      <span className="home">
-        <Link to="/"><i className="material-icons">home</i></Link>
+      <span className="homeWrapper">
+        <Link to="/">
+          <span className="home" />
+        </Link>
       </span>
-      {items}
+      {props.items.map((item, key) => (
+        <span key={key} className={`item ${key === props.items.length - 1 && 'active' || ''}`}>
+          <span className="separator" />
+          {key < props.items.length - 1 && (
+            <Link to={item.route}><span>{item.name}</span></Link>
+          ) || (
+            <span>{item.name}</span>
+          )}
+        </span>
+      ))}
     </div>
   )
 }
@@ -40,7 +33,7 @@ Breadcrumbs.propTypes = {
   path: PropTypes.string.isRequired
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   path: state.route.path
 })
 Breadcrumbs = connect(

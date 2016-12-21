@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import BareLink from 'react-router/Link'
+import BareLink from 'react-router/lib/Link'
 
 import langPrefix from '~/utils/langPrefix'
 

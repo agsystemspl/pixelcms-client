@@ -57,13 +57,7 @@ const locale = {
       'Message': 'Wiadomość',
       'send': 'wyślij',
       'Thank you, your message has been sent!': 'Dziękujemy, Twoja wiadomość została wysłana.',
-      'Send new message': 'Wyślij nową wiadomość',
-
-      // pagination
-      'First': 'Pierwsza',
-      'Previous': 'Poprzednia',
-      'Next': 'Następna',
-      'Last': 'Ostatnia'
+      'Send new message': 'Wyślij nową wiadomość'
     }
   }
 }

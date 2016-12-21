@@ -1,12 +1,16 @@
 import apiRequest from '~/utils/apiRequest'
+import cutLangPrefix from '~/utils/cutLangPrefix'
 import t from '~/utils/i18n/t'
 
-const requestPage = (resolve = f => f) => (dispatch, getState) => {
+const requestPage = (location, resolve = f => f) => (dispatch, getState) => {
   dispatch({ type: 'REQUSTING_PAGE' })
-  let pathname = getState().route.pathWithoutLang
+  let pathname = cutLangPrefix(location.pathname, getState().config.langs)
   pathname += pathname !== '/' ? '/' : ''
-  pathname += getState().route.search
-  const promise = apiRequest(dispatch, getState, `route${pathname}`)
+  pathname += location.search
+  const promise = apiRequest(
+    dispatch, getState,
+    `route${pathname}`
+  )
     .then(({ data, ok, status }) => {
       if (ok) {
         dispatch({
@@ -22,18 +26,29 @@ const requestPage = (resolve = f => f) => (dispatch, getState) => {
         })
       }
       else {
-        dispatch({
-          type: 'RECEIVE_PAGE',
-          page: {
-            componentName: status === 404 ? 'NotFound' : 'Error'
-          }
-        })
-        dispatch({
-          type: 'CHANGE_META',
-          meta: {
-            title: t(getState(), status === 404 ? 'Not found' : 'Error')
-          }
-        })
+        if (status === 401) {
+          dispatch({
+            type: 'RECEIVE_PAGE',
+            page: {
+              componentName: 'Redirect',
+              componentData: { to: '/accounts/login' }
+            }
+          })
+        }
+        else {
+          dispatch({
+            type: 'RECEIVE_PAGE',
+            page: {
+              componentName: status === 404 ? 'NotFound' : 'Error'
+            }
+          })
+          dispatch({
+            type: 'CHANGE_META',
+            meta: {
+              title: t(getState(), status === 404 ? 'Not found' : 'Error')
+            }
+          })
+        }
       }
       resolve()
     })

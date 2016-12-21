@@ -12,22 +12,18 @@ class LocationHandler extends Component {
         debug: process.env.NODE_ENV !== 'production'
       })
     }
+    this.dispatchLocationChanged(props.history.getCurrentLocation())
+    props.history.listen(location => this.dispatchLocationChanged(location))
   }
-  componentWillMount() {
-    this.handleLocationChange()
-  }
-  componentDidUpdate() {
-    this.handleLocationChange()
-  }
-  handleLocationChange() {
-    this.dispatchLocationChanged()
+  handleLocationChange(location) {
+    this.dispatchLocationChanged(location)
     this.gaLogPageView()
   }
-  dispatchLocationChanged() {
+  dispatchLocationChanged(location) {
     this.props.locationChanged(
-      this.props.location.pathname,
-      this.props.location.query,
-      this.props.location.search
+      location.pathname,
+      location.query,
+      location.search
     )
   }
   gaLogPageView() {
@@ -41,7 +37,7 @@ class LocationHandler extends Component {
   render() { return null }
 }
 LocationHandler.propTypes = {
-  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
   gaTrackingId: PropTypes.string,
   locationChanged: PropTypes.func.isRequired
 }

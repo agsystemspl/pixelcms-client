@@ -1,35 +1,41 @@
-import React, { PropTypes } from 'react'
+import { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import BareRedirect from 'react-router/Redirect'
+import withRouter from 'react-router/lib/withRouter'
 
 import langPrefix from '~/utils/langPrefix'
 
-let Redirect = props => {
-  let propsToPass = Object.assign({}, props)
-  delete propsToPass.dispatch
-  delete propsToPass.lang
-
-  if (typeof propsToPass.to === 'string') {
-    propsToPass.to = langPrefix(propsToPass.to, props.lang)
+class Redirect extends Component {
+  componentWillMount() {
+    let target = this.props.to // can be location object or pathname string
+    if (typeof target === 'string') {
+      target = langPrefix(this.props.to, this.props.lang)
+    }
+    else {
+      target = this.props.to
+      target.pathname = langPrefix(target.to.pathname, this.props.lang)
+    }
+    this.props.router.push(target)
   }
-  else {
-    propsToPass.to.pathname = langPrefix(propsToPass.to.pathname, props.lang)
+  render() {
+    return null
   }
-
-  return <BareRedirect {...propsToPass}>{props.children}</BareRedirect>
 }
 Redirect.propTypes = {
+  to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   lang: PropTypes.shape({
     code: PropTypes.string.isRequired,
     default: PropTypes.bool.isRequired
   }).isRequired,
-  to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
-  children: PropTypes.node
+  router: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({
   lang: state.route.lang
 })
-Redirect = connect(mapStateToProps)(Redirect)
+Redirect = connect(
+  mapStateToProps
+)(Redirect)
+
+Redirect = withRouter(Redirect)
 
 export default Redirect
