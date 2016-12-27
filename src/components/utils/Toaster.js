@@ -7,7 +7,7 @@ import removeToast from '~/actions/toaster/removeToast'
 class Toaster extends Component {
   render() {
     let toasts = []
-    Object.keys(this.props.toaster).reverse().map((item, key) => {
+    Object.keys(this.props.toaster).map((item, key) => {
       const toast = this.props.toaster[item]
       let icon
       if (toast.icon) {
@@ -31,16 +31,18 @@ class Toaster extends Component {
       }
       toasts.push(
         <div
-          key={key}
+          key={item}
           className={`toast ${toast.type}`}
-          onClick={() => this.props.removeToast(key)}
+          onClick={() => this.props.removeToast(item)}
         >
-          <div className="icon">
-            <i className="material-icons">{icon}</i>
-          </div>
-          <div className="text">
-            {toast.title && (<div className="title" dangerouslySetInnerHTML={{__html: toast.title}} />)}
-            {toast.message && (<div className="message" dangerouslySetInnerHTML={{__html: toast.message}} />)}
+          <div className="wrapper">
+            <div className="icon">
+              <i className="material-icons">{icon}</i>
+            </div>
+            <div className="text">
+              {toast.title && (<div className="title" dangerouslySetInnerHTML={{__html: toast.title}} />)}
+              {toast.message && (<div className="message" dangerouslySetInnerHTML={{__html: toast.message}} />)}
+            </div>
           </div>
         </div>
       )
@@ -50,7 +52,8 @@ class Toaster extends Component {
         <ReactCSSTransitionGroup
           transitionName="toast"
           transitionEnterTimeout={250}
-          transitionLeaveTimeout={250}>
+          transitionLeaveTimeout={250}
+        >
           {toasts}
         </ReactCSSTransitionGroup>
       </div>
