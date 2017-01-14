@@ -37,6 +37,8 @@ export Toaster from './components/utils/Toaster'
 export Loading from './components/utils/Loading'
 export RequireLoggedIn from './components/utils/RequireLoggedIn'
 export RequireNotLoggedIn from './components/utils/RequireNotLoggedIn'
+export ChangePasswordForm from './components/utils/ChangePasswordForm'
+export ChangeEmailForm from './components/utils/ChangeEmailForm'
 
 // Translations
 export T from './components/utils/T'

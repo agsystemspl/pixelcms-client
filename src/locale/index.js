@@ -48,6 +48,8 @@ const locale = {
       'New password': 'Nowe hasło',
       'Repeat new password': 'Powtórz nowe hasło',
       'Change': 'Zmień',
+      'Change your email': 'Zmień swój email',
+      'Click button below to change your email.': 'Kliknij przycisk poniżej, aby zmienić swój email.',
       'Hello': 'Witaj',
       'Session has expired. You have been logged out.': 'Sesja wygasła. Wylogowano.',
 
@@ -57,7 +59,11 @@ const locale = {
       'Message': 'Wiadomość',
       'send': 'wyślij',
       'Thank you, your message has been sent!': 'Dziękujemy, Twoja wiadomość została wysłana.',
-      'Send new message': 'Wyślij nową wiadomość'
+      'Send new message': 'Wyślij nową wiadomość',
+
+      // change password and change email forms
+      'Current password': 'Obecne hasło',
+      'New email': 'Nowy email'
     }
   }
 }

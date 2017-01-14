@@ -8,6 +8,7 @@ import Activate from '~/components/staticPages/accounts/Activate'
 import ResendActivationMessage from '~/components/staticPages/accounts/ResendActivationMessage'
 import ForgottenPassword from '~/components/staticPages/accounts/ForgottenPassword'
 import ResetPassword from '~/components/staticPages/accounts/ResetPassword'
+import ChangeEmailConfirmation from '~/components/staticPages/accounts/ChangeEmailConfirmation'
 
 const accounts = (lang, loginOnly) => {
   let routes = [
@@ -37,6 +38,10 @@ const accounts = (lang, loginOnly) => {
       {
         path: langPrefix('/accounts/reset-password/:key', lang),
         component: ResetPassword
+      },
+      {
+        path: langPrefix('/accounts/change-email-confirmation/:key', lang),
+        component: ChangeEmailConfirmation
       }
     ])
   }
