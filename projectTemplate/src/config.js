@@ -17,7 +17,8 @@ const config = {
     speed: 250,
     hideBarsDelay: 2000
   },
-  gaTrackingId: null
+  gaTrackingId: null,
+  socialAuth: []
 }
 
 const dynamicPageComponents = {}

@@ -10,8 +10,8 @@
   "scripts": {
     "test": "jest src",
     "lint": "eslint src",
-    "start": "rm -rf lib/* && babel -w src -d lib --ignore \"**/*.test.js\"",
-    "prepublish": "babel src -d lib --ignore \"**/*.test.js\""
+    "start": "rm -rf lib/* && babel -w src -d lib --ignore \"**/*.test.js\" --copy-files",
+    "prepublish": "babel src -d lib --ignore \"**/*.test.js\" --copy-files"
   },
   "author": "Michał Werner",
   "license": "MIT",

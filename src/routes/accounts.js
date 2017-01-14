@@ -3,6 +3,7 @@ import concat from 'lodash/concat'
 
 import langPrefix from '~/utils/langPrefix'
 import Login from '~/components/staticPages/accounts/Login'
+import SocialAuth from '~/components/staticPages/accounts/SocialAuth'
 import Register from '~/components/staticPages/accounts/Register'
 import Activate from '~/components/staticPages/accounts/Activate'
 import ResendActivationMessage from '~/components/staticPages/accounts/ResendActivationMessage'
@@ -17,6 +18,12 @@ const accounts = (lang, loginOnly) => {
       component: props => <Login loginOnly={loginOnly} />
     }
   ]
+  if (!lang) {
+    routes = concat(routes, [{
+      path: '/accounts/social-auth/:backend',
+      component: SocialAuth
+    }])
+  }
   if (!loginOnly) {
     routes = concat(routes, [
       {
