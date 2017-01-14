@@ -7,21 +7,26 @@ let Breadcrumbs = props => {
   if (props.path === '/') { return null }
   return (
     <div id="breadcrumbs">
-      <span className="homeWrapper">
+      <span className="item home">
         <Link to="/">
-          <span className="home" />
+          <span>Home</span>
         </Link>
       </span>
-      {props.items.map((item, key) => (
-        <span key={key} className={`item ${key === props.items.length - 1 && 'active' || ''}`}>
-          <span className="separator" />
-          {key < props.items.length - 1 && (
-            <Link to={item.route}><span>{item.name}</span></Link>
-          ) || (
-            <span>{item.name}</span>
-          )}
-        </span>
-      ))}
+      {props.items.map((item, key) => {
+        const active = key === props.items.length - 1
+        return (
+          <span key={key}>
+            <span className="separator" />
+            <span className={`item ${active && 'active' || ''}`}>
+              {!active && (
+                <Link to={item.route}><span>{item.name}</span></Link>
+              ) || (
+                <span>{item.name}</span>
+              )}
+            </span>
+          </span>
+        )
+      })}
     </div>
   )
 }
