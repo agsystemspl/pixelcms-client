@@ -80,7 +80,7 @@ class ContactForm extends Component {
             disabled={this.props.submitting}
             className={this.props.submitting && 'submitting' || null}
           >
-            <T t="send" />
+            <T t="Send" />
           </button>
         </div>
       </form>
@@ -107,7 +107,7 @@ ContactForm.propTypes = {
 
 ContactForm = reduxForm({
   form: 'contact',
-  validat: validateFormHoneypot
+  validate: validateFormHoneypot
 })(ContactForm)
 
 export default ContactForm
