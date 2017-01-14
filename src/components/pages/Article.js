@@ -37,7 +37,7 @@ const Article = props => {
   let content
   if (props.content) {
     content = (
-      <div className="intro">
+      <div className="content">
         <EditableContent
           model="cms.content.models.Article"
           pk={props.pk}
