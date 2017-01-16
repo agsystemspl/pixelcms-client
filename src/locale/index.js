@@ -53,6 +53,10 @@ const locale = {
       'Hello': 'Witaj',
       'Session has expired. You have been logged out.': 'Sesja wygasła. Wylogowano.',
 
+      // social auth
+      'Login with Google': 'Zaloguj się przez Google',
+      'Login with Facebook': 'Zaloguj się przez Facebook',
+
       // contact form
       'Your name / company name': 'Imię i nazwisko / nazwa firmy',
       'Phone number (optional)': 'Numer telefonu (opcjonalnie)',
