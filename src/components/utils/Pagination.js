@@ -76,7 +76,7 @@ let Pagination = props => {
           </span>
         ))}
       </span>
-      {props.showPrevNext && (props.location.query.page < props.numPages || !props.location.query.page) && (
+      {props.showPrevNext && (props.location.query.page < props.numPages || !props.location.query.page && props.numPages > 1) && (
         <span className="nextWrapper">
           <Link to={{
             pathname: props.location.pathname,
@@ -86,7 +86,7 @@ let Pagination = props => {
           </Link>
         </span>
       )}
-      {props.showFirstLast && (props.location.query.page < props.numPages || !props.location.query.page) && (
+      {props.showFirstLast && (props.location.query.page < props.numPages || !props.location.query.page && props.numPages > 1) && (
         <span className="lastWrapper">
           <Link to={{
             pathname: props.location.pathname,
