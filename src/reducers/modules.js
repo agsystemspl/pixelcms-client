@@ -17,6 +17,9 @@ const modules = (state = {}, action) => {
       }
       nextState[action.moduleType][action.templateId] = moduleData
       return nextState
+    case 'REMOVE_MODULE':
+      nextState[action.moduleType][action.templateId] = undefined
+      return nextState
     default:
       return state
   }

@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
 
 import requestModule from '~/actions/modules/requestModule'
+import removeModule from '~/actions/modules/removeModule'
 import Loading from '~/components/utils/Loading'
 
-let Module = (moduleType, getApiPath, moduleTypeHtmlClass) => {
+let Module = (moduleType, getApiPath, moduleTypeHtmlClass, persisting = true) => {
   return ComposedComponent => {
     class Module extends Component {
       makeRequest() {
@@ -19,6 +20,9 @@ let Module = (moduleType, getApiPath, moduleTypeHtmlClass) => {
         if (typeof this.props.module === 'undefined') {
           this.makeRequest()
         }
+      }
+      componentWillUnmount() {
+        this.props.removeModule(moduleType, this.props.templateId)
       }
       componentDidUpdate(prevProps) {
         if (this.props.langCode !== prevProps.langCode) {
@@ -64,7 +68,8 @@ let Module = (moduleType, getApiPath, moduleTypeHtmlClass) => {
           PropTypes.array
         ])
       }),
-      requestModule: PropTypes.func.isRequired
+      requestModule: PropTypes.func.isRequired,
+      removeModule: PropTypes.func.isRequired
     }
 
     const getModule = (modules, templateId) => {
@@ -77,7 +82,7 @@ let Module = (moduleType, getApiPath, moduleTypeHtmlClass) => {
     })
     return connect(
       mapStateToProps,
-      { requestModule }
+      { requestModule, removeModule }
     )(Module)
   }
 }
