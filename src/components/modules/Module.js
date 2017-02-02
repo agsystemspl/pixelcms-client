@@ -6,7 +6,7 @@ import requestModule from '~/actions/modules/requestModule'
 import removeModule from '~/actions/modules/removeModule'
 import Loading from '~/components/utils/Loading'
 
-let Module = (moduleType, getApiPath, moduleTypeHtmlClass, persisting = true) => {
+let Module = (moduleType, getApiPath, moduleTypeHtmlClass, persisting = true, loadingSpinner = true) => {
   return ComposedComponent => {
     class Module extends Component {
       makeRequest() {
@@ -31,7 +31,24 @@ let Module = (moduleType, getApiPath, moduleTypeHtmlClass, persisting = true) =>
       }
       render() {
         if (isEmpty(this.props.module)) { return null }
-        if (this.props.module.loading) { return <Loading /> }
+        if (this.props.module.loading) {
+          if (loadingSpinner) {
+            return (
+              <div
+                className="module loading"
+                style={{
+                  width: '100%',
+                  minHeight: '1px',
+                  height: 'inherit',
+                  position: 'relative'
+                }}
+              >
+                <Loading />
+              </div>
+            )
+          }
+          else { return null }
+        }
         const getHtmlClassName = () => {
           return [
             'module',
