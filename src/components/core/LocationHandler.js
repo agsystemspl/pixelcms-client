@@ -12,8 +12,8 @@ class LocationHandler extends Component {
         debug: process.env.NODE_ENV !== 'production'
       })
     }
-    this.dispatchLocationChanged(props.history.getCurrentLocation())
-    props.history.listen(location => this.dispatchLocationChanged(location))
+    this.handleLocationChange(props.history.getCurrentLocation())
+    props.history.listen(location => this.handleLocationChange(location))
   }
   handleLocationChange(location) {
     this.dispatchLocationChanged(location)
