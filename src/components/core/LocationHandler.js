@@ -27,7 +27,8 @@ class LocationHandler extends Component {
     )
   }
   gaLogPageView() {
-    if (!this.props.gaTrackingId) { return }
+    /* global __PROMISES__ */
+    if (!this.props.gaTrackingId || __SERVER__) { return }
     ReactGA.set({
       page: window.location.pathname,
       title: window.location.pathname
